@@ -2,7 +2,7 @@
 name = "sqr-project"
 version = "0.1.0"
 description = ""
-authors = ["Michael Dmitriev <m.dmitriev@innopolis.university>", Andrew Sandimirov <a.sadimirov@innopolis.university>", Timur Iakhshigulov <t.iakhshigulov@innopolis.university>"]
+authors = ["Michael Dmitriev <m.dmitriev@innopolis.university>", "Andrew Sandimirov <a.sadimirov@innopolis.university>", "Timur Iakhshigulov <t.iakhshigulov@innopolis.university>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
