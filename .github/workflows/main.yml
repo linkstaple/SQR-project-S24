@@ -19,7 +19,6 @@ jobs:
     needs: [ move-to-work ]
     steps:
       - name: install dependencies
-        continue-on-error: true
         working-directory: /home/poga/sqr-fanaty-serduchki/work
         run: python3.11 -m poetry install
 
@@ -37,6 +36,7 @@ jobs:
     needs: [ install-dependencies ]
     steps:
       - name: run tests
+        continue-on-error: true
         working-directory: /home/poga/sqr-fanaty-serduchki/work
         run: python3.11 -m poetry run pytest tests/
 
