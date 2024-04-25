@@ -47,3 +47,20 @@ jobs:
       - name: build docker image
         working-directory: /home/poga/sqr-fanaty-serduchki/work
         run: docker build --tag lazysplit:local -f deployments/Dockerfile . --network=host
+
+  deploy:
+    runs-on: self-hosted
+    needs: [ build-docker-image ]
+    steps:
+      - name: Export docker image
+        run: docker save lazysplit > /home/poga/sqr-fanaty-serduchki/work/lazysplit.tar
+
+      - name: Import docker image to microk8s
+        run: microk8s ctr --connect-timeout 10000s image import /home/poga/sqr-fanaty-serduchki/work/lazysplit.tar
+
+      - name: Remove previous deployment
+        continue-on-error: true
+        run: microk8s kubectl delete deployment/lazysplit
+
+      - name: Deploy
+        run: microk8s kubectl apply -f deployments/deployment.yaml
