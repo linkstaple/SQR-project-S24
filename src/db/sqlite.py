@@ -1,5 +1,7 @@
 import sqlite3
 
+from model import model
+
 
 class Database():
 
@@ -41,8 +43,49 @@ class Database():
 
         self.connection.commit()
 
+    def new_db(self):
+        return self
+
+    def __cursor(self):
+        return sqlite3.connect('lazy_split.db').cursor()
+
+    def query(self, query, *params):
+        return self.__cursor().execute(query, params)
+
+    def factory(self, cursor, row):
+        fields = [column[0] for column in cursor.description]
+        return {k: v for k, v in zip(fields, row)}
+
+    def execute(self, query, *params):
+        cursor = self.__cursor()
+        cursor.row_factory = self.factory
+        cursor.execute(query, params)
+        cursor.connection.commit()
+        return cursor
+
     def list_users(self):
-        return sqlite3.connect('lazy_split.db').cursor().execute("select * from users").fetchall()
+        return self.query("select * from users").fetchall()
+
+    def register_user(self, username, hashed_password) -> model.User:
+        resp = (self.
+                execute("insert into users (username, password) values ($1, $2)",
+                        username, hashed_password).
+                fetchall())
+
+        user = model.User.parse_obj(resp)
+        return user
+
+    def check_user(self, username, hashed_password) -> model.User:
+        resp = (self.
+                execute("select id, username from users where username = $1 and password = $2",
+                        username, hashed_password).
+                fetchall())
+        print("adljfjkhsdkf", resp)
+        if resp is None or len(resp) == 0:
+            print('ok')
+            return None
+        user = model.User.parse_obj(resp[0])
+        return user
 
     def graceful_shutdown(self):
         self.connection.close()
