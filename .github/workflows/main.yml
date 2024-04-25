@@ -37,3 +37,11 @@ jobs:
       - name: run tests
         working-directory: /home/poga/sqr-fanaty-serduchki/work
         run: python3.11 -m poetry run pytest tests/
+
+  build-docker-image:
+    runs-on: self-hosted
+    needs: [ run-tests, run-linter ]
+    steps:
+      - name: build docker image
+        working-directory: /home/poga/sqr-fanaty-serduchki/work
+        run: docker build --tag lazysplit:local -f deployments/Dockerfile . --network=host
