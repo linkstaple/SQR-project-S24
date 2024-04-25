@@ -2,11 +2,13 @@
 name = "sqr-project"
 version = "0.1.0"
 description = ""
-authors = ["Michael Dmitriev <m.dmitriev@innopolis.university>", Andrew Sandimirov <a.sadimirov@innopolis.university>", Timur Iakhshigulov <t.iakhshigulov@innopolis.university>"]
+authors = ["Michael Dmitriev <m.dmitriev@innopolis.university>", "Andrew Sandimirov <a.sadimirov@innopolis.university>", "Timur Iakhshigulov <t.iakhshigulov@innopolis.university>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
+fastapi = "^0.110.2"
+uvicorn = "^0.29.0"
 
 
 [tool.poetry.group.dev.dependencies]
