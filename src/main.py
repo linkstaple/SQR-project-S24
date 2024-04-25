@@ -1,8 +1,10 @@
 import uvicorn
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+
+from db.sqlite import Database
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
@@ -13,42 +15,50 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="static")
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+# Dependency
+def get_db():
+    if not hasattr(get_db, "db"):
+        get_db.db = Database()
+
+    return get_db.db
 
 
-@app.post("register")
+@app.get("/api/")
+async def root(db: Database = Depends(get_db)):
+    return {"message": db.list_users()}
+
+
+@app.post("/api/register")
 async def register():
     return {"message": "Hello World"}
 
 
-@app.post("login")
+@app.post("/api/login")
 async def login():
     return {"message": "Hello World"}
 
 
-@app.get("profile")
+@app.get("/api/profile")
 async def profile():
     return {"message": "Hello World"}
 
 
-@app.get("groups")
+@app.get("/api/groups")
 async def groups():
     return {"message": "Hello World"}
 
 
-@app.post("group")
+@app.post("/api/group")
 async def group():
     return {"message": "Hello World"}
 
 
-@app.get("group/{id}")
+@app.get("/api/group/{id}")
 async def group_info(id: str):
     return {"message": "Hello World"}
 
 
-@app.post("split")
+@app.post("/api/split")
 async def group():
     return {"message": "Hello World"}
 

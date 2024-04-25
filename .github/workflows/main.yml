@@ -5,10 +5,35 @@ on:
     branches: [ "main" ]
 
 jobs:
-  run_tests:
+  move-to-work:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
 
-      - name: test
-        run: echo "123"
+      - name: move project to work directory
+        continue-on-error: true
+        run: mv ./* ./.* /home/poga/sqr-fanaty-serduchki/work
+
+  install-dependencies:
+    runs-on: self-hosted
+    needs: [ move-to-work ]
+    steps:
+      - name: install dependencies
+        working-directory: /home/poga/sqr-fanaty-serduchki/work
+        run: python3.11 -m poetry install
+
+  run-linter:
+    runs-on: self-hosted
+    needs: [ install-dependencies ]
+    steps:
+      - name: run linter
+        working-directory: /home/poga/sqr-fanaty-serduchki/work
+        run: python3.11 -m poetry run flake8
+
+  run-tests:
+    runs-on: self-hosted
+    needs: [ install-dependencies ]
+    steps:
+      - name: run tests
+        working-directory: /home/poga/sqr-fanaty-serduchki/work
+        run: python3.11 -m poetry run pytest tests/
