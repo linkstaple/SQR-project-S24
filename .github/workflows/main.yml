@@ -26,7 +26,7 @@ jobs:
     runs-on: self-hosted
     needs: [ install-dependencies ]
     steps:
-      - name: install dependencies
+      - name: run linter
         working-directory: /home/poga/sqr-fanaty-serduchki/work
         run: python3.11 -m poetry run flake8
 
@@ -34,6 +34,6 @@ jobs:
     runs-on: self-hosted
     needs: [ install-dependencies ]
     steps:
-      - name: install dependencies
+      - name: run tests
         working-directory: /home/poga/sqr-fanaty-serduchki/work
         run: python3.11 -m poetry run pytest tests/
