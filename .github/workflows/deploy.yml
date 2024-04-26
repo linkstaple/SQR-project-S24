@@ -67,4 +67,5 @@ jobs:
         run: microk8s kubectl delete deployment/lazysplit
 
       - name: Deploy
+        working-directory: /home/poga/sqr-fanaty-serduchki/work
         run: microk8s kubectl apply -f deployments/deployment.yaml
