@@ -1,9 +1,9 @@
 function getLoginValue() {
-  return document.getElementById("login-input").value;
+  return document.getElementById("login-input").value.trim();
 }
 
 function getPasswordValue() {
-  return document.getElementById("password-input").value;
+  return document.getElementById("password-input").value.trim();
 }
 
 function getAuthSubmitButton() {

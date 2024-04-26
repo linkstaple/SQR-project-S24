@@ -13,11 +13,11 @@ if __name__ == "__main__":
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
-app.mount("/static-css", StaticFiles(directory="static-css"), name="static-css")
-app.mount("/static-js", StaticFiles(directory="static-js"), name="static-js")
+app.mount("/static-css", StaticFiles(directory="static/css"), name="static-css")
+app.mount("/static-js", StaticFiles(directory="static/js"), name="static-js")
 
 templates = Jinja2Templates(directory="static")
-htmlTemplates = Jinja2Templates(directory="static-html")
+htmlTemplates = Jinja2Templates(directory="static/html")
 
 
 # Dependency
