@@ -10,6 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: clear work directory
+        continue-on-error: true
+        run: rm -rf /home/poga/sqr-fanaty-serduchki/work/* /home/poga/sqr-fanaty-serduchki/work/.*
+
       - name: move project to work directory
         continue-on-error: true
         run: mv ./* ./.* /home/poga/sqr-fanaty-serduchki/work
