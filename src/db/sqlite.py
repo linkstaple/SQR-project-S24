@@ -24,10 +24,15 @@ class Database():
 
         self.connection.execute('''
             create table if not exists groups_users (
-                id integer primary key,
                 group_id integer not null,
                 user_id integer not null,
-                amount integer not null
+                constraint fk_users
+                    foreign key (user_id)
+                    references users(id)
+                
+                constraint fk_groups
+                    foreign key (group_id)
+                    references groups(id)
                 )
         ''')
 
@@ -81,6 +86,16 @@ class Database():
             return None
         user = model.User.model_validate(resp[0])
         return user
+
+    def get_user_groups(self, user_id) -> list[model.UserGroup]:
+        response = (self.
+                execute('''select id, name from groups where id in
+                        (select group_id from groups_users where user_id = $1)''',
+                        user_id).
+                fetchall())
+        
+        groups = list(map(model.UserGroup.model_validate, response))
+        return groups
 
     def graceful_shutdown(self):
         self.connection.close()

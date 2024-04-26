@@ -12,3 +12,7 @@ class LoginUser(BaseModel):
 class RegisterUser(BaseModel):
     username: str
     password: str
+
+class UserGroup(BaseModel):
+    id: int
+    name: str

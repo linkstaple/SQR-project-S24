@@ -66,7 +66,9 @@ async def profile():
 
 
 @app.get("/api/groups")
-async def groups():
+async def groups(db: Database = Depends(get_db)):
+    # user_groups = db.get_user_groups(1) #todo extract user_id from request
+    # return JSONResponse(content={'groups': list(map(lambda model: model.model_dump(), user_groups))}, status_code=200)
     return {"message": "Hello World"}
 
 
