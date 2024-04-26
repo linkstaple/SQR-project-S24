@@ -5,6 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from db.sqlite import Database
+from db.user import User
 from model.model import RegisterUser, LoginUser
 
 if __name__ == "__main__":
@@ -20,38 +21,30 @@ templates = Jinja2Templates(directory="static")
 htmlTemplates = Jinja2Templates(directory="static/html")
 
 
-# Dependency
-def get_db():
-    if not hasattr(get_db, "db"):
-        get_db.db = Database()
-
-    return get_db.db.new_db()
-
-
 @app.get("/api/")
-async def root(db: Database = Depends(get_db)):
-    return {"message": db.list_users()}
+async def root(user = User):
+    return {"message": user.list_users()}
 
 
 @app.post("/api/register")
-async def register(user: RegisterUser, db: Database = Depends(get_db)):
+async def register(user: RegisterUser, userDB = User):
     username, password = user.username, user.password
 
-    existing_user = db.get_user_by_credentials(username, password)
+    existing_user = userDB.get_user_by_credentials(username, password)
     if existing_user is not None:
         return JSONResponse(
             content={'message': "Username \"{username}\" is already taken"},
             status_code=409,
         )
     else:
-        db.register_user(username, password)
-        new_user = db.get_user_by_credentials(username, password)
+        userDB.register_user(username, password)
+        new_user = userDB.get_user_by_credentials(username, password)
         return JSONResponse(status_code=200, content=new_user.model_dump())
 
 
 @app.post("/api/login")
-async def login(user: LoginUser, db: Database = Depends(get_db)):
-    user = db.get_user_by_credentials(user.username, user.password)
+async def login(user: LoginUser, userDB = User):
+    user = userDB.get_user_by_credentials(user.username, user.password)
     if user is None:
         resp = JSONResponse(content="user or password is incorrect")
         resp.status_code = 404
@@ -66,7 +59,7 @@ async def profile():
 
 
 @app.get("/api/groups")
-async def groups(db: Database = Depends(get_db)):
+async def groups(db = Database):
     user_groups = db.get_user_groups(1) #todo extract user_id from request
     return JSONResponse(content={'groups': list(map(lambda model: model.model_dump(), user_groups))}, status_code=200)
     return {"message": "Hello World"}
