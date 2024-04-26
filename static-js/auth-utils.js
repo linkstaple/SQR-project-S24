@@ -3,7 +3,7 @@ function getLoginValue() {
 }
 
 function getPasswordValue() {
-  document.getElementById("password-input").value;
+  return document.getElementById("password-input").value;
 }
 
 function getAuthSubmitButton() {

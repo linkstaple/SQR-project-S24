@@ -13,17 +13,25 @@ async function onSubmit() {
 
   const registerResponse = await fetch("/api/register", {
     method: "POST",
-    body: {
+    body: JSON.stringify({
       username: userLogin,
       password: userPassword,
+    }),
+    headers: {
+      "Content-Type": "application/json",
     },
   });
+
   if (registerResponse.status === 409) {
-    alert("username taken");
+    alert(`Username "${userLogin}" is already taken`);
+    return;
+  }
+  if (!registerResponse.ok) {
+    alert("Unknown error");
     return;
   }
 
-  location.href = window.location.origin + "/login";
+  //   location.href = window.location.origin + "/login";
 }
 
 function registerScript() {
