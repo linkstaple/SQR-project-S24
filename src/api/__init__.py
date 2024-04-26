@@ -24,9 +24,8 @@ def setup(app: FastAPI) -> None:
         return await service.user.get_self(context.user_id)
 
     @app.get("/api/groups")
-    async def groups(authorization: Annotated[str | None, Header()] = None):
-        user_id = service.user.get_id_from_token(authorization)
-        return await service.group.get_users(user_id)
+    async def groups():
+        return await service.group.get_users(context.user_id)
 
     @app.post("/api/group")
     async def group(group_data: CreateGroup):
