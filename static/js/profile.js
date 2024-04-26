@@ -7,6 +7,7 @@ async function profileScript() {
   usernameElem.innerText = username;
 
   const groupsResponse = await fetch(`api/groups`, {
+    method: 'GET',
     headers: { Authorization: token },
   });
   const { groups } = await groupsResponse.json();
