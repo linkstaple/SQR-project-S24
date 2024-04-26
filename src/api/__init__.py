@@ -13,6 +13,10 @@ def setup(app):
     @app.post("/api/login")
     async def login(user: LoginUser):
         return await service.user.login(user)
+    
+    @app.get("/api/users")
+    async def list_users():
+        return await service.user.get_users()
 
     @app.get("/api/profile")
     async def profile(authorization: Annotated[str | None, Header()] = None):
