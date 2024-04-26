@@ -10,7 +10,7 @@ class Database():
         self.connection.execute('''
             create table if not exists users (
                 id integer primary key,
-                username text not null,
+                username text not null unique,
                 password text not null
                 )
         ''')
