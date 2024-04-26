@@ -19,9 +19,9 @@ def setup(app):
         return await service.user.get_self(authorization)
 
     @app.get("/api/groups")
-    async def groups():
-        # todo extract user_id from request
-        return await service.group.get_users(1)
+    async def groups(authorization: Annotated[str | None, Header()] = None):
+        user_id = service.user.get_id_from_token(authorization)
+        return await service.group.get_users(user_id)
 
     @app.post("/api/group")
     async def group(group_data: CreateGroup):
