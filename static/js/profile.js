@@ -63,9 +63,10 @@ async function requestCreateGroup(name, memberIds) {
 }
 
 async function profileScript() {
-  const [profileResponse, groupsResponse] = await Promise.all([
+  const [profileResponse, groupsResponse, usersResponse] = await Promise.all([
     makeRequest('/profile', 'GET'),
-    makeRequest(`/groups`, 'GET')
+    makeRequest(`/groups`, 'GET'),
+    makeRequest(`/users`, 'GET')
   ])
 
   if (profileResponse.status === 403) {
@@ -95,18 +96,19 @@ async function profileScript() {
     groupsListElem.appendChild(listElem)
   })
 
-  const users = [
-    {name: 'michael', id: 1},
-    {name: 'andrew', id: 2},
-    {name: 'timur', id: 3}
-  ]
+  // const users = [
+  //   {name: 'michael', id: 1},
+  //   {name: 'andrew', id: 2},
+  //   {name: 'timur', id: 3}
+  // ]
+  const {users} = await usersResponse.json()
 
   const createGroupButton = document.getElementById('create-group-button')
   createGroupButton.onclick = createClickCreateGroupHandler(
     users.map(({id}) => id)
   )
 
-  users.forEach(({name, id}) => addUserCheckbox(id, name))
+  users.forEach(({username, id}) => addUserCheckbox(id, username))
 }
 
 profileScript()
