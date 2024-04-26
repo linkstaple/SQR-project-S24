@@ -1,7 +1,8 @@
 import sqlite3
 from config import Config
 
-class _Database():
+
+class _Database:
     def __init__(self):
         self.connection = sqlite3.connect(Config.sqlite_path)
         with open(Config.sqlite_init_script_path, 'r') as init_db:
@@ -28,5 +29,6 @@ class _Database():
 
     def graceful_shutdown(self):
         self.connection.close()
+
 
 Database = _Database()
