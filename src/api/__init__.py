@@ -1,6 +1,8 @@
 from model import RegisterUser, LoginUser
 import service.user
 import service.group
+from typing import Annotated
+from fastapi import Header
 
 
 def setup(app):
@@ -13,8 +15,8 @@ def setup(app):
         return await service.user.login(user)
 
     @app.get("/api/profile")
-    async def profile():
-        return {"message": "Hello World"}
+    async def profile(authorization: Annotated[str | None, Header()] = None):
+        return await service.user.get_self(authorization)
 
     @app.get("/api/groups")
     async def groups():

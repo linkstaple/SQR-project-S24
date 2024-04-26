@@ -30,3 +30,16 @@ async def login(user: model.LoginUser):
 
     user['token'] = jwt.encode({"id": user['id']}, Config.jwt_token_secret, algorithm="HS256")
     return JSONResponse(status_code=200, content=model.User.model_validate(user).model_dump())
+
+
+async def get_self(token: str):
+    try:
+        payload = jwt.decode(token.split()[1], Config.jwt_token_secret, algorithms=["HS256"])
+    except:
+        resp = JSONResponse(content="jwt token invalid or not provided")
+        resp.status_code = 403
+        return resp
+    user = UserDB.get_by_id(payload['id'])
+    # Technically we should always find user, do not catch user not found for the sake of simpliticy
+    user['token'] = jwt.encode({"id": user['id']}, Config.jwt_token_secret, algorithm="HS256")
+    return JSONResponse(status_code=200, content=model.User.model_validate(user).model_dump())

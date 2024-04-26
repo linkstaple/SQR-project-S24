@@ -18,5 +18,14 @@ class _User:
             return None
         return resp[0]
 
+    def get_by_id(self, id):
+        resp = (Database.
+                execute("select id, username from users where id = $1",
+                        id).
+                    fetchall())
+        if resp is None or len(resp) == 0:
+            return None
+        return resp[0]
+
 
 User = _User()
