@@ -89,8 +89,9 @@ class Database():
 
     def get_user_groups(self, user_id) -> list[model.UserGroup]:
         response = (self.
-                execute('''select id, name from groups where id in
-                        (select group_id from groups_users where user_id = $1)''',
+                execute('''select groups_users.group_id as id, groups.name as name from groups_users
+                        left join groups on groups_users.group_id = groups.id
+                        where groups_users.user_id = $1''',
                         user_id).
                 fetchall())
         
