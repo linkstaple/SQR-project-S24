@@ -41,8 +41,33 @@ class Database():
                 id integer primary key,
                 group_id integer not null,
                 lander_id integer not null,
+                doer_id integer not null,
                 amount integer not null,
-                payers text
+                constraint fk_lander
+                    foreign key (lander_id)
+                    references users(id)
+                                
+                constraint fk_doer
+                    foreign key (doer_id)
+                    references users(id)
+                                
+                constraint fk_group
+                    foreign key (group_id)
+                    references groups(id)
+                )
+        ''')
+
+        self.connection.execute('''
+            create table if not exists split_members (
+                split_id integer not null,
+                member_id integer not null,
+                constraint fk_split
+                    foreign key (split_id)
+                    references split_history(id)
+                                
+                constraint fk_member
+                    foreign key (member_id)
+                    references users(id)
                 )
         ''')
 
