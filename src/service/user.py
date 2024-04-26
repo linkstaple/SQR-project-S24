@@ -40,6 +40,6 @@ async def get_self(token: str):
         resp.status_code = 403
         return resp
     user = UserDB.get_by_id(payload['id'])
-    # Technically we should always find user, do not catch user not found for the sake of simpliticy
+    # Technically we should always find user, do not catch user not found for the sake of simplicity
     user['token'] = jwt.encode({"id": user['id']}, Config.jwt_token_secret, algorithm="HS256")
     return JSONResponse(status_code=200, content=model.User.model_validate(user).model_dump())
