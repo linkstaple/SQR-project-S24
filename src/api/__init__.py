@@ -1,4 +1,4 @@
-from model import RegisterUser, LoginUser
+from model import RegisterUser, LoginUser, CreateGroup
 import service.user
 import service.group
 
@@ -24,7 +24,7 @@ def setup(app):
 
 
     @app.post("/api/group")
-    async def group():
+    async def group(group_data: CreateGroup):
         return {"message": "Hello World"}
 
 

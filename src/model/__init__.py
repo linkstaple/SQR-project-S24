@@ -16,3 +16,7 @@ class RegisterUser(BaseModel):
 class UserGroup(BaseModel):
     id: int
     name: str
+
+class CreateGroup(BaseModel):
+    name: str
+    members_ids: list[int]

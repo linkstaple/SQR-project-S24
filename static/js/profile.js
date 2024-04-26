@@ -57,7 +57,7 @@ async function requestCreateGroup(name, memberIds) {
     },
     body: JSON.stringify({
       name,
-      member_ids: memberIds
+      members_ids: memberIds
     })
   })
 }
