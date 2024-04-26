@@ -73,8 +73,7 @@ async function profileScript() {
     return
   }
 
-  const createGroupButton = document.getElementById('create-group-button')
-  username = 'Michael'
+  const {username} = await profileResponse.json()
 
   document.getElementsByTagName('title').item(0).textContent = username
   const usernameElem = document.getElementById('username')
@@ -102,6 +101,7 @@ async function profileScript() {
     {name: 'timur', id: 3}
   ]
 
+  const createGroupButton = document.getElementById('create-group-button')
   createGroupButton.onclick = createClickCreateGroupHandler(
     users.map(({id}) => id)
   )
