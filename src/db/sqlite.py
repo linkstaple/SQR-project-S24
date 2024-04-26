@@ -66,16 +66,11 @@ class Database():
     def list_users(self):
         return self.query("select * from users").fetchall()
 
-    def register_user(self, username, hashed_password) -> model.User:
-        resp = (self.
-                execute("insert into users (username, password) values ($1, $2)",
-                        username, hashed_password).
-                fetchall())
+    def register_user(self, username, hashed_password):
+        self.execute("insert into users (username, password) values ($1, $2)",
+                    username, hashed_password).fetchall()
 
-        user = model.User.parse_obj(resp)
-        return user
-
-    def check_user(self, username, hashed_password) -> model.User:
+    def get_user_by_credentials(self, username, hashed_password) -> model.User:
         resp = (self.
                 execute("select id, username from users where username = $1 and password = $2",
                         username, hashed_password).
@@ -84,7 +79,7 @@ class Database():
         if resp is None or len(resp) == 0:
             print('ok')
             return None
-        user = model.User.parse_obj(resp[0])
+        user = model.User.model_validate(resp[0])
         return user
 
     def graceful_shutdown(self):

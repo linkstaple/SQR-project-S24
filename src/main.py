@@ -35,18 +35,28 @@ async def root(db: Database = Depends(get_db)):
 
 @app.post("/api/register")
 async def register(user: RegisterUser, db: Database = Depends(get_db)):
-    print(db.register_user(user.username, user.password))
-    return {"message": "Hello World"}
+    username, password = user.username, user.password
+
+    existing_user = db.get_user_by_credentials(username, password)
+    if existing_user is not None:
+        return JSONResponse(
+            content={'message': "Username \"{username}\" is already taken"},
+            status_code=409,
+        )
+    else:
+        db.register_user(username, password)
+        new_user = db.get_user_by_credentials(username, password)
+        return JSONResponse(status_code=200, content=new_user.model_dump())
 
 
 @app.post("/api/login")
 async def login(user: LoginUser, db: Database = Depends(get_db)):
-    user = db.check_user(user.username, user.password)
+    user = db.get_user_by_credentials(user.username, user.password)
     if user is None:
         resp = JSONResponse(content="user or password is incorrect")
         resp.status_code = 404
         return resp
-    resp = JSONResponse(content=user.dict())
+    resp = JSONResponse(content=user.model_dump())
     return resp
 
 
