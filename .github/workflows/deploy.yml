@@ -1,0 +1,71 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  move-to-work:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: clear work directory
+        continue-on-error: true
+        run: rm -rf /home/poga/sqr-fanaty-serduchki/work/* /home/poga/sqr-fanaty-serduchki/work/.*
+
+      - name: move project to work directory
+        continue-on-error: true
+        run: mv ./* ./.* /home/poga/sqr-fanaty-serduchki/work
+
+  install-dependencies:
+    runs-on: self-hosted
+    needs: [ move-to-work ]
+    steps:
+      - name: install dependencies
+        working-directory: /home/poga/sqr-fanaty-serduchki/work
+        run: python3.11 -m poetry install
+
+  run-linter:
+    runs-on: self-hosted
+    needs: [ install-dependencies ]
+    steps:
+      - name: run linter
+        continue-on-error: true
+        working-directory: /home/poga/sqr-fanaty-serduchki/work
+        run: python3.11 -m poetry run flake8
+
+  run-tests:
+    runs-on: self-hosted
+    needs: [ install-dependencies ]
+    steps:
+      - name: run tests
+        continue-on-error: true
+        working-directory: /home/poga/sqr-fanaty-serduchki/work
+        run: python3.11 -m poetry run pytest tests/
+
+  build-docker-image:
+    runs-on: self-hosted
+    needs: [ run-tests, run-linter ]
+    steps:
+      - name: build docker image
+        working-directory: /home/poga/sqr-fanaty-serduchki/work
+        run: docker build --tag lazysplit:local -f deployments/Dockerfile . --network=host
+
+  deploy:
+    runs-on: self-hosted
+    needs: [ build-docker-image ]
+    steps:
+      - name: Export docker image
+        run: docker save lazysplit > /home/poga/sqr-fanaty-serduchki/work/lazysplit.tar
+
+      - name: Import docker image to microk8s
+        run: microk8s ctr --connect-timeout 10000s image import /home/poga/sqr-fanaty-serduchki/work/lazysplit.tar
+
+      - name: Remove previous deployment
+        continue-on-error: true
+        run: microk8s kubectl delete deployment/lazysplit
+
+      - name: Deploy
+        working-directory: /home/poga/sqr-fanaty-serduchki/work
+        run: microk8s kubectl apply -f deployments/deployment.yaml

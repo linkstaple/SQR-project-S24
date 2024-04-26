@@ -1,10 +1,11 @@
 import uvicorn
 from fastapi import FastAPI, Request, Depends
-from fastapi.responses import HTMLResponse
+from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from db.sqlite import Database
+from model.model import RegisterUser, LoginUser
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
@@ -18,12 +19,13 @@ app.mount("/static-js", StaticFiles(directory="static-js"), name="static-js")
 templates = Jinja2Templates(directory="static")
 htmlTemplates = Jinja2Templates(directory="static-html")
 
+
 # Dependency
 def get_db():
     if not hasattr(get_db, "db"):
         get_db.db = Database()
 
-    return get_db.db
+    return get_db.db.new_db()
 
 
 @app.get("/api/")
@@ -32,13 +34,20 @@ async def root(db: Database = Depends(get_db)):
 
 
 @app.post("/api/register")
-async def register():
+async def register(user: RegisterUser, db: Database = Depends(get_db)):
+    print(db.register_user(user.username, user.password))
     return {"message": "Hello World"}
 
 
 @app.post("/api/login")
-async def login():
-    return {"message": "Hello World"}
+async def login(user: LoginUser, db: Database = Depends(get_db)):
+    user = db.check_user(user.username, user.password)
+    if user is None:
+        resp = JSONResponse(content="user or password is incorrect")
+        resp.status_code = 404
+        return resp
+    resp = JSONResponse(content=user.dict())
+    return resp
 
 
 @app.get("/api/profile")
