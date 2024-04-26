@@ -28,17 +28,6 @@ class _Database():
         cursor.connection.commit()
         return cursor
 
-    def get_user_groups(self, user_id) -> list[model.UserGroup]:
-        response = (self.
-                execute('''select groups_users.group_id as id, groups.name as name from groups_users
-                        left join groups on groups_users.group_id = groups.id
-                        where groups_users.user_id = $1''',
-                        user_id).
-                fetchall())
-
-        groups = list(map(model.UserGroup.model_validate, response))
-        return groups
-
     def graceful_shutdown(self):
         self.connection.close()
 
