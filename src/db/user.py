@@ -1,4 +1,3 @@
-import model
 from .sqlite import Database
 
 
@@ -10,15 +9,14 @@ class _User:
         Database.execute("insert into users (username, password) values ($1, $2)",
                          username, hashed_password).fetchall()
 
-    def get_user_by_credentials(self, username, hashed_password) -> model.User:
+    def get_by_credentials(self, username, hashed_password):
         resp = (Database.
                 execute("select id, username from users where username = $1 and password = $2",
                         username, hashed_password).
                 fetchall())
         if resp is None or len(resp) == 0:
             return None
-        user = model.User.model_validate(resp[0])
-        return user
+        return resp[0]
 
 
 User = _User()
