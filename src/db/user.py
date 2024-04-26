@@ -3,7 +3,7 @@ from .sqlite import Database
 
 class _User:
     def list_users(self):
-        return Database.query("select id, username from users").fetchall()
+        return Database.execute("select id, username from users").fetchall()
 
     def register_user(self, username, hashed_password):
         Database.execute("insert into users (username, password) values ($1, $2)",
