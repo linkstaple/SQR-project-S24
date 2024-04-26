@@ -1,0 +1,56 @@
+.profile-data {
+    width: 250px;
+    margin: auto;
+    padding-top: 100px;
+}
+
+#username, #groups-title {
+    text-align: center;
+}
+
+#groups-title {
+    margin-top: 10px;
+}
+
+#groups-list {
+    margin-top: 20px;
+    list-style: none;
+}
+
+.group-list-item {
+    text-align: center;
+    border: 1px solid grey;
+    border-radius: 8px;
+}
+
+.group-list-item:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.group-list-item + .group-list-item {
+    margin-top: 10px;
+}
+
+#create-group-title {
+    margin-top: 15px;
+    text-align: center;
+}
+
+#create-group-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+#create-group-button {
+    cursor: pointer;
+}
+
+#group-name-input-container {
+    margin-top: 5px;
+}
+
+fieldset {
+    padding: 5px;
+}

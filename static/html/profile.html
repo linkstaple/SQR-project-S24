@@ -10,9 +10,24 @@
 <body>
     <div class="root">
         <div class="profile-data">
-            <h2 id="username"></h2>
-            <h4>Groups</h4>
+            <h1 id="username"></h2>
+            <h3 id="groups-title">Your groups</h4>
             <ul id="groups-list"></ul>
+            <h3 id="create-group-title">Create new group</h3>
+            <form action="javascript:void(0);">
+                <fieldset id="fieldset">
+                  <legend>Choose members</legend>
+                </fieldset>
+                <div id="group-name-input-container">
+                    <label>
+                        Group name:
+                    </label>
+                    <input id="group-name-input" type="text"/>
+                </div>
+                <div id="create-group-button-container">
+                    <button id="create-group-button">Create new group</button>
+                </div>
+            </form>      
         </div>
     </div>
     <script src="{{ url_for('static-js', path='/profile.js') }}"></script>

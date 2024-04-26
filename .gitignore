@@ -160,3 +160,4 @@ cython_debug/
 .idea/
 
 lazy_split.db
+lazy_split.db-journal
