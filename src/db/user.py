@@ -1,4 +1,4 @@
-from model import model
+import model
 from .sqlite import Database
 
 class _User():

@@ -1,5 +1,5 @@
 from db.user import User as UserDB
-from model.model import RegisterUser, LoginUser
+from model import RegisterUser, LoginUser
 from fastapi.responses import JSONResponse
 
 
