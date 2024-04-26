@@ -31,7 +31,10 @@ async function onSubmit() {
     return
   }
 
-  //   location.href = window.location.origin + "/login";
+  const {token} = await registerResponse.json()
+  localStorage.setItem('authorization_token', token)
+
+  location.href = window.location.origin + '/profile'
 }
 
 function registerScript() {

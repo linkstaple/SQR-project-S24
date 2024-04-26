@@ -11,21 +11,19 @@ async function onSubmit() {
     return
   }
 
-  const loginResponse = await fetch('/api/login', {
-    method: 'POST',
-    body: JSON.stringify({
-      username: userLogin,
-      password: userPassword
-    }),
-    headers: {
-      'Content-Type': 'application/json'
-    }
+  const loginResponse = await makeRequest('/login', 'POST', {
+    username: userLogin,
+    password: userPassword
   })
 
   if (loginResponse.status === 404) {
     alert('Invalid username or password')
     return
   }
+
+  const {token} = await loginResponse.json()
+  localStorage.setItem('authorization_token', token)
+  location.href = location.origin + '/profile'
 }
 
 function loginScript() {

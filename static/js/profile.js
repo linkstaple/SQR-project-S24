@@ -63,22 +63,16 @@ async function requestCreateGroup(name, memberIds) {
 }
 
 async function profileScript() {
-  // const [profileResponse, groupsResponse] = await Promise.all([
-  //   fetch("api/profile", {
-  //     method: "GET",
-  //     headers: { Authorization: token },
-  //   }),
-  //   fetch(`api/groups`, {
-  //     method: "GET",
-  //     headers: { Authorization: token },
-  //   }),
-  // ]);
+  const [profileResponse, groupsResponse] = await Promise.all([
+    makeRequest('/profile', 'GET'),
+    makeRequest(`/groups`, 'GET')
+  ])
 
-  // if (profileResponse.status === 403) {
-  //   location.href = location.origin + "/login";
-  //   return;
-  // }
-  // const { username, id, token } = await profileResponse.json();
+  if (profileResponse.status === 403) {
+    location.href = location.origin + '/login'
+    return
+  }
+
   const createGroupButton = document.getElementById('create-group-button')
   username = 'Michael'
 
