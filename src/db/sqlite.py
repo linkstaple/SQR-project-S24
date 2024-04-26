@@ -1,7 +1,5 @@
 import sqlite3
-
 from config.config import Config
-from model import model
 
 class _Database():
     def __init__(self):
