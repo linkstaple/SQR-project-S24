@@ -1,0 +1,21 @@
+.login-container {
+    width: 250px;
+    margin: auto;
+    padding-top: 100px;
+}
+
+.login-input, .password-input {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.password-input {
+    margin-top: 10px;
+}
+
+.auth-submit-button-container, .auth-register-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}

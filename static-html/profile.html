@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your profile</title>
+    <link href="{{ url_for('static-css', path='/common.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static-css', path='/profile.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="root">
+        <div class="profile-data">
+            <h2 id="username"></h2>
+            <h4>Groups</h4>
+            <ul id="groups-list"></ul>
+        </div>
+    </div>
+    <script src="{{ url_for('static-js', path='/profile.js') }}"></script>
+</body>
+</html>

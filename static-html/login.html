@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% if script_type == 'login' %}
+        Login
+        {% endif %}
+        {% if script_type == 'register' %}
+        Register
+        {% endif %}
+    </title>
+    <link href="{{ url_for('static-css', path='/common.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static-css', path='/login.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="root">
+        <div class="login-container">
+            <form action="javascript:void(0);">
+                <div class="login-input">
+                    <label>
+                        login:
+                    </label>
+                    <input id="login-input" type="text"/>
+                </div>
+                <div class="password-input">
+                    <label>
+                        password:
+                    </label>
+                    <input id="password-input" type="password"/>
+                </div>
+                <div class="auth-submit-button-container">
+                    <button id="auth-submit-button">Submit</button>
+                </div>
+                {% if script_type == 'login' %}
+                <div class="auth-register-button-container">
+                    <button id="auth-register-button">Register</button>
+                </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static-js', path='/auth-utils.js') }}"></script>
+    {% if script_type == 'login' %}
+    <script src="{{ url_for('static-js', path='/login.js') }}"></script>
+    {% endif %}
+    {% if script_type == 'register' %}
+    <script src="{{ url_for('static-js', path='/register.js') }}"></script>
+    {% endif %}
+</body>
+</html>
