@@ -1,3 +1,31 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: lazysplit-pv
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/opt/lazysplit"
+  claimRef:
+    namespace: default
+    name: lazysplit-pvc
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: lazysplit-pvc
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -18,6 +46,16 @@ spec:
           image: lazysplit:local
           command: ["poetry", "run", "python", "src/main.py"]
           imagePullPolicy: Never
+          env:
+            - name: SQLITE_PATH
+              value: "/db/lazysplit.db"
+          volumeMounts:
+            - mountPath: /db
+              name: lazysplit-pv
+      volumes:
+        - name: lazysplit-pv
+          persistentVolumeClaim:
+            claimName: lazysplit-pvc
 ---
 apiVersion: v1
 kind: Service
