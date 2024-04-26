@@ -17,7 +17,7 @@ def setup(app: FastAPI) -> None:
     
     @app.get("/api/users")
     async def list_users():
-        return await service.user.get_users()
+        return await service.user.get_all()
 
     @app.get("/api/profile")
     async def profile():
@@ -29,7 +29,7 @@ def setup(app: FastAPI) -> None:
 
     @app.post("/api/group")
     async def group(group_data: CreateGroup):
-        return {"message": "Hello World"}
+        return await service.group.create(context.user_id, group_data)
 
     @app.get("/api/group/{id}")
     async def group_info(id: str):

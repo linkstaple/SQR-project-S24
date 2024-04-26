@@ -11,6 +11,7 @@ class LoginUser(BaseModel):
     username: str
     password: str
 
+
 class ListUser(BaseModel):
     id: int
     username: str
@@ -25,6 +26,7 @@ class UserGroup(BaseModel):
     id: int
     name: str
 
+
 class CreateGroup(BaseModel):
     name: str
-    members_ids: list[int]
+    member_ids: list[int]

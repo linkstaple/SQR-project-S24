@@ -10,22 +10,26 @@ class _Database:
 
         self.connection.commit()
 
-    def __cursor(self):
-        return sqlite3.connect(Config.sqlite_path).cursor()
-
-    def query(self, query, *params):
-        return self.__cursor().execute(query, params)
-
-    def factory(self, cursor, row):
+    def __factory(self, cursor, row):
         fields = [column[0] for column in cursor.description]
         return {k: v for k, v in zip(fields, row)}
 
-    def execute(self, query, *params):
-        cursor = self.__cursor()
-        cursor.row_factory = self.factory
+    def fetch(self, query, *params):
+        cursor = self.connection.cursor()
+        cursor.row_factory = self.__factory
         cursor.execute(query, params)
-        cursor.connection.commit()
-        return cursor
+        return cursor.fetchall()
+
+    def execute(self, query, *params):
+        return self.connection.execute(query, params).fetchall()
+
+    def commit(self):
+        return self.connection.commit()
+
+    def execute_and_commit(self, query, *params):
+        rows = self.connection.execute(query, params).fetchall()
+        self.commit()
+        return rows
 
     def graceful_shutdown(self):
         self.connection.close()

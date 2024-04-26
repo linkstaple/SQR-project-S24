@@ -32,7 +32,7 @@ async def login(user: model.LoginUser):
     return JSONResponse(status_code=200, content=model.User.model_validate(user).model_dump())
 
 
-async def get_users():
+async def get_all():
     users_list = UserDB.list_users()
     users = list(map(lambda data: model.ListUser.model_validate(data).model_dump(), users_list))
     return JSONResponse(content={'users': users}, status_code=200)
