@@ -1,65 +1,65 @@
 function createGroupListElem(name, id) {
-  const elem = document.createElement("li");
-  elem.className = "group-list-item";
-  elem.textContent = name;
+  const elem = document.createElement('li')
+  elem.className = 'group-list-item'
+  elem.textContent = name
 
   elem.onclick = () => {
-    location.href = location.origin + `/group/${id}`;
-  };
-  return elem;
+    location.href = location.origin + `/group/${id}`
+  }
+  return elem
 }
 
 function addUserCheckbox(id, name) {
-  const elemId = `add_user_${id}`;
+  const elemId = `add_user_${id}`
 
-  const inputElem = document.createElement("input");
-  inputElem.type = "checkbox";
-  inputElem.id = elemId;
+  const inputElem = document.createElement('input')
+  inputElem.type = 'checkbox'
+  inputElem.id = elemId
 
-  const labelElem = document.createElement("label");
-  labelElem.style.marginLeft = "5px";
-  labelElem.for = elemId;
-  labelElem.textContent = name;
+  const labelElem = document.createElement('label')
+  labelElem.style.marginLeft = '5px'
+  labelElem.for = elemId
+  labelElem.textContent = name
 
-  const div = document.createElement("div");
-  div.appendChild(inputElem);
-  div.appendChild(labelElem);
+  const div = document.createElement('div')
+  div.appendChild(inputElem)
+  div.appendChild(labelElem)
 
-  const fieldsetElem = document.getElementById("fieldset");
-  fieldsetElem.appendChild(div);
+  const fieldsetElem = document.getElementById('fieldset')
+  fieldsetElem.appendChild(div)
 }
 
 function createClickCreateGroupHandler(ids) {
   return () => {
     const memberIds = ids.filter(
-      (id) => document.getElementById(`add_user_${id}`).checked
-    );
+      id => document.getElementById(`add_user_${id}`).checked
+    )
 
     if (memberIds.length === 0) {
-      alert("You must choose at least 1 member");
-      return;
+      alert('You must choose at least 1 member')
+      return
     }
 
-    const groupName = document.getElementById("group-name-input").value;
+    const groupName = document.getElementById('group-name-input').value
     if (!groupName) {
-      alert("Group name is not specified");
-      return;
+      alert('Group name is not specified')
+      return
     }
-    requestCreateGroup(groupName, memberIds);
-  };
+    requestCreateGroup(groupName, memberIds)
+  }
 }
 
 async function requestCreateGroup(name, memberIds) {
-  return fetch("/api/group", {
-    method: "POST",
+  return fetch('/api/group', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       name,
-      member_ids: memberIds,
-    }),
-  });
+      member_ids: memberIds
+    })
+  })
 }
 
 async function profileScript() {
@@ -79,40 +79,40 @@ async function profileScript() {
   //   return;
   // }
   // const { username, id, token } = await profileResponse.json();
-  const createGroupButton = document.getElementById("create-group-button");
-  username = "Michael";
+  const createGroupButton = document.getElementById('create-group-button')
+  username = 'Michael'
 
-  document.getElementsByTagName("title").item(0).textContent = username;
-  const usernameElem = document.getElementById("username");
-  usernameElem.innerText = username;
+  document.getElementsByTagName('title').item(0).textContent = username
+  const usernameElem = document.getElementById('username')
+  usernameElem.innerText = username
 
   // const { groups } = await groupsResponse.json();
   groups = [
-    { name: "dengovie", id: 1 },
-    { name: "poga", id: 2 },
-    { name: "fanaty_serdyuchki", id: 3 },
-  ];
+    {name: 'dengovie', id: 1},
+    {name: 'poga', id: 2},
+    {name: 'fanaty_serdyuchki', id: 3}
+  ]
 
-  const groupsListElem = document.getElementById("groups-list");
-  const groupsItemsElements = groups.map(({ id, name }) =>
+  const groupsListElem = document.getElementById('groups-list')
+  const groupsItemsElements = groups.map(({id, name}) =>
     createGroupListElem(name, id)
-  );
+  )
 
-  groupsItemsElements.forEach((listElem) => {
-    groupsListElem.appendChild(listElem);
-  });
+  groupsItemsElements.forEach(listElem => {
+    groupsListElem.appendChild(listElem)
+  })
 
   const users = [
-    { name: "michael", id: 1 },
-    { name: "andrew", id: 2 },
-    { name: "timur", id: 3 },
-  ];
+    {name: 'michael', id: 1},
+    {name: 'andrew', id: 2},
+    {name: 'timur', id: 3}
+  ]
 
   createGroupButton.onclick = createClickCreateGroupHandler(
-    users.map(({ id }) => id)
-  );
+    users.map(({id}) => id)
+  )
 
-  users.forEach(({ name, id }) => addUserCheckbox(id, name));
+  users.forEach(({name, id}) => addUserCheckbox(id, name))
 }
 
-profileScript();
+profileScript()
