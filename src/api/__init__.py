@@ -2,10 +2,11 @@ from model import RegisterUser, LoginUser, CreateGroup
 import service.user
 import service.group
 from typing import Annotated
-from fastapi import Header
+from fastapi import Header, FastAPI
+from starlette_context import context
 
 
-def setup(app):
+def setup(app: FastAPI) -> None:
     @app.post("/api/register")
     async def register(user: RegisterUser):
         return await service.user.register(user)
@@ -15,8 +16,8 @@ def setup(app):
         return await service.user.login(user)
 
     @app.get("/api/profile")
-    async def profile(authorization: Annotated[str | None, Header()] = None):
-        return await service.user.get_self(authorization)
+    async def profile():
+        return await service.user.get_self(context.user_id)
 
     @app.get("/api/groups")
     async def groups(authorization: Annotated[str | None, Header()] = None):
