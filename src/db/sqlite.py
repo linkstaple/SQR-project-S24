@@ -1,75 +1,14 @@
 import sqlite3
 
+from config.config import Config
 from model import model
 
 
 class Database():
-
     def __init__(self):
-        self.connection = sqlite3.connect('lazy_split.db')
-        self.connection.execute('''
-            create table if not exists users (
-                id integer primary key,
-                username text not null unique,
-                password text not null
-                )
-        ''')
-
-        self.connection.execute('''
-            create table if not exists groups (
-                id integer primary key,
-                name text not null
-                )
-        ''')
-
-        self.connection.execute('''
-            create table if not exists groups_users (
-                group_id integer not null,
-                user_id integer not null,
-                constraint fk_users
-                    foreign key (user_id)
-                    references users(id)
-                
-                constraint fk_groups
-                    foreign key (group_id)
-                    references groups(id)
-                )
-        ''')
-
-        self.connection.execute('''
-            create table if not exists split_history (
-                id integer primary key,
-                group_id integer not null,
-                lander_id integer not null,
-                doer_id integer not null,
-                amount integer not null,
-                constraint fk_lander
-                    foreign key (lander_id)
-                    references users(id)
-                                
-                constraint fk_doer
-                    foreign key (doer_id)
-                    references users(id)
-                                
-                constraint fk_group
-                    foreign key (group_id)
-                    references groups(id)
-                )
-        ''')
-
-        self.connection.execute('''
-            create table if not exists split_members (
-                split_id integer not null,
-                member_id integer not null,
-                constraint fk_split
-                    foreign key (split_id)
-                    references split_history(id)
-                                
-                constraint fk_member
-                    foreign key (member_id)
-                    references users(id)
-                )
-        ''')
+        self.connection = sqlite3.connect(Config.sqlite_path)
+        with open(Config.sqlite_init_script_path, 'r') as init_db:
+            self.connection.executescript(init_db.read())
 
         self.connection.commit()
 
@@ -77,7 +16,7 @@ class Database():
         return self
 
     def __cursor(self):
-        return sqlite3.connect('lazy_split.db').cursor()
+        return sqlite3.connect(Config.sqlite_path).cursor()
 
     def query(self, query, *params):
         return self.__cursor().execute(query, params)
@@ -105,7 +44,6 @@ class Database():
                 execute("select id, username from users where username = $1 and password = $2",
                         username, hashed_password).
                 fetchall())
-        print("adljfjkhsdkf", resp)
         if resp is None or len(resp) == 0:
             print('ok')
             return None
