@@ -23,9 +23,11 @@ create table if not exists groups_users (
 
 create table if not exists split_history (
     id integer primary key,
+    created_at float not null,
     group_id integer not null,
-    lander_id integer not null,
     doer_id integer not null,
+    lander_id integer not null,
+    payer_ids string not null, -- JSON array as "[1, 2, 3]"
     amount integer not null,
     constraint fk_lander
         foreign key (lander_id)
