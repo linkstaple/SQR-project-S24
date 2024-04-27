@@ -108,7 +108,12 @@ function createSplitHandler(members, groupId) {
       return
     }
 
-    await requestSplit(groupId, amount, landerId, payersIds)
+    const splitResponse = await requestSplit(groupId, amount, landerId, payersIds)
+    if (!splitResponse.ok) {
+      const msg = await splitResponse.json()
+      alert(msg)
+      return
+    }
     window.location.reload()
   }
 }
