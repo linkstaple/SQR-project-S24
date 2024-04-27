@@ -1,0 +1,88 @@
+ul {
+    list-style: none;
+}
+
+.root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 100px 0;
+}
+
+#group-title {
+    text-align: center;
+}
+
+.group-page {
+    display: flex;
+    justify-content: space-between;
+    gap: 150px;
+    margin-top: 20px;
+}
+
+.members-list-block {
+    max-height: 500px;
+}
+
+#members-list {
+    margin-top: 10px;
+}
+
+.member-list-item {
+    max-width: 120px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid grey;
+}
+
+.member-list-item + .member-list-item {
+    margin-top: 5px;
+}
+
+.split-form-container {}
+
+.split-form {}
+
+#payers-fieldset {
+    padding: 5px;
+}
+
+.amount-input-block {
+    margin-top: 5px;
+}
+
+.split-money-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+}
+
+#split-money-button {
+    cursor: pointer;
+}
+
+.history-block {
+    width: 200px;
+}
+
+.history-title {
+    text-align: center;
+}
+
+.history-content {
+    height: 700px;
+}
+
+.histrory-list {
+    height: 100%;
+    padding: 10px 5px;
+}
+
+.history-item {
+    border-radius: 8px;
+    border: 1px solid grey;
+}
+
+.history-item + .history-item {
+    margin-top: 10px;
+}
