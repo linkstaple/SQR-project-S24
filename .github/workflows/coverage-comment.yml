@@ -42,7 +42,7 @@ jobs:
       - name: Produce the coverage report
         uses: insightsengineering/coverage-action@v2
         with:
-          path: ./coverage-comment-badge.json
+          path: ./coverage.xml
           fail: false
           publish: true
           coverage-summary-title: "Code Coverage Summary"
