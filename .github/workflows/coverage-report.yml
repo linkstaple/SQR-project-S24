@@ -1,4 +1,4 @@
-name: coverage-comment
+name: coverage-report
 on:
   push:
     branches: [ "main" ]
@@ -7,7 +7,7 @@ permissions:
   contents: write
 
 jobs:
-  coverage-comment:
+  coverage-report:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -43,7 +43,7 @@ jobs:
           fail_below_min: false
           format: markdown
           hide_branch_rate: false
-          hide_complexity: false
+          hide_complexity: true
           indicators: true
           output: both
           thresholds: '60 80'
