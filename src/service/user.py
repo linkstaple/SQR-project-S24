@@ -8,7 +8,7 @@ from config import Config
 from service.passwords import hash_password, check_password
 
 
-def register(user: model.RegisterUser) -> JSONResponse:
+async def register(user: model.RegisterUser) -> JSONResponse:
     username, password = user.username, hash_password(user.password)
 
     user_exists = UserDB.user_exists(username)
@@ -27,7 +27,7 @@ def register(user: model.RegisterUser) -> JSONResponse:
             content=model.User.model_validate(new_user).model_dump())
 
 
-def login(user: model.LoginUser) -> JSONResponse:
+async def login(user: model.LoginUser) -> JSONResponse:
     found_user = UserDB.get_by_username(user.username)
     if found_user is None or not check_password(
             user.password,
@@ -46,7 +46,7 @@ def login(user: model.LoginUser) -> JSONResponse:
         content=model.User.model_validate(found_user).model_dump())
 
 
-def get_all():
+async def get_all():
     users_list = UserDB.list_users()
     users = list(map(
         lambda data: model.ListUser.model_validate(data).model_dump(),

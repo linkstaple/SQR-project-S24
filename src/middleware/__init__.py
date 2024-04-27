@@ -8,7 +8,7 @@ from config import Config
 def setup(app: FastAPI):
     @app.middleware("http")
     async def auth(request: Request, call_next):
-
+        print("KLJASHDLKJASHD")
         if (request.url.path[:5] != '/api/'
                 or request.url.path in ['/api/login', '/api/register']):
             return await call_next(request)
