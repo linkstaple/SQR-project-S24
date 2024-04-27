@@ -30,7 +30,7 @@ function loginScript() {
   const submitButton = getAuthSubmitButton()
   submitButton.onclick = onSubmit
 
-  const registerButton = document.getElementById('auth-register-button')
+  const registerButton = document.getElementById('action-button')
   registerButton.onclick = () => {
     window.location.href = window.location.origin + '/register'
   }

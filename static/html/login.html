@@ -33,11 +33,16 @@
                 <div class="auth-submit-button-container">
                     <button id="auth-submit-button">Submit</button>
                 </div>
-                {% if script_type == 'login' %}
-                <div class="auth-register-button-container">
-                    <button id="auth-register-button">Register</button>
+                <div class="action-button-container">
+                    <button id="action-button">
+                        {% if script_type == 'login' %}
+                        Register
+                        {% endif %}
+                        {% if script_type == 'register' %}
+                        Login
+                        {% endif %}
+                    </button>
                 </div>
-                {% endif %}
             </form>
         </div>
     </div>

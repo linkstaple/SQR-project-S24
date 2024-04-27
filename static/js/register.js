@@ -40,6 +40,11 @@ async function onSubmit() {
 function registerScript() {
   const submitButton = getAuthSubmitButton()
   submitButton.onclick = onSubmit
+
+  const registerButton = document.getElementById('action-button')
+  registerButton.onclick = () => {
+    window.location.href = window.location.origin + '/login'
+  }
 }
 
 registerScript()

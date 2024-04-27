@@ -14,7 +14,7 @@
     margin-top: 10px;
 }
 
-.auth-submit-button-container, .auth-register-button-container {
+.auth-submit-button-container, .action-button-container {
     display: flex;
     justify-content: flex-end;
     margin-top: 10px;
