@@ -17,11 +17,6 @@ src.tests.service | 100% | 100% | ✔
 **Summary** | **83%** (319 / 384) | **55%** (34 / 62) | ✔
 <!-- END REPORT -->
 
-
-
-
-
-
 ## Install dependencies
 `poetry install`
 
