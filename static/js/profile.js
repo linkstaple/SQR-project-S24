@@ -30,7 +30,7 @@ function addUserCheckbox(id, name) {
 }
 
 function createCreateGroupClickHandler(ids) {
-  return () => {
+  return async () => {
     const memberIds = ids.filter(
       id => document.getElementById(`add_user_${id}`).checked
     )
@@ -45,7 +45,23 @@ function createCreateGroupClickHandler(ids) {
       alert('Group name is not specified')
       return
     }
-    requestCreateGroup(groupName, memberIds)
+
+    const createGroupResponse = await requestCreateGroup(groupName, memberIds)
+    if (createGroupResponse.status === 403) {
+      alert('Unauthorized request')
+      return
+    }
+    if (createGroupResponse.status === 422) {
+      alert('invalid list of members (list contains duplicates or empty)')
+      return
+    }
+    if (createGroupResponse.status === 403) {
+      alert('user in the member list not found')
+      return
+    }
+
+    const {id: groupId} = await createGroupResponse.json()
+    routeManager.goToGroup(groupId)
   }
 }
 
