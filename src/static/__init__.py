@@ -10,6 +10,12 @@ def setup(app):
     templates = Jinja2Templates(directory="static")
     html_templates = Jinja2Templates(directory="static/html")
 
+    @app.get("/", response_class=HTMLResponse)
+    async def root_page(request: Request):
+        return html_templates.TemplateResponse(
+            request=request, name="main.html"
+        )
+
     @app.get("/login", response_class=HTMLResponse)
     async def login_page(request: Request):
         return html_templates.TemplateResponse(
