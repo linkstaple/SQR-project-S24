@@ -77,9 +77,39 @@ function populateHistory(history, members) {
   const historyListElem = document
     .getElementsByClassName('history-list')
     .item(0)
-  history.forEach(({timestamp, amont, doer_id, lander_id, payers_id}) => {
+  history.forEach(({timestamp, amount, doer_id, lander_id, payers_id}) => {
     const listItem = document.createElement('li')
     listItem.className = 'history-item'
+
+    const timestampDiv = document.createElement('div')
+    timestampDiv.textContent = `Date: ${new Date(
+      timestamp * 1000
+    ).toLocaleString()}`
+
+    const amountDiv = document.createElement('div')
+    amountDiv.textContent = `Amount: ${amount.toFixed(2)}`
+    amountDiv.style.marginTop = '5px'
+
+    const landerDiv = document.createElement('div')
+    landerDiv.textContent = `Lander: ${getUsernameById(members, lander_id)}`
+    landerDiv.style.marginTop = '5px'
+
+    const doerDiv = document.createElement('div')
+    doerDiv.textContent = `Doer: ${getUsernameById(members, doer_id)}`
+    doerDiv.style.marginTop = '5px'
+
+    const payersDiv = document.createElement('div')
+    const payersText = members
+      .map(({id}) => getUsernameById(members, id))
+      .join(', ')
+    payersDiv.textContent = `Payers: ${payersText}`
+    payersDiv.style.marginTop = '5px'
+
+    listItem.appendChild(timestampDiv)
+    listItem.appendChild(amountDiv)
+    listItem.appendChild(landerDiv)
+    listItem.appendChild(doerDiv)
+    listItem.appendChild(payersDiv)
 
     historyListElem.appendChild(listItem)
   })
@@ -108,7 +138,12 @@ function createSplitHandler(members, groupId) {
       return
     }
 
-    const splitResponse = await requestSplit(groupId, amount, landerId, payersIds)
+    const splitResponse = await requestSplit(
+      groupId,
+      amount,
+      landerId,
+      payersIds
+    )
     if (!splitResponse.ok) {
       const msg = await splitResponse.json()
       alert(msg)
@@ -141,13 +176,13 @@ async function groupScript() {
   populateMembersList(members)
   populateLanderSelect(members)
   populatePayersFieldset(members)
+  populateHistory(history, members)
 
   const splitButtonElem = document.getElementById('split-money-button')
   splitButtonElem.onclick = createSplitHandler(members, groupId)
 
   const goBackButton = document.getElementById('go-to-profile-button')
   goBackButton.onclick = routeManager.goToProfile
-  // populateHistory(history, members)
 }
 
 groupScript()

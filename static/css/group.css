@@ -71,13 +71,20 @@ ul {
 
 .history-title {
     text-align: center;
+    margin-bottom: 5px;
 }
 
 .history-content {
-    height: 700px;
+    max-height: 600px;
+    max-width: 250px;
+    overflow: auto;
+
+    padding: 5px 10px;
+    border: 1px solid black;
+    border-radius: 8px;
 }
 
-.histrory-list {
+.history-list {
     height: 100%;
     padding: 10px 5px;
 }
@@ -85,6 +92,7 @@ ul {
 .history-item {
     border-radius: 8px;
     border: 1px solid grey;
+    padding: 5px;
 }
 
 .history-item + .history-item {
