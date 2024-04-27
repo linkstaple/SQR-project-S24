@@ -144,6 +144,9 @@ async function groupScript() {
 
   const splitButtonElem = document.getElementById('split-money-button')
   splitButtonElem.onclick = createSplitHandler(members, groupId)
+
+  const goBackButton = document.getElementById('go-to-profile-button')
+  goBackButton.onclick = routeManager.goToProfile
   // populateHistory(history, members)
 }
 

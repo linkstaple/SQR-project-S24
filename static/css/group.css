@@ -20,6 +20,10 @@ ul {
     margin-top: 20px;
 }
 
+#go-to-profile-button {
+    margin-bottom: 5px;
+}
+
 .members-list-block {
     max-height: 500px;
 }
