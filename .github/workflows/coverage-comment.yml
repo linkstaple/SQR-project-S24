@@ -38,3 +38,11 @@ jobs:
           MINIMUM_ORANGE: 60
           COMMENT_TEMPLATE: ""
           DIFF_COVER_ARGS: ""
+
+      - name: Produce the coverage report
+        uses: insightsengineering/coverage-action@v2
+        with:
+          path: ./coverage-comment-badge.json
+          fail: false
+          publish: true
+          coverage-summary-title: "Code Coverage Summary"
