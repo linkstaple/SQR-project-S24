@@ -13,8 +13,9 @@ src.config | 92% | 50% | ✔
 src.db | 45% | 10% | ❌
 src.model | 100% | 100% | ✔
 src.service | 84% | 74% | ✔
+src.tests.integration | 100% | 100% | ✔
 src.tests.service | 100% | 100% | ✔
-**Summary** | **83%** (319 / 384) | **55%** (34 / 62) | ✔
+**Summary** | **84%** (330 / 395) | **65%** (52 / 80) | ✔
 <!-- END REPORT -->
 
 ## Install dependencies
