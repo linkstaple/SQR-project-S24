@@ -22,6 +22,12 @@ class _User:
         if resp is None or len(resp) == 0:
             return None
         return resp[0]
+    
+    def user_exists(self, username):
+        resp = Database.fetch("select * from users where username = $1",
+                              username)
+        
+        return not (resp is None or len(resp) == 0)
 
 
 User = _User()

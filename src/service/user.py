@@ -8,8 +8,8 @@ from config import Config
 async def register(user: model.RegisterUser):
     username, password = user.username, user.password
 
-    existing_user = UserDB.get_by_credentials(username, password)
-    if existing_user is not None:
+    user_exists = UserDB.user_exists(username)
+    if user_exists:
         return JSONResponse(
             content={'message': "Username \"{username}\" is already taken"},
             status_code=409,
