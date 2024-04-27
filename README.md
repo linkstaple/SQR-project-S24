@@ -9,13 +9,16 @@
 Package | Line Rate | Branch Rate | Health
 -------- | --------- | ----------- | ------
 src | 100% | 100% | ✔
+src.api | 93% | 100% | ✔
 src.config | 92% | 50% | ✔
-src.db | 45% | 10% | ❌
+src.db | 95% | 85% | ✔
+src.middleware | 89% | 100% | ✔
 src.model | 100% | 100% | ✔
-src.service | 84% | 74% | ✔
-src.tests.integration | 100% | 100% | ✔
+src.service | 90% | 74% | ✔
+src.static | 80% | 100% | ✔
+src.tests.integration | 98% | 100% | ✔
 src.tests.service | 100% | 100% | ✔
-**Summary** | **84%** (330 / 395) | **65%** (52 / 80) | ✔
+**Summary** | **95%** (548 / 575) | **90%** (115 / 128) | ✔
 <!-- END REPORT -->
 
 ## Install dependencies
