@@ -1,7 +1,6 @@
 from model import RegisterUser, LoginUser, CreateGroup
 import service.user
 import service.group
-from typing import Annotated
 from fastapi import Header, FastAPI
 from starlette_context import context
 
