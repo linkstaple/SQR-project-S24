@@ -45,5 +45,5 @@ jobs:
           hide_branch_rate: false
           hide_complexity: true
           indicators: true
-          output: file
+          output: both
           thresholds: '60 80'
