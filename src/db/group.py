@@ -20,7 +20,7 @@ class _Group:
             return None
         return rows[0]
 
-    def list(self, user_id):
+    def list_users(self, user_id):
         groups = Database.fetch('''select groups_users.group_id as id, groups.name as name from groups_users
                         left join groups on groups_users.group_id = groups.id
                         where groups_users.user_id = $1''',
@@ -28,7 +28,7 @@ class _Group:
         return groups
 
     def get_members(self, group_id):
-        members = Database.fetch('''select groups_users.user_id as id, users.username, 0 as dept
+        members = Database.fetch('''select groups_users.user_id as id, users.username, groups_users.balance
         from groups_users 
         left join users on groups_users.user_id = users.id
         where groups_users.group_id = ?''',
@@ -37,6 +37,16 @@ class _Group:
 
     def get_history(self, group_id):
         return []
+
+    def add_transaction(self, group_id, doer_id, lander_id, payer_ids, amount):
+        self._increase_balance_not_commit(group_id, lander_id, amount)
+        for payer_id in payer_ids:
+            self._increase_balance_not_commit(group_id, payer_id, -amount / len(payer_ids))
+        Database.commit()
+
+    def _increase_balance_not_commit(self, group_id, user_id, increase):
+        Database.execute('''update groups_users set balance = balance + ? where group_id = ? and user_id = ?''',
+                         increase, group_id, user_id)
 
 
 Group = _Group()

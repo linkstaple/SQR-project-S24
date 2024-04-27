@@ -12,6 +12,7 @@ create table if not exists groups (
 create table if not exists groups_users (
     group_id integer not null,
     user_id integer not null,
+    balance float not null default 0,
     constraint fk_users
         foreign key (user_id)
             references users(id)

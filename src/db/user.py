@@ -29,5 +29,9 @@ class _User:
         
         return not (resp is None or len(resp) == 0)
 
+    def users_exist(self, ids):
+        [[count]] = Database.fetch('''count * from users where id in ?''', ids)
+        return len(ids) == count
+
 
 User = _User()

@@ -10,7 +10,7 @@ class User(BaseModel):
 class GroupMember(BaseModel):
     id: int
     username: str
-    dept: float
+    balance: float
 
 
 class GroupHistoryEntry(BaseModel):
@@ -55,3 +55,10 @@ class GroupList(BaseModel):
 class CreateGroup(BaseModel):
     name: str
     member_ids: list[int]
+
+
+class Split(BaseModel):
+    group_id: int
+    amount: float
+    lander_id: int
+    payer_ids: list[int]

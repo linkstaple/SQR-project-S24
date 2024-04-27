@@ -1,18 +1,17 @@
-from model import RegisterUser, LoginUser, CreateGroup
+import model
 import service.user
 import service.group
-from typing import Annotated
 from fastapi import Header, FastAPI
 from starlette_context import context
 
 
 def setup(app: FastAPI) -> None:
     @app.post("/api/register")
-    async def register(user: RegisterUser):
+    async def register(user: model.RegisterUser):
         return await service.user.register(user)
 
     @app.post("/api/login")
-    async def login(user: LoginUser):
+    async def login(user: model.LoginUser):
         return await service.user.login(user)
     
     @app.get("/api/users")
@@ -25,10 +24,10 @@ def setup(app: FastAPI) -> None:
 
     @app.get("/api/groups")
     async def groups():
-        return await service.group.list(context.user_id)
+        return await service.group.list_users(context.user_id)
 
     @app.post("/api/group")
-    async def group(group_data: CreateGroup):
+    async def group(group_data: model.CreateGroup):
         return await service.group.create(context.user_id, group_data)
 
     @app.get("/api/group/{id}")
@@ -36,5 +35,5 @@ def setup(app: FastAPI) -> None:
         return await service.group.get(context.user_id, id)
 
     @app.post("/api/split")
-    async def group():
-        return {"message": "Hello World"}
+    async def group(split_data: model.Split):
+        return await service.group.split(context.user_id, split_data)
