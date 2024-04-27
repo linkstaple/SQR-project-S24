@@ -8,7 +8,8 @@ class _Config:
 
     def __init__(self):
         self._try_find_in_env('sqlite_path', 'SQLITE_PATH')
-        self._try_find_in_env('sqlite_init_script_path', 'SQLITE_INIT_SCRIPT_PATH')
+        self._try_find_in_env('sqlite_init_script_path',
+                              'SQLITE_INIT_SCRIPT_PATH')
         self._try_find_in_env('jwt_token_secret', 'JWT_TOKEN_SECRET')
 
     def _try_find_in_env(self, key, env_key):

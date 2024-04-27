@@ -19,13 +19,15 @@ def setup(app):
     @app.get("/login", response_class=HTMLResponse)
     async def login_page(request: Request):
         return html_templates.TemplateResponse(
-            request=request, name="login.html", context={'script_type': 'login'}
+            request=request, name="login.html",
+            context={'script_type': 'login'}
         )
 
     @app.get("/register", response_class=HTMLResponse)
     async def register_page(request: Request):
         return html_templates.TemplateResponse(
-            request=request, name="login.html", context={'script_type': 'register'}
+            request=request, name="login.html",
+            context={'script_type': 'register'}
         )
 
     @app.get("/profile", response_class=HTMLResponse)
@@ -48,6 +50,9 @@ def setup(app):
 
 
 def mount_static_folders(app):
-    app.mount("/static", StaticFiles(directory="static"), name="static")
-    app.mount("/static-css", StaticFiles(directory="static/css"), name="static-css")
-    app.mount("/static-js", StaticFiles(directory="static/js"), name="static-js")
+    app.mount("/static", StaticFiles(directory="static"),
+              name="static")
+    app.mount("/static-css", StaticFiles(directory="static/css"),
+              name="static-css")
+    app.mount("/static-js", StaticFiles(directory="static/js"),
+              name="static-js")

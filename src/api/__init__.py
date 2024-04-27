@@ -1,7 +1,7 @@
 import model
 import service.user
 import service.group
-from fastapi import Header, FastAPI
+from fastapi import FastAPI
 from starlette_context import context
 
 
@@ -13,7 +13,7 @@ def setup(app: FastAPI) -> None:
     @app.post("/api/login")
     async def login(user: model.LoginUser):
         return await service.user.login(user)
-    
+
     @app.get("/api/users")
     async def list_users():
         return service.user.get_all()
@@ -35,5 +35,5 @@ def setup(app: FastAPI) -> None:
         return await service.group.get(context.user_id, id)
 
     @app.post("/api/split")
-    async def group(split_data: model.Split):
+    async def split(split_data: model.Split):
         return await service.group.split(context.user_id, split_data)
