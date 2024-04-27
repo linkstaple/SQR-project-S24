@@ -12,6 +12,8 @@ from config import Config
 
 from model import RegisterUser, CreateGroup, User, Split
 
+pytest_plugins = ('pytest_asyncio',)
+
 
 @pytest.fixture
 def user() -> User:
@@ -32,7 +34,8 @@ def new_group() -> CreateGroup:
     )
 
 
-def test_create_ok(mocker: pytest_mock.mocker, user, new_group):
+@pytest.mark.asyncio
+async def test_create_ok(mocker: pytest_mock.mocker, user, new_group):
     users_exists = mocker.patch(
         'db.user.User.users_exist',
         autospec=True,
@@ -89,7 +92,7 @@ def test_create_ok(mocker: pytest_mock.mocker, user, new_group):
         ],
     )
     import service.group
-    resp = service.group.create(user.id, new_group)
+    resp = await service.group.create(user.id, new_group)
     assert resp.status_code == 200
 
     users_exists.assert_called_with(new_group.member_ids)
@@ -133,7 +136,8 @@ def test_create_ok(mocker: pytest_mock.mocker, user, new_group):
         }, ]
 
 
-def test_create_user_not_added(mocker: pytest_mock.mocker):
+@pytest.mark.asyncio
+async def test_create_user_not_added(mocker: pytest_mock.mocker):
     users_exists = mocker.patch(
         'db.user.User.users_exist',
         autospec=True,
@@ -190,7 +194,7 @@ def test_create_user_not_added(mocker: pytest_mock.mocker):
         ],
     )
     import service.group
-    resp = service.group.create(1, CreateGroup(
+    resp = await service.group.create(1, CreateGroup(
         name='группа',
         member_ids=[2, 3]
     ))
@@ -240,9 +244,10 @@ def test_create_user_not_added(mocker: pytest_mock.mocker):
     ]
 
 
-def test_create_validation_error(mocker: pytest_mock.mocker):
+@pytest.mark.asyncio
+async def test_create_validation_error(mocker: pytest_mock.mocker):
     import service.group
-    resp = service.group.create(1, CreateGroup(
+    resp = await service.group.create(1, CreateGroup(
         name='группа',
         member_ids=[1, 1, 2]
     ))
@@ -250,7 +255,8 @@ def test_create_validation_error(mocker: pytest_mock.mocker):
     assert resp.body.decode() == '"invalid list of members (empty, contains only you, or contains duplicates)"'
 
 
-def test_split_ok(mocker: pytest_mock.mocker):
+@pytest.mark.asyncio
+async def test_split_ok(mocker: pytest_mock.mocker):
     group_get = mocker.patch(
         'db.group.Group.get',
         autospec=True,
@@ -312,7 +318,7 @@ def test_split_ok(mocker: pytest_mock.mocker):
     )
 
     import service.group
-    resp = service.group.split(1, Split(
+    resp = await service.group.split(1, Split(
         group_id=10012,
         amount=100,
         lander_id=1,

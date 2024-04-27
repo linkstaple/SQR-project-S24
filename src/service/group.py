@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 import model
 
 
-def create(user_id, group_data: model.CreateGroup) -> JSONResponse:
+async def create(user_id, group_data: model.CreateGroup) -> JSONResponse:
     if (len(group_data.member_ids) != len(set(group_data.member_ids))
             or len(group_data.member_ids) == 0
             or (len(group_data.member_ids) == 1
@@ -33,7 +33,7 @@ def create(user_id, group_data: model.CreateGroup) -> JSONResponse:
                         content=model.Group.model_validate(group).model_dump())
 
 
-def get(user_id, group_id) -> JSONResponse:
+async def get(user_id, group_id) -> JSONResponse:
     group = GroupDB.get(group_id)
     if group is None:
         return JSONResponse(status_code=HTTPStatus.NOT_FOUND,
@@ -53,7 +53,7 @@ async def list_users(user_id):
         {'groups': groups}).model_dump(), status_code=HTTPStatus.OK)
 
 
-def split(user_id, split_data: model.Split):
+async def split(user_id, split_data: model.Split):
     if len(split_data.payer_ids) != len(
             set(split_data.payer_ids)) or len(split_data.payer_ids) == 0:
         return JSONResponse(
@@ -92,4 +92,4 @@ def split(user_id, split_data: model.Split):
         split_data.lander_id,
         split_data.payer_ids,
         split_data.amount)
-    return get(user_id, group['id'])
+    return await get(user_id, group['id'])

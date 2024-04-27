@@ -14,6 +14,8 @@ sys.path.append('src/')
 from model import *
 from config import Config
 
+pytest_plugins = ('pytest_asyncio',)
+
 
 @pytest.fixture
 def new_user() -> RegisterUser:
@@ -24,32 +26,35 @@ def new_user() -> RegisterUser:
     )
 
 
-def test_get_all(mocker: pytest_mock.mocker, new_user):
+@pytest.mark.asyncio
+async def test_get_all(mocker: pytest_mock.mocker, new_user):
     mocker.patch(
         'db.user.User.list_users',
         autospec=True,
         return_value=[{'id': 1, 'username': 'a'}],
     )
     import service.user
-    resp = service.user.get_all()
+    resp = await service.user.get_all()
     assert resp.status_code == 200
     assert json.loads(resp.body.decode())['users'][0]['id'] == 1
     assert json.loads(resp.body.decode())['users'][0]['username'] == 'a'
 
 
-def test_register_already_registered_user(mocker: pytest_mock.mocker, new_user):
+@pytest.mark.asyncio
+async def test_register_already_registered_user(mocker: pytest_mock.mocker, new_user):
     mocker.patch(
         'db.user.User.user_exists',
         autospec=True,
         return_value=True,
     )
     import service.user
-    resp = service.user.register(new_user)
+    resp = await service.user.register(new_user)
     assert resp.status_code == HTTPStatus.CONFLICT
     assert json.loads(resp.body.decode()) == {"message": f"Username \"{new_user.username}\" is already taken"}
 
 
-def test_register_new_user(mocker: pytest_mock.mocker, new_user):
+@pytest.mark.asyncio
+async def test_register_new_user(mocker: pytest_mock.mocker, new_user):
     mocker.patch(
         'db.user.User.user_exists',
         autospec=True,
@@ -70,7 +75,7 @@ def test_register_new_user(mocker: pytest_mock.mocker, new_user):
         },
     )
     import service.user
-    resp = service.user.register(new_user)
+    resp = await service.user.register(new_user)
     assert resp.status_code == HTTPStatus.OK
     resp = json.loads(resp.body.decode())
 
@@ -84,7 +89,8 @@ def test_register_new_user(mocker: pytest_mock.mocker, new_user):
     assert from_jwt == {'id': 1}
 
 
-def test_login_ok(mocker: pytest_mock.mocker, new_user):
+@pytest.mark.asyncio
+async def test_login_ok(mocker: pytest_mock.mocker, new_user):
     mocker.patch(
         'db.user.User.get_by_username',
         autospec=True,
@@ -95,7 +101,7 @@ def test_login_ok(mocker: pytest_mock.mocker, new_user):
         },
     )
     import service.user
-    resp = service.user.login(new_user)
+    resp = await service.user.login(new_user)
     assert resp.status_code == HTTPStatus.OK
     resp = json.loads(resp.body.decode())
 
@@ -109,7 +115,8 @@ def test_login_ok(mocker: pytest_mock.mocker, new_user):
     assert from_jwt == {'id': 1}
 
 
-def test_login_invalid_password(mocker: pytest_mock.mocker, new_user):
+@pytest.mark.asyncio
+async def test_login_invalid_password(mocker: pytest_mock.mocker, new_user):
     mocker.patch(
         'db.user.User.get_by_username',
         autospec=True,
@@ -120,7 +127,7 @@ def test_login_invalid_password(mocker: pytest_mock.mocker, new_user):
         },
     )
     import service.user
-    resp = service.user.login(new_user)
+    resp = await service.user.login(new_user)
     assert resp.status_code == HTTPStatus.NOT_FOUND
     print(resp.body.decode())
     assert resp.body.decode() == '"user or password is incorrect"'
