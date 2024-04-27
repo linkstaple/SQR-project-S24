@@ -51,6 +51,12 @@
     margin-top: 5px;
 }
 
+.logout-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+}
+
 fieldset {
     padding: 5px;
 }

@@ -26,7 +26,7 @@ async function onSubmit() {
   }
 
   const {token} = await registerResponse.json()
-  localStorage.setItem('authorization_token', token)
+  authManager.saveToken(token)
   routeManager.goToProfile()
 }
 
@@ -35,7 +35,7 @@ function registerScript() {
   submitButton.onclick = onSubmit
 
   const registerButton = document.getElementById('action-button')
-  registerButton.onclick = routeManager.goToLogin()
+  registerButton.onclick = routeManager.goToLogin
 }
 
 registerScript()

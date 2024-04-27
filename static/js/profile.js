@@ -94,6 +94,9 @@ async function profileScript() {
   )
 
   users.forEach(({username, id}) => addUserCheckbox(id, username))
+
+  const logoutButton = document.getElementById('logout-button')
+  logoutButton.onclick = () => authManager.logout()
 }
 
 profileScript()
