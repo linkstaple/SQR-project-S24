@@ -3,7 +3,7 @@
 name: pytest-coverage-comment
 on:
   push:
-    branches: [ "andrey" ]
+    branches: [ "main" ]
 
 # https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
 # `contents` is for permission to the contents of the repository.
