@@ -6,16 +6,17 @@
 ## Coverage report
 
 <!-- BEGIN REPORT -->
-Package | Line Rate | Branch Rate | Complexity | Health
--------- | --------- | ----------- | ---------- | ------
-src | 100% | 100% | 0 | ✔
-src.config | 92% | 50% | 0 | ✔
-src.db | 45% | 10% | 0 | ❌
-src.model | 100% | 100% | 0 | ✔
-src.service | 84% | 74% | 0 | ✔
-src.tests.service | 100% | 100% | 0 | ✔
-**Summary** | **83%** (319 / 384) | **55%** (34 / 62) | **0** | ✔
+Package | Line Rate | Branch Rate | Health
+-------- | --------- | ----------- | ------
+src | 100% | 100% | ✔
+src.config | 92% | 50% | ✔
+src.db | 45% | 10% | ❌
+src.model | 100% | 100% | ✔
+src.service | 84% | 74% | ✔
+src.tests.service | 100% | 100% | ✔
+**Summary** | **83%** (319 / 384) | **55%** (34 / 62) | ✔
 <!-- END REPORT -->
+
 
 
 
