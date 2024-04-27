@@ -7,6 +7,27 @@ class User(BaseModel):
     token: str
 
 
+class GroupMember(BaseModel):
+    id: int
+    username: str
+    dept: float
+
+
+class GroupHistoryEntry(BaseModel):
+    timestamp: float
+    amount: float
+    doer_id: int
+    lander_id: int
+    payer_ids: list[int]
+
+
+class Group(BaseModel):
+    id: int
+    name: str
+    members: list[GroupMember]
+    history: list[GroupHistoryEntry]
+
+
 class LoginUser(BaseModel):
     username: str
     password: str
@@ -22,9 +43,13 @@ class RegisterUser(BaseModel):
     password: str
 
 
-class UserGroup(BaseModel):
+class GroupListItem(BaseModel):
     id: int
     name: str
+
+
+class GroupList(BaseModel):
+    groups: list[GroupListItem]
 
 
 class CreateGroup(BaseModel):

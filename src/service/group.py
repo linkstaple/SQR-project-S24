@@ -1,14 +1,31 @@
 from db.group import Group as GroupDB
 from fastapi.responses import JSONResponse
-
-from model import CreateGroup
-
-
-async def create(user_id, group_data: CreateGroup) -> JSONResponse:
-    id = GroupDB.create(group_data.name, group_data.member_ids + [user_id])
-    return JSONResponse(status_code=200, content=id)
+import model
 
 
-async def get_users(user_id):
-    user_groups = GroupDB.get_user_groups(user_id)
-    return JSONResponse(content={'groups': list(map(lambda model: model.model_dump(), user_groups))}, status_code=200)
+async def create(user_id, group_data: model.CreateGroup) -> JSONResponse:
+    if len(group_data.member_ids) != len(set(group_data.member_ids)) or len(group_data.member_ids) == 0:
+        return JSONResponse(status_code=422, content='invalid list of members (empty or contains duplicates)')
+    if user_id not in group_data.member_ids:
+        group_data.member_ids.append(user_id)
+    id = GroupDB.create(group_data.name, group_data.member_ids)
+    group = GroupDB.get(id)
+    group['members'] = GroupDB.get_members(id)
+    group['history'] = GroupDB.get_history(id)
+    return JSONResponse(status_code=200, content=model.Group.model_validate(group).model_dump())
+
+
+async def get(user_id, group_id) -> JSONResponse:
+    group = GroupDB.get(group_id)
+    if group is None:
+        return JSONResponse(status_code=404, content='group not found')
+    group['members'] = GroupDB.get_members(group_id)
+    if user_id not in map(lambda member: member['id'], group['members']):
+        return JSONResponse(status_code=404, content='group not found')
+    group['history'] = GroupDB.get_history(group_id)
+    return JSONResponse(status_code=200, content=model.Group.model_validate(group).model_dump())
+
+
+async def list(user_id):
+    groups = GroupDB.list(user_id)
+    return JSONResponse(content=model.GroupList.model_validate({'groups': groups}).model_dump(), status_code=200)
