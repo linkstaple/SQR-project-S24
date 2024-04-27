@@ -8,11 +8,11 @@ from starlette_context import context
 def setup(app: FastAPI) -> None:
     @app.post("/api/register")
     async def register(user: model.RegisterUser):
-        return await service.user.register(user)
+        return service.user.register(user)
 
     @app.post("/api/login")
     async def login(user: model.LoginUser):
-        return await service.user.login(user)
+        return service.user.login(user)
 
     @app.get("/api/users")
     async def list_users():
@@ -28,12 +28,12 @@ def setup(app: FastAPI) -> None:
 
     @app.post("/api/group")
     async def group(group_data: model.CreateGroup):
-        return await service.group.create(context.user_id, group_data)
+        return service.group.create(context.user_id, group_data)
 
     @app.get("/api/group/{id}")
     async def group_info(id: int):
-        return await service.group.get(context.user_id, id)
+        return service.group.get(context.user_id, id)
 
     @app.post("/api/split")
     async def split(split_data: model.Split):
-        return await service.group.split(context.user_id, split_data)
+        return service.group.split(context.user_id, split_data)

@@ -8,13 +8,13 @@ from config import Config
 from service.passwords import hash_password, check_password
 
 
-async def register(user: model.RegisterUser):
+def register(user: model.RegisterUser) -> JSONResponse:
     username, password = user.username, hash_password(user.password)
 
     user_exists = UserDB.user_exists(username)
     if user_exists:
         return JSONResponse(
-            content={'message': "Username \"{username}\" is already taken"},
+            content={'message': f"Username \"{username}\" is already taken"},
             status_code=HTTPStatus.CONFLICT,
         )
     else:
@@ -27,13 +27,15 @@ async def register(user: model.RegisterUser):
             content=model.User.model_validate(new_user).model_dump())
 
 
-async def login(user: model.LoginUser):
+def login(user: model.LoginUser) -> JSONResponse:
     found_user = UserDB.get_by_username(user.username)
     if found_user is None or not check_password(
             user.password,
             found_user['password']):
-        resp = JSONResponse(content="user or password is incorrect")
-        resp.status_code = HTTPStatus.NOT_FOUND
+        resp = JSONResponse(
+            status_code=HTTPStatus.NOT_FOUND,
+            content="user or password is incorrect",
+        )
         return resp
 
     found_user['token'] = (

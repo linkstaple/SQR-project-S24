@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 import model
 
 
-async def create(user_id, group_data: model.CreateGroup) -> JSONResponse:
+def create(user_id, group_data: model.CreateGroup) -> JSONResponse:
     if (len(group_data.member_ids) != len(set(group_data.member_ids))
             or len(group_data.member_ids) == 0
             or (len(group_data.member_ids) == 1
@@ -17,13 +17,13 @@ async def create(user_id, group_data: model.CreateGroup) -> JSONResponse:
             content='invalid list of members '
                     '(empty, contains only you, or contains duplicates)')
 
-    if not UserDB.users_exist(group_data.member_ids):
+    if not UserDB.users_exist(group_data.member_ids.copy()):
         return JSONResponse(
             status_code=HTTPStatus.NOT_FOUND,
             content='member not found')
 
     if user_id not in group_data.member_ids:
-        group_data.member_ids.append(user_id)
+        group_data.member_ids += [user_id]
 
     id = GroupDB.create(group_data.name, group_data.member_ids)
     group = GroupDB.get(id)
@@ -33,7 +33,7 @@ async def create(user_id, group_data: model.CreateGroup) -> JSONResponse:
                         content=model.Group.model_validate(group).model_dump())
 
 
-async def get(user_id, group_id) -> JSONResponse:
+def get(user_id, group_id) -> JSONResponse:
     group = GroupDB.get(group_id)
     if group is None:
         return JSONResponse(status_code=HTTPStatus.NOT_FOUND,
@@ -53,7 +53,7 @@ async def list_users(user_id):
         {'groups': groups}).model_dump(), status_code=HTTPStatus.OK)
 
 
-async def split(user_id, split_data: model.Split):
+def split(user_id, split_data: model.Split):
     if len(split_data.payer_ids) != len(
             set(split_data.payer_ids)) or len(split_data.payer_ids) == 0:
         return JSONResponse(
@@ -92,4 +92,4 @@ async def split(user_id, split_data: model.Split):
         split_data.lander_id,
         split_data.payer_ids,
         split_data.amount)
-    return await get(user_id, group['id'])
+    return get(user_id, group['id'])
