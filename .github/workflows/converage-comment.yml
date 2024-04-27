@@ -32,7 +32,7 @@ jobs:
 
       - name: Build coverage file
         run: |
-          coverage run -m pytest -s && coverage xml
+          poetry run coverage run -m pytest -s && poetry run coverage xml
 
       - name: Display coverage
         uses: ewjoachim/coverage-comment-action@v1
