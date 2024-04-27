@@ -55,7 +55,6 @@ async def split(user_id, split_data: model.Split):
         return JSONResponse(status_code=HTTPStatus.NOT_FOUND, content='group not found')
 
     member_ids = list(map(lambda member: member['id'], group['members']))
-    print(member_ids)
     for payer_id in split_data.payer_ids:
         if payer_id not in member_ids:
             return JSONResponse(status_code=HTTPStatus.NOT_FOUND, content='payer not found within the group')
