@@ -29,7 +29,7 @@ function addUserCheckbox(id, name) {
   fieldsetElem.appendChild(div)
 }
 
-function createClickCreateGroupHandler(ids) {
+function createCreateGroupClickHandler(ids) {
   return () => {
     const memberIds = ids.filter(
       id => document.getElementById(`add_user_${id}`).checked
@@ -50,15 +50,9 @@ function createClickCreateGroupHandler(ids) {
 }
 
 async function requestCreateGroup(name, memberIds) {
-  return fetch('/api/group', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      name,
-      members_ids: memberIds
-    })
+  return makeRequest('/group', 'POST', {
+    name,
+    member_ids: memberIds
   })
 }
 
@@ -74,18 +68,13 @@ async function profileScript() {
     return
   }
 
-  const {username} = await profileResponse.json()
+  const {username, id: userId} = await profileResponse.json()
 
   document.getElementsByTagName('title').item(0).textContent = username
   const usernameElem = document.getElementById('username')
   usernameElem.innerText = username
 
-  // const { groups } = await groupsResponse.json();
-  groups = [
-    {name: 'dengovie', id: 1},
-    {name: 'poga', id: 2},
-    {name: 'fanaty_serdyuchki', id: 3}
-  ]
+  const {groups} = await groupsResponse.json()
 
   const groupsListElem = document.getElementById('groups-list')
   const groupsItemsElements = groups.map(({id, name}) =>
@@ -96,15 +85,11 @@ async function profileScript() {
     groupsListElem.appendChild(listElem)
   })
 
-  // const users = [
-  //   {name: 'michael', id: 1},
-  //   {name: 'andrew', id: 2},
-  //   {name: 'timur', id: 3}
-  // ]
-  const {users} = await usersResponse.json()
+  const {users: originalUsers} = await usersResponse.json()
+  const users = originalUsers.filter(({id}) => id !== userId)
 
   const createGroupButton = document.getElementById('create-group-button')
-  createGroupButton.onclick = createClickCreateGroupHandler(
+  createGroupButton.onclick = createCreateGroupClickHandler(
     users.map(({id}) => id)
   )
 
