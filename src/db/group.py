@@ -1,4 +1,5 @@
 from .sqlite import Database
+from .split_history import SplitHistory
 
 
 class _Group:
@@ -35,13 +36,11 @@ class _Group:
                                  group_id)
         return members
 
-    def get_history(self, group_id):
-        return []
-
     def add_transaction(self, group_id, doer_id, lander_id, payer_ids, amount):
         self._increase_balance_not_commit(group_id, lander_id, amount)
         for payer_id in payer_ids:
             self._increase_balance_not_commit(group_id, payer_id, -amount / len(payer_ids))
+        SplitHistory.add_not_commit(group_id, doer_id, lander_id, payer_ids, amount)
         Database.commit()
 
     def _increase_balance_not_commit(self, group_id, user_id, increase):

@@ -2,6 +2,7 @@ from http import HTTPStatus
 
 from db.group import Group as GroupDB
 from db.user import User as UserDB
+from db.split_history import SplitHistory as SplitHistoryDB
 from fastapi.responses import JSONResponse
 import model
 
@@ -21,7 +22,7 @@ async def create(user_id, group_data: model.CreateGroup) -> JSONResponse:
     id = GroupDB.create(group_data.name, group_data.member_ids)
     group = GroupDB.get(id)
     group['members'] = GroupDB.get_members(id)
-    group['history'] = GroupDB.get_history(id)
+    group['history'] = SplitHistoryDB.list(id)
     return JSONResponse(status_code=HTTPStatus.OK, content=model.Group.model_validate(group).model_dump())
 
 
@@ -32,7 +33,7 @@ async def get(user_id, group_id) -> JSONResponse:
     group['members'] = GroupDB.get_members(group_id)
     if user_id not in map(lambda member: member['id'], group['members']):
         return JSONResponse(status_code=HTTPStatus.NOT_FOUND, content='group not found')
-    group['history'] = GroupDB.get_history(group_id)
+    group['history'] = SplitHistoryDB.list(group_id)
     return JSONResponse(status_code=HTTPStatus.OK, content=model.Group.model_validate(group).model_dump())
 
 
