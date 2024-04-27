@@ -16,7 +16,7 @@ def setup(app: FastAPI) -> None:
     
     @app.get("/api/users")
     async def list_users():
-        return await service.user.get_all()
+        return service.user.get_all()
 
     @app.get("/api/profile")
     async def profile():
