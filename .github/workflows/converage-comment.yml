@@ -1,17 +1,8 @@
-# This workflow will install dependencies, create coverage tests and run Pytest Coverage Comment
-# For more information see: https://github.com/MishaKav/pytest-coverage-comment/
 name: coverage-comment
 on:
   push:
     branches: [ "main" ]
 
-# https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
-# `contents` is for permission to the contents of the repository.
-# `pull-requests` is for permission to pull request
-permissions:
-  contents: write
-  checks: write
-  pull-requests: write
 
 jobs:
   build:
@@ -38,24 +29,10 @@ jobs:
         uses: ewjoachim/coverage-comment-action@v1
         with:
           GITHUB_TOKEN: ${{ github.token }}
-
-          # Path and filename of the coverage XML file to analyze.
           COVERAGE_FILE: "coverage.xml"
-
-          # Whether or not a badge will be generated and stored.
           BADGE_ENABLED: "true"
-
-          # Name of the json file containing badge informations stored in the repo wiki.
           BADGE_FILENAME: coverage-comment-badge.json
-
-          # If the coverage percentage is above or equal to this value, the badge will be green.
-          MINIMUM_GREEN: 100
-
-          # Same with orange. Below is red.
-          MINIMUM_ORANGE: 70
-
-          # [Advanced] Specify a different template for the comments that will be written on the PR.
+          MINIMUM_GREEN: 80
+          MINIMUM_ORANGE: 60
           COMMENT_TEMPLATE: ""
-
-          # [Advanced] Additional args to pass to diff cover (one per line)
           DIFF_COVER_ARGS: ""
