@@ -11,15 +11,9 @@ async function onSubmit() {
     return
   }
 
-  const registerResponse = await fetch('/api/register', {
-    method: 'POST',
-    body: JSON.stringify({
-      username: userLogin,
-      password: userPassword
-    }),
-    headers: {
-      'Content-Type': 'application/json'
-    }
+  const registerResponse = await makeRequest('/register', 'POST', {
+    username: userLogin,
+    password: userPassword
   })
 
   if (registerResponse.status === 409) {
@@ -33,8 +27,7 @@ async function onSubmit() {
 
   const {token} = await registerResponse.json()
   localStorage.setItem('authorization_token', token)
-
-  location.href = window.location.origin + '/profile'
+  routeManager.goToProfile()
 }
 
 function registerScript() {
@@ -42,9 +35,7 @@ function registerScript() {
   submitButton.onclick = onSubmit
 
   const registerButton = document.getElementById('action-button')
-  registerButton.onclick = () => {
-    window.location.href = window.location.origin + '/login'
-  }
+  registerButton.onclick = routeManager.goToLogin()
 }
 
 registerScript()

@@ -13,3 +13,18 @@ function makeRequest(url, method, body) {
 function fetchUsers() {
   return makeRequest('/users', 'GET')
 }
+
+const routeManager = {
+    goToLogin() {
+        location.href = location.origin + '/login'
+    },
+    goToRegister() {
+        location.href = location.origin + '/register'
+    },
+    goToProfile() {
+        location.href = location.origin + '/profile'
+    },
+    goToGroup(groupId) {
+        location.href = location.origin + `/group/${groupId}`
+    }
+}
