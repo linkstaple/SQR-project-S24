@@ -79,7 +79,6 @@ async def get_profile(app: FastAPI, base_url: str, user: User) -> User:
         })
         assert response.status_code == 200
 
-        print(response.json())
         return User(
             username=response.json()["username"],
             id=response.json()['id'],
@@ -192,14 +191,14 @@ async def test_api_common_operations(mocker):
         group_1_3_info = await get_group_info(app, base_url,
                                               user3, group_1_3.id)
 
-        assert len(group_all_info.history) == 0
+        assert len(group_1_3_info.history) == 0
         assert group_1_3_info.members[0].balance == 0.
         assert group_1_3_info.members[1].balance == 0.
 
         group_1_2_info = await get_group_info(app, base_url,
                                               user1, group_1_2.id)
 
-        assert len(group_all_info.history) == 2
+        assert len(group_1_2_info.history) == 2
         assert group_1_2_info.members[0].balance == 150.
         assert group_1_2_info.members[1].balance == -150.
 

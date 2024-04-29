@@ -38,7 +38,7 @@ async def test_add_not_commit_no_error(mocker):
     execute.assert_has_calls(calls=[
         call('''insert into split_history
                 (group_id, doer_id, lander_id, payer_ids, amount, created_at)
-                values (?, ?, ?, ?, ?, now)'''
+                values (?, ?, ?, ?, ?, time('now'))'''
              , 1, 2, 3, '[1, 2]', 100)
     ])
 
@@ -95,7 +95,7 @@ async def test_add_not_commit_no_error(mocker):
         pytest.fail("Unexpected exception: ", e)
 
     execute.assert_has_calls(calls=[
-        call('''select created_at as timestamp, amount,
+        call('''select strftime('%s', created_at) as timestamp, amount,
             doer_id, lander_id, payer_ids
                 from split_history
                 where group_id = ?

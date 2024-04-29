@@ -15,7 +15,6 @@ async def test_create_no_error(mocker):
     sys.path.append('src/')
 
     def side_eff(*args, **kwargs):
-        print(args)
         if args[0] == "insert into groups (name) values ($1) returning id":
             return [[1]]
 
@@ -42,10 +41,14 @@ async def test_create_no_error(mocker):
         pytest.fail("Unexpected exception: ", e)
 
     execute.assert_has_calls(calls=[
-        call('insert into groups (name) values ($1) returning id', '1'),
-        call(f"insert into groups_users (group_id, user_id) " +
-             f"values (?, ?),(?, ?),(?, ?)",
-             1, 1, 1, 2, 1, 3),
+        call("insert into groups (name) "
+             "values ($1) returning id", '1'),
+        call('insert into groups_users (group_id, user_id)'
+             'values (?, ?)', 1, 1),
+        call('insert into groups_users (group_id, user_id)'
+             'values (?, ?)', 1, 2),
+        call('insert into groups_users (group_id, user_id)'
+             'values (?, ?)', 1, 3),
     ])
 
     commit.assert_called()
@@ -161,7 +164,7 @@ async def test_add_transaction_no_type_error(mocker: pytest_mock.mocker):
              -50, 1, 2),
         call('''insert into split_history
                 (group_id, doer_id, lander_id, payer_ids, amount, created_at)
-                values (?, ?, ?, ?, ?, now)''',
+                values (?, ?, ?, ?, ?, time('now'))''',
              1, 1, 1, json.dumps([1, 2]), 100)
     ])
 

@@ -7,13 +7,13 @@ class _SplitHistory:
         Database.execute(
             '''insert into split_history
                 (group_id, doer_id, lander_id, payer_ids, amount, created_at)
-                values (?, ?, ?, ?, ?, now)''',
+                values (?, ?, ?, ?, ?, time('now'))''',
             group_id, doer_id, lander_id,
             json.dumps(payer_ids), amount)
 
     def list(self, group_id):
         history = Database.fetch(
-            '''select created_at as timestamp, amount,
+            '''select strftime('%s', created_at) as timestamp, amount,
             doer_id, lander_id, payer_ids
                 from split_history
                 where group_id = ?

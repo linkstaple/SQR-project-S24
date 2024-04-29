@@ -302,39 +302,19 @@ async def test_user_exists_no_error(mocker):
 
 
 @pytest.mark.asyncio
-async def test_users_exist_no_error(mocker):
+async def test_users_exist_less_users_no_error(mocker):
     sys.path.append('src/')
+
+    def side_eff(*args, **kwargs):
+        if args[1] == 1:
+            return [[1]]
+        if args[1] == 2:
+            return [[1]]
+        raise "unexpected input"
 
     execute = mocker.patch(
         'src.db.sqlite.Database.execute',
-        return_value=[[2]],
-    )
-
-    import src.db.user
-
-    try:
-        assert src.db.user.User.users_exist([1, 2]) == True
-    except TypeError as e:
-        pytest.fail("Unexpected TypeError:", e)
-    except sqlite3.OperationalError as e:
-        pytest.fail("Unexpected sqlite3.OperationalError:", e)
-    except Exception as e:
-        pytest.fail("Unexpected exception: ", e)
-
-    execute.assert_has_calls(calls=[
-        call(f'''select count (*) from users
-            where id in (?,?)''',
-             1, 2),
-    ])
-
-
-@pytest.mark.asyncio
-async def test_users_exist_more_users_no_error(mocker):
-    sys.path.append('src/')
-
-    execute = mocker.patch(
-        'src.db.sqlite.Database.execute',
-        return_value=[[3]],
+        side_effect=side_eff
     )
 
     import src.db.user
@@ -349,7 +329,46 @@ async def test_users_exist_more_users_no_error(mocker):
         pytest.fail("Unexpected exception: ", e)
 
     execute.assert_has_calls(calls=[
-        call(f'''select count (*) from users
-            where id in (?,?)''',
-             1, 2),
+        call('''select count (*) from users
+                where id = ?''',
+             1),
+        call('''select count (*) from users
+                where id = ?''',
+             2),
+    ])
+
+@pytest.mark.asyncio
+async def test_users_exist_less_users_no_error(mocker):
+    sys.path.append('src/')
+
+    def side_eff(*args, **kwargs):
+        if args[1] == 1:
+            return [[1]]
+        if args[1] == 2:
+            return [[0]]
+        raise "unexpected input"
+
+    execute = mocker.patch(
+        'src.db.sqlite.Database.execute',
+        side_effect=side_eff
+    )
+
+    import src.db.user
+
+    try:
+        assert src.db.user.User.users_exist([1, 2]) == False
+    except TypeError as e:
+        pytest.fail("Unexpected TypeError:", e)
+    except sqlite3.OperationalError as e:
+        pytest.fail("Unexpected sqlite3.OperationalError:", e)
+    except Exception as e:
+        pytest.fail("Unexpected exception: ", e)
+
+    execute.assert_has_calls(calls=[
+        call('''select count (*) from users
+                where id = ?''',
+             1),
+        call('''select count (*) from users
+                where id = ?''',
+             2),
     ])
