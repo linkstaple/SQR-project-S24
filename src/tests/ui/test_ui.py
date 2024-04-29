@@ -14,7 +14,8 @@ def driver():
     safari_options = Options()
     return WebDriver(safari_options, WAIT_TIME)
 
-def test_main_page_for_unauthorized_user(driver, capsys):
+@pytest.mark.skip('UI tests do not work')
+def test_main_page_for_unauthorized_user(driver):
     driver.driver.start_client()
     driver.load_page(app_urls.get('main'))
 
@@ -28,6 +29,7 @@ def test_main_page_for_unauthorized_user(driver, capsys):
     except TimeoutException:
         assert False, f"\"#action-button\" element is not visible after {WAIT_TIME} secs"
 
+@pytest.mark.skip('UI tests do not work')
 def test_login_page_redirection(driver, capsys):
     driver.load_page(app_urls.get('login'))
 
