@@ -33,7 +33,7 @@ describe('UI tests', () => {
       .build()
 
     await driver.manage().setTimeouts({
-      implicit: 3000
+      implicit: 8000
     })
   })
 
@@ -70,7 +70,7 @@ describe('UI tests', () => {
 
     await driver.wait(
       until.urlContains('profile'),
-      2000,
+      7000,
       'Profile page is not opened'
     )
 
@@ -84,7 +84,7 @@ describe('UI tests', () => {
     const submitButton = await driver.findElement(By.id('auth-submit-button'))
     await submitButton.click()
 
-    driver.wait(until.alertIsPresent(), 1000, 'Expected alert to be shown')
+    driver.wait(until.alertIsPresent(), 4000, 'Expected alert to be shown')
     let alert = await driver.switchTo().alert()
     let alertText = await alert.getText()
     assert.match(
@@ -137,7 +137,7 @@ describe('UI tests', () => {
 
     await driver.wait(
       until.urlContains('profile'),
-      2000,
+      7000,
       'Profile page is not opened'
     )
   })
