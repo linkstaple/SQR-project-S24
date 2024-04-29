@@ -29,7 +29,7 @@ src.tests.service | 100% | 100% | ✔
 <!-- BEGIN MUTATION REPORT -->
 Total mutations | Passed | Failed | Rate
 ----------------|--------|--------|------
-95 | 80 | 15 | 84%
+5 | 5 | 0 | 100%
 <!-- END MUTATION REPORT -->
 
 ## Install dependencies
