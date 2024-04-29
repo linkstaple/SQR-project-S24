@@ -38,6 +38,10 @@ class ListUser(BaseModel):
     username: str
 
 
+class UsersList(BaseModel):
+    users: list[ListUser]
+
+
 class RegisterUser(BaseModel):
     username: str
     password: str
@@ -62,3 +66,7 @@ class Split(BaseModel):
     amount: float
     lander_id: int
     payer_ids: list[int]
+
+
+class ErrorResponse(BaseModel):
+    content: str
