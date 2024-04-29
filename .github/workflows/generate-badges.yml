@@ -1,4 +1,4 @@
-name: bandit-status
+name: generate-badges
 on:
   push:
     branches: [ "andrey" ]
@@ -70,27 +70,27 @@ jobs:
         run: |
           poetry run bandit -c bandit.yaml -r src/ && echo "status=passing" >> $GITHUB_OUTPUT || echo "status=failing" >> $GITHUB_OUTPUT 
 
-      - name: Generate the badge SVG image
+      - name: Generate the bandit badge SVG image
         uses: emibcn/badge-action@v2.0.3
         id: badge
         with:
           label: 'Bandit'
           status: "${{ steps.bandit_status.outputs.status }}"
           color: ${{ steps.bandit_status.outputs.status == 'passing' && 'green' || 'red' }}
-          path: _badges/data/badge.svg
+          path: _badges/data/bandit_badge.svg
 
-      - name: Commit badge
+      - name: Commit badges
         working-directory: _badges/data
         run: |
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git switch _badges || true
           git pull origin _badges
-          git add "badge.svg"
+          git add "bandit_badge.svg"
           git commit -m "Add/Update badge: ${{ github.sha }}" || true
         shell: bash
 
-      - name: Push badge
+      - name: Push badges
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
