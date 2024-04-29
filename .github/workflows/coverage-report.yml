@@ -46,7 +46,7 @@ jobs:
           hide_complexity: true
           indicators: true
           output: both
-          thresholds: '45 80'
+          thresholds: '45'
 
       - name: Edit README.md
         run: |
