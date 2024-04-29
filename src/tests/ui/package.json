@@ -1,8 +1,8 @@
 {
   "name": "ui",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "UI tests for LazySplit app with mocha & selenium",
+  "main": "tests/test_ui.ts",
   "scripts": {
     "test": "mocha tests/test_ui.js",
     "mocha": "mocha --timeout 6000 -r ts-node/register 'tests/**/*.ts'"
