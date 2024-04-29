@@ -1,0 +1,39 @@
+name: mutation-report
+on:
+  push:
+    branches: [ "andrey" ]
+
+permissions:
+  contents: write
+
+jobs:
+  coverage-report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Produce the coverage report
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: ./coverage.xml
+          badge: false
+          fail_below_min: false
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: true
+          indicators: true
+          output: both
+          thresholds: '45 80'
+
+      - name: Edit README.md
+        run: |
+          sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\\n/g' -e 's/\//\\\//g' code-coverage-results.md > code-coverage-results-fixed.md
+          sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/===/g' README.md > one_line_readme.md
+          sed -i "s/<\!-- BEGIN REPORT -->.*<\!-- END REPORT -->/<\!-- BEGIN REPORT -->===$(cat code-coverage-results-fixed.md)===<\!-- END REPORT -->/g" one_line_readme.md
+          sed -e ':a' -e 'N' -e '$!ba' -e 's/===/\n/g' one_line_readme.md > README.md
+          rm one_line_readme.md code-coverage-results-fixed.md rm code-coverage-results.md
+
+      - uses: mikeal/publish-to-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: 'main'
