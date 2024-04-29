@@ -23,22 +23,22 @@ jobs:
           pip install poetry
           poetry install
           
-      - name: Fetch status from _badge
+      - name: Fetch status from _badges
         uses: actions/checkout@v4
         with:
-          path: _badge
+          path: _badges
           fetch-depth: 0
 
       - name: Initialize storage branch
-        working-directory: _badge
+        working-directory: _badges
         run: |
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           # Switch to the branch if it already exists
-          git switch _badge || true
-          git pull origin _badge || true
+          git switch _badges || true
+          git pull origin _badges || true
           # Create the branch if it doesn't exist yet
-          git checkout --orphan _badge || true
+          git checkout --orphan _badges || true
           # Ensure that the bare minimum components exist in the branch
           mkdir -p data
           touch README.md data/.gitkeep
@@ -61,8 +61,8 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: _badge
-          directory: _badge
+          branch: _badges
+          directory: _badges
           force: true
 
       - name: Get bandit status
