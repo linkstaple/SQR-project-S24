@@ -22,7 +22,7 @@ src.service | 90% | 74% | ✔
 src.static | 80% | 100% | ✔
 src.tests.integration | 98% | 100% | ✔
 src.tests.service | 100% | 100% | ✔
-src.tests.ui | 48% | 100% | ❌
+src.tests.ui | 48% | 100% | ➖
 **Summary** | **91%** (584 / 641) | **90%** (124 / 138) | ✔
 <!-- END REPORT -->
 
