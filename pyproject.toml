@@ -28,6 +28,7 @@ pytest-mock = "^3.14.0"
 selenium = "^4.20.0"
 coverage = "^7.5.0"
 gevent = "^24.2.1"
+locust = "^2.26.0"
 
 [build-system]
 requires = ["poetry-core"]

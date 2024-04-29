@@ -1,5 +1,4 @@
 import jwt
-from starlette_context import context
 from fastapi import Request, FastAPI
 from fastapi.responses import JSONResponse
 from config import Config
@@ -16,7 +15,7 @@ def setup(app: FastAPI):
         try:
             payload = jwt.decode(token.split()[1],
                                  Config.jwt_token_secret, algorithms=["HS256"])
-            context.user_id = payload["id"]
+            request.state.user_id = payload['id']
         except:
             return JSONResponse(
                 content="jwt token invalid or not provided",
