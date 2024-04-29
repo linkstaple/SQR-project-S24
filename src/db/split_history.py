@@ -8,9 +8,9 @@ class _SplitHistory:
         Database.execute(
             '''insert into split_history
                 (group_id, doer_id, lander_id, payer_ids, amount, created_at)
-                values (?, ?, ?, ?, ?, ?)''',
+                values (?, ?, ?, ?, ?, now)''',
             group_id, doer_id, lander_id,
-            json.dumps(payer_ids), amount, time.time())
+            json.dumps(payer_ids), amount)
 
     def list(self, group_id):
         history = Database.fetch(
