@@ -18,6 +18,7 @@ class _Config:
             'secretxdd')
         self._try_find_in_env('bind_host', 'BIND_HOST')
         self._try_find_in_env('bind_port', 'BIND_PORT')
+        print('Config:', self.sqlite_path)
 
     def _try_find_in_env(self, key, env_key, fallback=None):
         if os.getenv(env_key) is not None:
