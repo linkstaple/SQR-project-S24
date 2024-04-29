@@ -36,3 +36,9 @@ Total mutations | Passed | Failed | Rate
 
 ## Run project
 `poetry run python src/main.py`
+
+## Run unit-tests and integration tests
+`poetry run pytest`
+
+## Run UI-tests
+`sh run-ui-test.sh`
