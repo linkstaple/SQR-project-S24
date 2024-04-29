@@ -71,7 +71,7 @@ jobs:
         run: |
           poetry run flake8 src/ && echo "status=passing" >> $GITHUB_OUTPUT || echo "status=failing" >> $GITHUB_OUTPUT 
 
-      - name: Generate the bandit badge SVG image
+      - name: Generate the flake8 badge SVG image
         uses: emibcn/badge-action@v2.0.3
         id: flake8_badge
         with:
@@ -79,6 +79,20 @@ jobs:
           status: "${{ steps.flake8_status.outputs.status }}"
           color: ${{ steps.flake8_status.outputs.status == 'passing' && 'green' || 'red' }}
           path: _badges/data/flake8_badge.svg
+
+      - name: Get complexity check status
+        id: complexity_check_status
+        run: |
+          poetry run flake8 --max-complexity 10 src/ && echo "status=passing" >> $GITHUB_OUTPUT || echo "status=failing" >> $GITHUB_OUTPUT 
+
+      - name: Generate the complexity check badge SVG image
+        uses: emibcn/badge-action@v2.0.3
+        id: complexity_check_badge
+        with:
+          label: 'Cyclomatic complexity'
+          status: "${{ steps.complexity_check_status.outputs.status }}"
+          color: ${{ steps.complexity_check_status.outputs.status == 'passing' && 'green' || 'red' }}
+          path: _badges/data/cyclomatic_complexity.svg
 
       - name: Get bandit status
         id: bandit_status
@@ -103,6 +117,7 @@ jobs:
           git pull origin _badges
           git add "bandit_badge.svg"
           git add "flake8_badge.svg"
+          git add "cyclomatic_complexity.svg"
           git commit -m "Add/Update badge: ${{ github.sha }}" || true
         shell: bash
 

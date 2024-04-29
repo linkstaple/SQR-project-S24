@@ -4,6 +4,7 @@
 
 ![](https://raw.githubusercontent.com/linkstaple/SQR-project-S24/_xml_coverage_reports/data/main/badge.svg)
 ![](https://raw.githubusercontent.com/linkstaple/SQR-project-S24/_badges/data/flake8_badge.svg)
+![](https://raw.githubusercontent.com/linkstaple/SQR-project-S24/_badges/data/cyclomatic_complexity.svg)
 ![](https://raw.githubusercontent.com/linkstaple/SQR-project-S24/_badges/data/bandit_badge.svg)
 
 ## Coverage report
