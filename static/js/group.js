@@ -77,7 +77,7 @@ function populateHistory(history, members) {
   const historyListElem = document
     .getElementsByClassName('history-list')
     .item(0)
-  history.forEach(({timestamp, amount, doer_id, lander_id, payers_id}) => {
+  history.forEach(({timestamp, amount, doer_id, lander_id, payer_ids}) => {
     const listItem = document.createElement('li')
     listItem.className = 'history-item'
 
@@ -99,8 +99,8 @@ function populateHistory(history, members) {
     doerDiv.style.marginTop = '5px'
 
     const payersDiv = document.createElement('div')
-    const payersText = members
-      .map(({id}) => getUsernameById(members, id))
+    const payersText = payer_ids
+      .map(id => getUsernameById(members, id))
       .join(', ')
     payersDiv.textContent = `Payers: ${payersText}`
     payersDiv.style.marginTop = '5px'
