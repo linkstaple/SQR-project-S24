@@ -2,7 +2,7 @@ name: generate-badges
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "andrey" ]
 
 permissions:
   contents: write
@@ -66,6 +66,20 @@ jobs:
           directory: _badges
           force: true
 
+      - name: Get flake8 status
+        id: flake8_status
+        run: |
+          poetry run flake8 src/ && echo "status=passing" >> $GITHUB_OUTPUT || echo "status=failing" >> $GITHUB_OUTPUT 
+
+      - name: Generate the bandit badge SVG image
+        uses: emibcn/badge-action@v2.0.3
+        id: flake8_badge
+        with:
+          label: 'Flake8'
+          status: "${{ steps.flake8_status.outputs.status }}"
+          color: ${{ steps.flake8_status.outputs.status == 'passing' && 'green' || 'red' }}
+          path: _badges/data/flake8_badge.svg
+
       - name: Get bandit status
         id: bandit_status
         run: |
@@ -73,7 +87,7 @@ jobs:
 
       - name: Generate the bandit badge SVG image
         uses: emibcn/badge-action@v2.0.3
-        id: badge
+        id: bandit_badge
         with:
           label: 'Bandit'
           status: "${{ steps.bandit_status.outputs.status }}"
