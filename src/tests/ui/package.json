@@ -1,0 +1,23 @@
+{
+  "name": "ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests/test_ui.js",
+    "mocha": "mocha -r ts-node/register 'tests/**/*.ts'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.12.7",
+    "@types/selenium-webdriver": "^4.1.22",
+    "assert": "^2.1.0",
+    "mocha": "^10.4.0",
+    "selenium-webdriver": "^4.20.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
