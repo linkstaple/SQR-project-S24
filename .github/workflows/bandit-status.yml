@@ -75,7 +75,7 @@ jobs:
         id: badge
         with:
           label: 'Bandit'
-          status: "${{ steps.bandit_status.outputs.status }}%"
+          status: "${{ steps.bandit_status.outputs.status }}"
           color: ${{ steps.bandit_status.outputs.status == 'ok' && 'green' || 'red' }}
           path: _badges/data/badge.svg
 
@@ -86,7 +86,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git switch _badges || true
           git pull origin _badges
-          git add "_badges/data/badge.svg"
+          git add "badge.svg"
           git commit -m "Add/Update badge: ${{ github.sha }}" || true
         shell: bash
 
