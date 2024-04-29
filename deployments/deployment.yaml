@@ -49,6 +49,9 @@ spec:
           env:
             - name: SQLITE_PATH
               value: "/db/lazysplit.db"
+          env:
+            - name: BIND_HOST
+              value: "0.0.0.0"
           volumeMounts:
             - mountPath: /db
               name: lazysplit-pv

@@ -5,7 +5,7 @@ class _Config:
     sqlite_path = 'lazy_split.db'
     sqlite_init_script_path = 'src/db/init.sql'
     jwt_token_secret = None
-    bind_host = '0.0.0.0'
+    bind_host = 'localhost'
     bind_port = 8000
 
     def __init__(self):
