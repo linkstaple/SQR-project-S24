@@ -86,7 +86,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git switch _badges || true
           git pull origin _badges
-          git add "_badges/badge.svg"
+          git add "_badges/data/badge.svg"
           git commit -m "Add/Update badge: ${{ github.sha }}" || true
         shell: bash
 
