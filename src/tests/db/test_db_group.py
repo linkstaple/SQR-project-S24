@@ -33,11 +33,13 @@ async def test_create_no_error(mocker):
     import src.db.group
 
     try:
-        src.db.group.Group.create('1', [1, 2, 3])
+        assert src.db.group.Group.create('1', [1, 2, 3]) == 1
     except TypeError as e:
         pytest.fail("Unexpected TypeError:", e)
     except sqlite3.OperationalError as e:
         pytest.fail("Unexpected sqlite3.OperationalError:", e)
+    except Exception as e:
+        pytest.fail("Unexpected exception: ", e)
 
     execute.assert_has_calls(calls=[
         call('insert into groups (name) values ($1) returning id', '1'),
@@ -61,13 +63,43 @@ async def test_get_no_type_error(mocker: pytest_mock.mocker):
     import src.db.group
 
     try:
-        print(src.db.group.Group.get(1))
+        assert src.db.group.Group.get(1) == {"id": 1, "name": "aaa"}
     except TypeError as e:
         pytest.fail("Unexpected TypeError:", e)
     except sqlite3.OperationalError as e:
         pytest.fail("Unexpected sqlite3.OperationalError:", e)
+    except Exception as e:
+        pytest.fail("Unexpected exception: ", e)
 
     fetch.assert_called_with("select id, name from groups where id = $1", 1)
+
+
+@pytest.mark.asyncio
+async def test_list_users_no_error(mocker: pytest_mock.mocker):
+    sys.path.append('src/')
+
+    fetch = mocker.patch(
+        'src.db.sqlite.Database.fetch',
+        return_value="aaa"
+    )
+
+    import src.db.group
+
+    try:
+        assert src.db.group.Group.list_users(1) == "aaa"
+    except TypeError as e:
+        pytest.fail("Unexpected TypeError:", e)
+    except sqlite3.OperationalError as e:
+        pytest.fail("Unexpected sqlite3.OperationalError:", e)
+    except Exception as e:
+        print(e)
+        pytest.fail("Unexpected exception: ", e)
+
+    fetch.assert_called_with('''select groups_users.group_id as id,
+                groups.name as name from groups_users
+                left join groups on groups_users.group_id = groups.id
+                where groups_users.user_id = $1''',
+                             1)
 
 
 @pytest.mark.asyncio
@@ -85,6 +117,8 @@ async def test_get_members_no_type_error(mocker: pytest_mock.mocker):
         pytest.fail("Unexpected TypeError:", e)
     except sqlite3.OperationalError as e:
         pytest.fail("Unexpected sqlite3.OperationalError:", e)
+    except Exception as e:
+        pytest.fail("Unexpected exception: ", e)
 
     fetch.assert_called_with('''select groups_users.user_id as id,
             users.username, groups_users.balance
@@ -111,8 +145,9 @@ async def test_add_transaction_no_type_error(mocker: pytest_mock.mocker):
     except TypeError as e:
         pytest.fail("Unexpected TypeError:", e)
     except sqlite3.OperationalError as e:
-        print(e)
         pytest.fail("Unexpected sqlite3.OperationalError:", e)
+    except Exception as e:
+        pytest.fail("Unexpected exception: ", e)
 
     execute.assert_has_calls(calls=[
         call('''update groups_users
