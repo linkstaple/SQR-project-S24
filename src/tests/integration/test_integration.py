@@ -1,10 +1,9 @@
 import dataclasses
-import json
 import os
 import sys
 import traceback
 import typing
-from time import sleep
+import warnings
 
 from httpx import AsyncClient
 
@@ -16,6 +15,8 @@ sys.path.append('src')
 from model import Group, GroupList
 
 pytest_plugins = ('pytest_asyncio',)
+
+warnings.filterwarnings("ignore")
 
 
 def set_up(mocker) -> FastAPI:
@@ -204,5 +205,7 @@ async def test_api_common_operations(mocker):
 
     except Exception as e:
         print("exception: ", e, traceback.format_exc())
+        teardown()
+        raise e
 
     teardown()
