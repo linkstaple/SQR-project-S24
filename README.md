@@ -20,11 +20,8 @@ src.middleware | 88% | 100% | ✔
 src.model | 100% | 100% | ✔
 src.service | 92% | 79% | ✔
 src.static | 80% | 100% | ✔
-src.tests.db | 57% | 35% | ➖
-src.tests.integration | 96% | 100% | ✔
-src.tests.service | 98% | 100% | ✔
-src.tests.ui | 48% | 100% | ➖
-**Summary** | **80%** (825 / 1025) | **66%** (182 / 276) | ✔
+src.tests.ui | 65% | 100% | ➖
+**Summary** | **92%** (313 / 340) | **90%** (83 / 92) | ✔
 <!-- END REPORT -->
 
 ## Mutation testing report
