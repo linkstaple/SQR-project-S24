@@ -4,7 +4,6 @@ from config import Config
 
 class _Database:
     def __init__(self):
-        print('sqlite:', Config.sqlite_path)
         self.connection = sqlite3.connect(Config.sqlite_path)
         with open(Config.sqlite_init_script_path, 'r') as init_db:
             self.connection.executescript(init_db.read())
