@@ -25,7 +25,7 @@ jobs:
 
       - name: Build coverage file
         run: |
-          poetry run coverage run --branch -m pytest -s && poetry run coverage xml
+          poetry run coverage run --branch --omit="*/test*" -m pytest -s && poetry run coverage xml
 
       - name: Produce the coverage badge
         uses: insightsengineering/coverage-action@v2
@@ -46,7 +46,7 @@ jobs:
           hide_complexity: true
           indicators: true
           output: both
-          thresholds: '60 80'
+          thresholds: '45 80'
 
       - name: Edit README.md
         run: |
@@ -54,7 +54,7 @@ jobs:
           sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/===/g' README.md > one_line_readme.md
           sed -i "s/<\!-- BEGIN REPORT -->.*<\!-- END REPORT -->/<\!-- BEGIN REPORT -->===$(cat code-coverage-results-fixed.md)===<\!-- END REPORT -->/g" one_line_readme.md
           sed -e ':a' -e 'N' -e '$!ba' -e 's/===/\n/g' one_line_readme.md > README.md
-          rm one_line_readme.md code-coverage-results-fixed.md
+          rm one_line_readme.md code-coverage-results-fixed.md coverage.xml
           rm -rf _xml_coverage_reports
           rm code-coverage-results.md
 

@@ -1,15 +1,16 @@
 import dataclasses
-import json
 import os
 import sys
 import traceback
 import typing
-from time import sleep
+import warnings
 
 from httpx import AsyncClient
 
 import pytest
 from fastapi import FastAPI
+
+from test_base import set_up, teardown
 
 sys.path.append('src')
 
@@ -17,31 +18,8 @@ from model import Group, GroupList
 
 pytest_plugins = ('pytest_asyncio',)
 
+warnings.filterwarnings("ignore")
 
-def set_up(mocker) -> FastAPI:
-    os.open('test_lazy_split.db', flags=os.O_CREAT)
-
-    sys.path.append('src/')
-
-    users_exists = mocker.patch(
-        'config.Config.sqlite_path',
-        'test_lazy_split.db',
-    )
-
-    import api
-    import middleware
-    import static
-
-    app = FastAPI()
-    middleware.setup(app)
-    api.setup(app)
-    static.setup(app)
-
-    return app
-
-
-def teardown():
-    os.remove('test_lazy_split.db')
 
 
 @dataclasses.dataclass
@@ -79,7 +57,6 @@ async def get_profile(app: FastAPI, base_url: str, user: User) -> User:
         })
         assert response.status_code == 200
 
-        print(response.json())
         return User(
             username=response.json()["username"],
             id=response.json()['id'],
@@ -185,38 +162,27 @@ async def test_api_common_operations(mocker):
         group_all_info = await get_group_info(app, base_url,
                                               user3, group_all.id)
         assert len(group_all_info.history) == 3
-        # assert group_all_info.members
+        assert group_all_info.members[0].balance == -400.
+        assert group_all_info.members[1].balance == 500.
+        assert group_all_info.members[2].balance == -100.
 
         group_1_3_info = await get_group_info(app, base_url,
                                               user3, group_1_3.id)
-        print(group_1_3_info)
+
+        assert len(group_1_3_info.history) == 0
+        assert group_1_3_info.members[0].balance == 0.
+        assert group_1_3_info.members[1].balance == 0.
 
         group_1_2_info = await get_group_info(app, base_url,
                                               user1, group_1_2.id)
-        print(group_1_2_info)
 
-
+        assert len(group_1_2_info.history) == 2
+        assert group_1_2_info.members[0].balance == 150.
+        assert group_1_2_info.members[1].balance == -150.
 
     except Exception as e:
         print("exception: ", e, traceback.format_exc())
+        teardown()
+        raise e
 
     teardown()
-
-#
-#
-# payload = json.dumps({
-#     "username": "212344123596",
-#     "password": "123243"
-# })
-#
-# headers = {
-#     'Content-Type': 'application/json',
-#     'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MX0.Ggbl'
-#                      '-87EbMIijgSApQNRibOFm_omxUVWEWi58Mp7y5s'
-# }
-#
-# async with AsyncClient(app=app, base_url=base_url) as ac:
-#     response = await ac.request("GET", '/api/profile', headers=headers, json=payload)
-#
-# print(response.status_code)
-# print(response.json())

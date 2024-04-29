@@ -256,6 +256,45 @@ async def test_create_validation_error(mocker: pytest_mock.mocker):
 
 
 @pytest.mark.asyncio
+async def test_split_validation_error(mocker: pytest_mock.mocker):
+    import service.group
+    resp = await service.group.split(1, Split(
+        group_id=1,
+        amount=100,
+        lander_id=1,
+        payer_ids=[1, 1, 2, 3],
+    ))
+    assert resp.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
+    assert resp.body.decode() == '"invalid list of payers (empty or contains duplicates)"'
+
+
+@pytest.mark.asyncio
+async def test_split_validation_error(mocker: pytest_mock.mocker):
+    import service.group
+    resp = await service.group.split(1, Split(
+        group_id=1,
+        amount=100,
+        lander_id=1,
+        payer_ids=[],
+    ))
+    assert resp.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
+    assert resp.body.decode() == '"invalid list of payers (empty or contains duplicates)"'
+
+
+@pytest.mark.asyncio
+async def test_split_validation_error_sum(mocker: pytest_mock.mocker):
+    import service.group
+    resp = await service.group.split(1, Split(
+        group_id=1,
+        amount=0,
+        lander_id=1,
+        payer_ids=[1, 2],
+    ))
+    assert resp.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
+    assert resp.body.decode() == '"amount less or equal to zero"'
+
+
+@pytest.mark.asyncio
 async def test_split_ok(mocker: pytest_mock.mocker):
     group_get = mocker.patch(
         'db.group.Group.get',
@@ -329,6 +368,125 @@ async def test_split_ok(mocker: pytest_mock.mocker):
     group_get_members.assert_called_with(10012)
     split_history_list.assert_called_with(10012)
     split_history_add_tx.assert_called_with(10012, 1, 1, [1, 2, 3], 100)
+
+    assert resp.status_code == 200
+    resp = json.loads(resp.body.decode())
+    assert 'id' in resp
+    assert 'name' in resp
+    assert 'members' in resp
+    assert 'history' in resp
+
+    assert resp['id'] == 10012
+    assert resp['name'] == 'группа'
+    assert resp['members'] == [
+        {
+            'id': 1,
+            'username': f'member_name_1',
+            'balance': 1.,
+        },
+        {
+            'id': 2,
+            'username': f'member_name_2',
+            'balance': 2.,
+        },
+        {
+            'id': 3,
+            'username': f'member_name_3',
+            'balance': 3.,
+        }
+    ]
+    assert resp['history'] == [
+        {
+            "timestamp": now,
+            "amount": 1.,
+            "doer_id": 1.,
+            "lander_id": 2,
+            "payer_ids": [1, 2, 3],
+        },
+        {
+            "timestamp": now,
+            "amount": 2.,
+            "doer_id": 1.,
+            "lander_id": 2,
+            "payer_ids": [1, 2, 3],
+        },
+    ]
+
+
+@pytest.mark.asyncio
+async def test_split_ok_low_sum(mocker: pytest_mock.mocker):
+    group_get = mocker.patch(
+        'db.group.Group.get',
+        autospec=True,
+        return_value={
+            'id': 10012,
+            'name': 'группа',
+        },
+    )
+
+    group_get_members = mocker.patch(
+        'db.group.Group.get_members',
+        autospec=True,
+        return_value=[
+            {
+                'id': 1,
+                'username': f'member_name_1',
+                'balance': 1.,
+            },
+            {
+                'id': 2,
+                'username': f'member_name_2',
+                'balance': 2.,
+            },
+            {
+                'id': 3,
+                'username': f'member_name_3',
+                'balance': 3.,
+            }
+        ]
+    )
+
+    now = time()
+    split_history_list = mocker.patch(
+        'db.split_history.SplitHistory.list',
+        autospec=True,
+        return_value=[
+            {
+                "timestamp": now,
+                "amount": 1.,
+                "doer_id": 1.,
+                "lander_id": 2,
+                "payer_ids": [1, 2, 3],
+            },
+            {
+                "timestamp": now,
+                "amount": 2.,
+                "doer_id": 1.,
+                "lander_id": 2,
+                "payer_ids": [1, 2, 3],
+            },
+        ],
+    )
+
+    split_history_add_tx = mocker.patch(
+        'db.group.Group.add_transaction',
+        autospec=True,
+        return_value=[
+        ],
+    )
+
+    import service.group
+    resp = await service.group.split(1, Split(
+        group_id=10012,
+        amount=0.1,
+        lander_id=1,
+        payer_ids=[1, 2, 3]
+    ))
+
+    group_get.assert_called_with(10012)
+    group_get_members.assert_called_with(10012)
+    split_history_list.assert_called_with(10012)
+    split_history_add_tx.assert_called_with(10012, 1, 1, [1, 2, 3], 0.1)
 
     assert resp.status_code == 200
     resp = json.loads(resp.body.decode())

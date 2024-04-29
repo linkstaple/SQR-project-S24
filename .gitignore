@@ -44,7 +44,7 @@ htmlcov/
 .coverage.*
 .cache
 nosetests.xml
-coverage.xml
+# coverage.xml
 *.cover
 *.py,cover
 .hypothesis/
@@ -162,3 +162,5 @@ cython_debug/
 lazy_split.db
 lazy_split.db-journal
 node_modules
+
+.mutmut-cache
