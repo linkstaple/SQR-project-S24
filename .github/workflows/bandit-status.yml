@@ -1,0 +1,56 @@
+name: bandit-status
+on:
+  push:
+    branches: [ "andrey" ]
+
+permissions:
+  contents: write
+
+jobs:
+  bandit-status:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+
+      - name: Get bandit status
+        id: bandit_status
+        run: |
+          poetry run bandit -c bandit.yaml -r src/ && echo "status=passing" >> $GITHUB_OUTPUT || echo "status=failing" >> $GITHUB_OUTPUT 
+
+      - name: Generate the badge SVG image
+        uses: emibcn/badge-action@v2.0.3
+        id: badge
+        with:
+          label: 'Bandit'
+          status: "${{ steps.bandit_status.outputs.status }}%"
+          color: ${{ steps.bandit_status.outputs.status == 'ok' && 'green' || 'red' }}
+          path: _badges/data/badge.svg
+
+      - name: Commit badge
+        working-directory: _badges/data
+        run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git switch _badges || true
+          git pull origin _badges
+          git add "_badges/badge.svg"
+          git commit -m "Add/Update badge: ${{ github.sha }}" || true
+        shell: bash
+
+      - name: Push badge
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: _badges
+          directory: _badges/data

@@ -32,11 +32,14 @@ class _User:
         return not (resp is None or len(resp) == 0)
 
     def users_exist(self, ids):
-        [[count]] = Database.execute(
-            f'''select count (*) from users
-            where id in ({','.join(['?'] * len(ids))})''',
-            *ids)
-        return len(ids) == count
+        for id in ids:
+            [[count]] = Database.execute(
+                '''select count (*) from users
+                where id = ?''',
+                id)
+            if count == 0:
+                return False
+        return True
 
 
 User = _User()

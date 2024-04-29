@@ -6,16 +6,10 @@ class _Group:
     def create(self, name, user_ids) -> int:
         [[id]] = Database.execute("insert into groups (name) "
                                   "values ($1) returning id", name)
-        # say we are inserting users with ids 1, 2, 3 into group with id 10
-        # the code below executes such sql:
-        # insert into groups_users (group_id, user_id)
-        # values (?, ?),(?, ?),(?, ?)
-        # with params (10, 1, 10, 2, 10, 3)
-        relations = list(map(lambda user_id: (id, user_id), user_ids))
-        Database.execute(
-            f"insert into groups_users (group_id, user_id) "
-            f"values {','.join(['(?, ?)'] * len(relations))}",
-            *[x for xs in relations for x in xs])
+        for user_id in user_ids:
+            Database.execute(
+                'insert into groups_users (group_id, user_id)'
+                'values (?, ?)', id, user_id)
         Database.commit()
         return id
 
