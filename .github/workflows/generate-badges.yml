@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  bandit-status:
+  generate-badges:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -102,6 +102,7 @@ jobs:
           git switch _badges || true
           git pull origin _badges
           git add "bandit_badge.svg"
+          git add "flake8_badge.svg"
           git commit -m "Add/Update badge: ${{ github.sha }}" || true
         shell: bash
 
