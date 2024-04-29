@@ -185,38 +185,25 @@ async def test_api_common_operations(mocker):
         group_all_info = await get_group_info(app, base_url,
                                               user3, group_all.id)
         assert len(group_all_info.history) == 3
-        # assert group_all_info.members
+        assert group_all_info.members[0].balance == -400.
+        assert group_all_info.members[1].balance == 500.
+        assert group_all_info.members[2].balance == -100.
 
         group_1_3_info = await get_group_info(app, base_url,
                                               user3, group_1_3.id)
-        print(group_1_3_info)
+
+        assert len(group_all_info.history) == 0
+        assert group_1_3_info.members[0].balance == 0.
+        assert group_1_3_info.members[1].balance == 0.
 
         group_1_2_info = await get_group_info(app, base_url,
                                               user1, group_1_2.id)
-        print(group_1_2_info)
 
-
+        assert len(group_all_info.history) == 2
+        assert group_1_2_info.members[0].balance == 150.
+        assert group_1_2_info.members[1].balance == -150.
 
     except Exception as e:
         print("exception: ", e, traceback.format_exc())
 
     teardown()
-
-#
-#
-# payload = json.dumps({
-#     "username": "212344123596",
-#     "password": "123243"
-# })
-#
-# headers = {
-#     'Content-Type': 'application/json',
-#     'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MX0.Ggbl'
-#                      '-87EbMIijgSApQNRibOFm_omxUVWEWi58Mp7y5s'
-# }
-#
-# async with AsyncClient(app=app, base_url=base_url) as ac:
-#     response = await ac.request("GET", '/api/profile', headers=headers, json=payload)
-#
-# print(response.status_code)
-# print(response.json())
