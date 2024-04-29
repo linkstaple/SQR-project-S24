@@ -5,6 +5,7 @@ import {
   Capabilities,
   UserPromptHandler
 } from 'selenium-webdriver/lib/capabilities'
+import {pages, users} from './helpers'
 
 describe('LazySplit UI tests', () => {
   let driver: WebDriver
@@ -39,12 +40,14 @@ describe('LazySplit UI tests', () => {
 
   describe('login & registration', () => {
     it('should load Login page for unauthorized user', async () => {
-      await driver.get('http://127.0.0.1:8000/')
+      await driver.get(pages.root)
+      await driver.wait(
+        until.urlMatches(/\/login/),
+        5000,
+        'Expecteed Login page to be opened for unauthorized user'
+      )
+
       const actionButton = await driver.findElement(By.id('action-button'))
-
-      const url = await driver.getCurrentUrl()
-      assert.match(url, /\/login/, 'Expected login page to be opened')
-
       const buttonText = await actionButton.getText()
       assert.equal(
         buttonText,
@@ -54,13 +57,15 @@ describe('LazySplit UI tests', () => {
     })
 
     it('Register page should register', async () => {
-      await driver.get('http://127.0.0.1:8000/register')
+      await driver.get(pages.register)
+
+      const {name, password} = users.michael
 
       const loginInput = await driver.findElement(By.id('login-input'))
-      await loginInput.sendKeys('michael')
+      await loginInput.sendKeys(name)
 
       const passwordInput = await driver.findElement(By.id('password-input'))
-      await passwordInput.sendKeys('1')
+      await passwordInput.sendKeys(password)
 
       const submitButton = await driver.findElement(By.id('auth-submit-button'))
       await submitButton.click()
@@ -76,7 +81,8 @@ describe('LazySplit UI tests', () => {
     })
 
     it('check for empty login credentials', async () => {
-      await driver.get('http://127.0.0.1:8000/login')
+      await driver.get(pages.login)
+      const {name, password} = users.andrew
 
       const submitButton = await driver.findElement(By.id('auth-submit-button'))
       await submitButton.click()
@@ -93,7 +99,7 @@ describe('LazySplit UI tests', () => {
       await alert.accept()
 
       const loginInput = await driver.findElement(By.id('login-input'))
-      await loginInput.sendKeys('andrew')
+      await loginInput.sendKeys(name)
 
       await submitButton.click()
 
@@ -107,7 +113,7 @@ describe('LazySplit UI tests', () => {
       await alert.accept()
 
       const passwordInput = await driver.findElement(By.id('password-input'))
-      await passwordInput.sendKeys('2')
+      await passwordInput.sendKeys(password)
 
       await submitButton.click()
 
@@ -121,13 +127,14 @@ describe('LazySplit UI tests', () => {
     })
 
     it('should login user', async () => {
-      await driver.get('http://127.0.0.1:8000/login')
+      await driver.get(pages.login)
+      const {name, password} = users.michael
 
       const loginInput = await driver.findElement(By.id('login-input'))
-      await loginInput.sendKeys('michael')
+      await loginInput.sendKeys(name)
 
       const passwordInput = await driver.findElement(By.id('password-input'))
-      await passwordInput.sendKeys('1')
+      await passwordInput.sendKeys(password)
 
       const submitButton = await driver.findElement(By.id('auth-submit-button'))
       await submitButton.click()
@@ -146,13 +153,15 @@ describe('LazySplit UI tests', () => {
   describe('profile page', () => {
     it('should create group', async () => {
       // register user Andrew
-      await driver.get('http://127.0.0.1:8000/register')
+      await driver.get(pages.register)
+
+      const {andrew, timur} = users
 
       let loginInput = await driver.findElement(By.id('login-input'))
-      await loginInput.sendKeys('andrew')
+      await loginInput.sendKeys(andrew.name)
 
       let passwordInput = await driver.findElement(By.id('password-input'))
-      await passwordInput.sendKeys('2')
+      await passwordInput.sendKeys(andrew.password)
 
       let submitButton = await driver.findElement(By.id('auth-submit-button'))
       await submitButton.click()
@@ -167,13 +176,13 @@ describe('LazySplit UI tests', () => {
       const logoutButton = await driver.findElement(By.id('logout-button'))
       await logoutButton.click()
 
-      await driver.get('http://127.0.0.1:8000/register')
+      await driver.get(pages.register)
 
       loginInput = await driver.findElement(By.id('login-input'))
-      await loginInput.sendKeys('timur')
+      await loginInput.sendKeys(timur.name)
 
       passwordInput = await driver.findElement(By.id('password-input'))
-      await passwordInput.sendKeys('3')
+      await passwordInput.sendKeys(timur.password)
 
       submitButton = await driver.findElement(By.id('auth-submit-button'))
       await submitButton.click()
@@ -205,13 +214,14 @@ describe('LazySplit UI tests', () => {
 
     it('should show create group alerts', async () => {
       // login and open profile
-      await driver.get('http://127.0.0.1:8000/login')
+      await driver.get(pages.login)
+      const {michael} = users
 
       const loginInput = await driver.findElement(By.id('login-input'))
-      await loginInput.sendKeys('michael')
+      await loginInput.sendKeys(michael.name)
 
       const passwordInput = await driver.findElement(By.id('password-input'))
-      await passwordInput.sendKeys('1')
+      await passwordInput.sendKeys(michael.password)
 
       const submitButton = await driver.findElement(By.id('auth-submit-button'))
       await submitButton.click()

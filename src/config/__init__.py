@@ -1,6 +1,5 @@
 import os
 
-
 class _Config:
     sqlite_path = 'lazy_split.db'
     sqlite_init_script_path = 'src/db/init.sql'
