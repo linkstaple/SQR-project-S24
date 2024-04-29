@@ -7,7 +7,7 @@ permissions:
   contents: write
 
 jobs:
-  coverage-report:
+  mutation-testing-report:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -17,19 +17,19 @@ jobs:
         with:
           python-version: 3.11
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install poetry
-          poetry install
-
-      - name: Mutation testing
-        run: |
-          poetry run mutmut run --tests-dir src/tests --disable-mutation-types=string,decorator | tee test.txt
+#      - name: Install dependencies
+#        run: |
+#          python -m pip install --upgrade pip
+#          pip install poetry
+#          poetry install
+#
+#      - name: Mutation testing
+#        run: |
+#          poetry run mutmut run --tests-dir src/tests --disable-mutation-types=string,decorator | tee test.txt
 
       - name: Edit README.md
         run: |
-          sed 's/\x0d/\n/g' test.txt | tail -n 1 > oneline.txt
+          sed -e 's/\x0d/\n/g' test.txt | tail -n 1 > oneline.txt
           python -c 'print(input().split()[3])' < oneline.txt > passed
           python -c 'print(input().split()[9])' < oneline.txt > failed
           cat passed > p1
@@ -43,7 +43,7 @@ jobs:
           echo "$(cat total) | $(cat passed) | $(cat failed) | $(cat rate)" >> report.md
           sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\\n/g' -e 's/\//\\\//g' report.md > report-fixed.md
           sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/===/g' README.md > one_line_readme.md
-          sed -i '' "s/<\!-- BEGIN MUTATION REPORT -->.*<\!-- END MUTATION REPORT -->/<\!-- BEGIN MUTATION REPORT -->===$(cat report-fixed.md)===<\!-- END MUTATION REPORT -->/g" one_line_readme.md
+          sed -i "s/<\!-- BEGIN MUTATION REPORT -->.*<\!-- END MUTATION REPORT -->/<\!-- BEGIN MUTATION REPORT -->===$(cat report-fixed.md)===<\!-- END MUTATION REPORT -->/g" one_line_readme.md
           sed -e ':a' -e 'N' -e '$!ba' -e 's/===/\n/g' one_line_readme.md > README.md
           rm one_line_readme.md report.md rm report-fixed.md test.txt oneline.txt passed failed p1 total p2 rate
 
