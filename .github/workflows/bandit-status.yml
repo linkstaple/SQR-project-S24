@@ -76,7 +76,7 @@ jobs:
         with:
           label: 'Bandit'
           status: "${{ steps.bandit_status.outputs.status }}"
-          color: ${{ steps.bandit_status.outputs.status == 'ok' && 'green' || 'red' }}
+          color: ${{ steps.bandit_status.outputs.status == 'passing' && 'green' || 'red' }}
           path: _badges/data/badge.svg
 
       - name: Commit badge
