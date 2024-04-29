@@ -21,7 +21,49 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install poetry
-          poetry install
+          poetry installs
+          
+      - name: Fetch status from _badge
+        uses: actions/checkout@v4
+        with:
+          path: _badge
+          fetch-depth: 0
+
+      - name: Initialize storage branch
+        working-directory: _badge
+        run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          # Switch to the branch if it already exists
+          git switch _badge || true
+          git pull origin _badge || true
+          # Create the branch if it doesn't exist yet
+          git checkout --orphan _badge || true
+          # Ensure that the bare minimum components exist in the branch
+          mkdir -p data
+          touch README.md data/.gitkeep
+          # Copy necessary files and folders to a temporary location
+          mkdir -p /tmp/${{ github.sha }}
+          echo "Copying data to /tmp/${{ github.sha }}"
+          cp -r .git README.md data /tmp/${{ github.sha }}
+          # Remove everything else
+          # Attribution: https://unix.stackexchange.com/a/77313
+          rm -rf ..?* .[!.]* *
+          # Restore files from the temporary location
+          echo "Copying data from /tmp/${{ github.sha }}"
+          cp -r /tmp/${{ github.sha }}/.git /tmp/${{ github.sha }}/README.md /tmp/${{ github.sha }}/data .
+          rm -rf /tmp/${{ github.sha }}
+          git add --all -f
+          git commit -m "Update storage branch: $(date)" || true
+        shell: bash
+
+      - name: Push storage branch
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: _badge
+          directory: _badge
+          force: true
 
       - name: Get bandit status
         id: bandit_status
