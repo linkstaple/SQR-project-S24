@@ -1,6 +1,3 @@
-import random
-
-
 def pre_mutation(context):
     if context.filename == 'src/main.py':
         context.skip = True
@@ -18,7 +15,4 @@ def pre_mutation(context):
         context.skip = True
 
     if context.filename == 'src/db/sqlite.py':
-        context.skip = True
-
-    if random.random() < 0.95:
         context.skip = True
