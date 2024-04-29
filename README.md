@@ -15,15 +15,16 @@ Package | Line Rate | Branch Rate | Health
 src | 100% | 100% | ✔
 src.api | 93% | 100% | ✔
 src.config | 95% | 75% | ✔
-src.db | 94% | 82% | ✔
+src.db | 98% | 95% | ✔
 src.middleware | 88% | 100% | ✔
 src.model | 100% | 100% | ✔
-src.service | 90% | 74% | ✔
+src.service | 92% | 79% | ✔
 src.static | 80% | 100% | ✔
-src.tests.integration | 98% | 100% | ✔
-src.tests.service | 100% | 100% | ✔
+src.tests.db | 57% | 35% | ➖
+src.tests.integration | 96% | 100% | ✔
+src.tests.service | 98% | 100% | ✔
 src.tests.ui | 48% | 100% | ➖
-**Summary** | **91%** (584 / 641) | **90%** (124 / 138) | ✔
+**Summary** | **80%** (825 / 1025) | **66%** (182 / 276) | ✔
 <!-- END REPORT -->
 
 ## Mutation testing report

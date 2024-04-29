@@ -1,625 +1,1200 @@
 <?xml version="1.0" ?>
-<testsuites disabled="0" errors="0" failures="15" tests="146" time="0.0">
-	<testsuite disabled="0" errors="0" failures="15" name="mutmut" skipped="0" tests="146" time="0">
-		<testcase name="Mutant #1" file="src/main.py" line="9">
-			<failure type="failure" message="bad_survived">--- src/main.py
-+++ src/main.py
-@@ -6,7 +6,7 @@
- from config import Config
- from fastapi import FastAPI
- 
--if __name__ == &quot;__main__&quot;:
-+if __name__ != &quot;__main__&quot;:
-     uvicorn.run(&quot;main:app&quot;, host=Config.bind_host,
-                 port=Config.bind_port, reload=True)
- 
-</failure>
-			<system-out>if __name__ == &quot;__main__&quot;:</system-out>
-		</testcase>
-		<testcase name="Mutant #2" file="src/main.py" line="11">
-			<failure type="failure" message="bad_survived">--- src/main.py
-+++ src/main.py
-@@ -8,7 +8,7 @@
- 
- if __name__ == &quot;__main__&quot;:
-     uvicorn.run(&quot;main:app&quot;, host=Config.bind_host,
--                port=Config.bind_port, reload=True)
-+                port=Config.bind_port, reload=False)
- 
- app = FastAPI()
- middleware.setup(app)
-</failure>
-			<system-out>                port=Config.bind_port, reload=True)</system-out>
-		</testcase>
-		<testcase name="Mutant #3" file="src/main.py" line="13">
-			<failure type="failure" message="bad_survived">--- src/main.py
-+++ src/main.py
-@@ -10,7 +10,7 @@
-     uvicorn.run(&quot;main:app&quot;, host=Config.bind_host,
-                 port=Config.bind_port, reload=True)
- 
--app = FastAPI()
-+app = None
- middleware.setup(app)
- api.setup(app)
- static.setup(app)
-</failure>
-			<system-out>app = FastAPI()</system-out>
-		</testcase>
-		<testcase name="Mutant #4" file="src/middleware/__init__.py" line="10">
-			<system-out>        if (request.url.path[:5] != '/api/'</system-out>
-		</testcase>
-		<testcase name="Mutant #5" file="src/middleware/__init__.py" line="10">
-			<system-out>        if (request.url.path[:5] != '/api/'</system-out>
-		</testcase>
-		<testcase name="Mutant #6" file="src/middleware/__init__.py" line="11">
-			<system-out>                or request.url.path in ['/api/login', '/api/register']):</system-out>
-		</testcase>
-		<testcase name="Mutant #7" file="src/middleware/__init__.py" line="11">
-			<system-out>                or request.url.path in ['/api/login', '/api/register']):</system-out>
-		</testcase>
-		<testcase name="Mutant #8" file="src/middleware/__init__.py" line="14">
-			<system-out>        token = request.headers.get(&quot;Authorization&quot;)</system-out>
-		</testcase>
-		<testcase name="Mutant #9" file="src/middleware/__init__.py" line="16">
-			<system-out>            payload = jwt.decode(token.split()[1],</system-out>
-		</testcase>
-		<testcase name="Mutant #10" file="src/middleware/__init__.py" line="17">
-			<system-out>                                 Config.jwt_token_secret, algorithms=[&quot;HS256&quot;])</system-out>
-		</testcase>
-		<testcase name="Mutant #11" file="src/middleware/__init__.py" line="18">
-			<system-out>            request.state.user_id = payload['id']</system-out>
-		</testcase>
-		<testcase name="Mutant #12" file="src/middleware/__init__.py" line="22">
-			<system-out>                status_code=403)</system-out>
-		</testcase>
-		<testcase name="Mutant #13" file="src/config/__init__.py" line="5">
-			<system-out>    sqlite_path = 'lazy_split.db'</system-out>
-		</testcase>
-		<testcase name="Mutant #14" file="src/config/__init__.py" line="6">
-			<system-out>    sqlite_init_script_path = 'src/db/init.sql'</system-out>
-		</testcase>
-		<testcase name="Mutant #15" file="src/config/__init__.py" line="7">
-			<system-out>    jwt_token_secret = None</system-out>
-		</testcase>
-		<testcase name="Mutant #16" file="src/config/__init__.py" line="8">
-			<system-out>    bind_host = 'localhost'</system-out>
-		</testcase>
-		<testcase name="Mutant #17" file="src/config/__init__.py" line="9">
-			<system-out>    bind_port = 8000</system-out>
-		</testcase>
-		<testcase name="Mutant #18" file="src/config/__init__.py" line="9">
-			<system-out>    bind_port = 8000</system-out>
-		</testcase>
-		<testcase name="Mutant #19" file="src/config/__init__.py" line="23">
-			<system-out>        if os.getenv(env_key) is not None:</system-out>
-		</testcase>
-		<testcase name="Mutant #20" file="src/config/__init__.py" line="25">
-			<system-out>        elif fallback is not None:</system-out>
-		</testcase>
-		<testcase name="Mutant #21" file="src/config/__init__.py" line="29">
-			<system-out>Config = _Config()</system-out>
-		</testcase>
-		<testcase name="Mutant #22" file="src/schema/__init__.py" line="8">
-			<system-out>            lambda route: route.path.startswith('/api'),</system-out>
-		</testcase>
-		<testcase name="Mutant #23" file="src/schema/__init__.py" line="9">
-			<system-out>            app.routes))</system-out>
-		</testcase>
-		<testcase name="Mutant #24" file="src/schema/__init__.py" line="16">
-			<system-out>        )</system-out>
-		</testcase>
-		<testcase name="Mutant #25" file="src/schema/__init__.py" line="18">
-			<system-out>        app.openapi_schema = openapi_schema</system-out>
-		</testcase>
-		<testcase name="Mutant #26" file="src/schema/__init__.py" line="21">
-			<system-out>    app.openapi = api_schema</system-out>
-		</testcase>
-		<testcase name="Mutant #27" file="src/static/__init__.py" line="8">
-			<system-out>    mount_static_folders(app)</system-out>
-		</testcase>
-		<testcase name="Mutant #28" file="src/static/__init__.py" line="10">
-			<system-out>    templates = Jinja2Templates(directory=&quot;static&quot;)</system-out>
-		</testcase>
-		<testcase name="Mutant #29" file="src/static/__init__.py" line="11">
-			<system-out>    html_templates = Jinja2Templates(directory=&quot;static/html&quot;)</system-out>
-		</testcase>
-		<testcase name="Mutant #30" file="src/db/user.py" line="16">
-			<system-out>                              username)</system-out>
-		</testcase>
-		<testcase name="Mutant #31" file="src/db/user.py" line="17">
-			<system-out>        if resp is None or len(resp) == 0:</system-out>
-		</testcase>
-		<testcase name="Mutant #32" file="src/db/user.py" line="17">
-			<system-out>        if resp is None or len(resp) == 0:</system-out>
-		</testcase>
-		<testcase name="Mutant #33" file="src/db/user.py" line="17">
-			<system-out>        if resp is None or len(resp) == 0:</system-out>
-		</testcase>
-		<testcase name="Mutant #34" file="src/db/user.py" line="17">
-			<system-out>        if resp is None or len(resp) == 0:</system-out>
-		</testcase>
-		<testcase name="Mutant #35" file="src/db/user.py" line="19">
-			<system-out>        return resp[0]</system-out>
-		</testcase>
-		<testcase name="Mutant #36" file="src/db/user.py" line="23">
-			<system-out>                              id)</system-out>
-		</testcase>
-		<testcase name="Mutant #37" file="src/db/user.py" line="24">
-			<system-out>        if resp is None or len(resp) == 0:</system-out>
-		</testcase>
-		<testcase name="Mutant #38" file="src/db/user.py" line="24">
-			<system-out>        if resp is None or len(resp) == 0:</system-out>
-		</testcase>
-		<testcase name="Mutant #39" file="src/db/user.py" line="24">
-			<system-out>        if resp is None or len(resp) == 0:</system-out>
-		</testcase>
-		<testcase name="Mutant #40" file="src/db/user.py" line="24">
-			<system-out>        if resp is None or len(resp) == 0:</system-out>
-		</testcase>
-		<testcase name="Mutant #41" file="src/db/user.py" line="26">
-			<system-out>        return resp[0]</system-out>
-		</testcase>
-		<testcase name="Mutant #42" file="src/db/user.py" line="30">
-			<system-out>                              username)</system-out>
-		</testcase>
-		<testcase name="Mutant #43" file="src/db/user.py" line="32">
-			<system-out>        return not (resp is None or len(resp) == 0)</system-out>
-		</testcase>
-		<testcase name="Mutant #44" file="src/db/user.py" line="32">
-			<system-out>        return not (resp is None or len(resp) == 0)</system-out>
-		</testcase>
-		<testcase name="Mutant #45" file="src/db/user.py" line="32">
-			<system-out>        return not (resp is None or len(resp) == 0)</system-out>
-		</testcase>
-		<testcase name="Mutant #46" file="src/db/user.py" line="32">
-			<system-out>        return not (resp is None or len(resp) == 0)</system-out>
-		</testcase>
-		<testcase name="Mutant #47" file="src/db/user.py" line="32">
-			<system-out>        return not (resp is None or len(resp) == 0)</system-out>
-		</testcase>
-		<testcase name="Mutant #48" file="src/db/user.py" line="39">
-			<system-out>                id)</system-out>
-		</testcase>
-		<testcase name="Mutant #49" file="src/db/user.py" line="40">
-			<system-out>            if count == 0:</system-out>
-		</testcase>
-		<testcase name="Mutant #50" file="src/db/user.py" line="40">
-			<system-out>            if count == 0:</system-out>
-		</testcase>
-		<testcase name="Mutant #51" file="src/db/user.py" line="41">
-			<system-out>                return False</system-out>
-		</testcase>
-		<testcase name="Mutant #52" file="src/db/user.py" line="42">
-			<failure type="failure" message="bad_survived">--- src/db/user.py
-+++ src/db/user.py
-@@ -39,7 +39,7 @@
-                 id)
-             if count == 0:
-                 return False
--        return True
-+        return False
- 
- 
- User = _User()
-</failure>
-			<system-out>        return True</system-out>
-		</testcase>
-		<testcase name="Mutant #53" file="src/db/user.py" line="45">
-			<system-out>User = _User()</system-out>
-		</testcase>
-		<testcase name="Mutant #54" file="src/db/sqlite.py" line="7">
-			<system-out>        self.connection = sqlite3.connect(Config.sqlite_path)</system-out>
-		</testcase>
-		<testcase name="Mutant #55" file="src/db/sqlite.py" line="14">
-			<system-out>        fields = [column[0] for column in cursor.description]</system-out>
-		</testcase>
-		<testcase name="Mutant #56" file="src/db/sqlite.py" line="14">
-			<system-out>        fields = [column[0] for column in cursor.description]</system-out>
-		</testcase>
-		<testcase name="Mutant #57" file="src/db/sqlite.py" line="18">
-			<system-out>        cursor = self.connection.cursor()</system-out>
-		</testcase>
-		<testcase name="Mutant #58" file="src/db/sqlite.py" line="19">
-			<system-out>        cursor.row_factory = self.__factory</system-out>
-		</testcase>
-		<testcase name="Mutant #59" file="src/db/sqlite.py" line="30">
-			<system-out>        rows = self.connection.execute(query, params).fetchall()</system-out>
-		</testcase>
-		<testcase name="Mutant #60" file="src/db/sqlite.py" line="38">
-			<system-out>Database = _Database()</system-out>
-		</testcase>
-		<testcase name="Mutant #61" file="src/db/group.py" line="8">
-			<system-out>                                  &quot;values ($1) returning id&quot;, name)</system-out>
-		</testcase>
-		<testcase name="Mutant #62" file="src/db/group.py" line="19">
-			<system-out>            group_id)</system-out>
-		</testcase>
-		<testcase name="Mutant #63" file="src/db/group.py" line="20">
-			<system-out>        if len(rows) == 0:</system-out>
-		</testcase>
-		<testcase name="Mutant #64" file="src/db/group.py" line="20">
-			<system-out>        if len(rows) == 0:</system-out>
-		</testcase>
-		<testcase name="Mutant #65" file="src/db/group.py" line="22">
-			<system-out>        return rows[0]</system-out>
-		</testcase>
-		<testcase name="Mutant #66" file="src/db/group.py" line="30">
-			<system-out>            user_id)</system-out>
-		</testcase>
-		<testcase name="Mutant #67" file="src/db/group.py" line="40">
-			<system-out>            group_id)</system-out>
-		</testcase>
-		<testcase name="Mutant #68" file="src/db/group.py" line="47">
-			<system-out>                group_id, payer_id, -amount / len(payer_ids))</system-out>
-		</testcase>
-		<testcase name="Mutant #69" file="src/db/group.py" line="47">
-			<system-out>                group_id, payer_id, -amount / len(payer_ids))</system-out>
-		</testcase>
-		<testcase name="Mutant #70" file="src/db/group.py" line="59">
-			<system-out>Group = _Group()</system-out>
-		</testcase>
-		<testcase name="Mutant #71" file="src/db/split_history.py" line="21">
-			<system-out>            group_id)</system-out>
-		</testcase>
-		<testcase name="Mutant #72" file="src/db/split_history.py" line="23">
-			<system-out>            history_entry['payer_ids'] = json.loads(history_entry['payer_ids'])</system-out>
-		</testcase>
-		<testcase name="Mutant #73" file="src/db/split_history.py" line="27">
-			<system-out>SplitHistory = _SplitHistory()</system-out>
-		</testcase>
-		<testcase name="Mutant #74" file="src/api/__init__.py" line="9">
-			<system-out>        200: {'model': model.User},</system-out>
-		</testcase>
-		<testcase name="Mutant #75" file="src/api/__init__.py" line="10">
-			<system-out>        409: {'model': model.ErrorResponse,</system-out>
-		</testcase>
-		<testcase name="Mutant #76" file="src/api/__init__.py" line="17">
-			<system-out>        200: {'model': model.User},</system-out>
-		</testcase>
-		<testcase name="Mutant #77" file="src/api/__init__.py" line="18">
-			<system-out>        404: {'model': model.ErrorResponse,</system-out>
-		</testcase>
-		<testcase name="Mutant #78" file="src/api/__init__.py" line="25">
-			<system-out>        200: {'model': model.UsersList},</system-out>
-		</testcase>
-		<testcase name="Mutant #79" file="src/api/__init__.py" line="26">
-			<system-out>        403: {'model': model.ErrorResponse,</system-out>
-		</testcase>
-		<testcase name="Mutant #80" file="src/api/__init__.py" line="34">
-			<system-out>        200: {'model': model.User},</system-out>
-		</testcase>
-		<testcase name="Mutant #81" file="src/api/__init__.py" line="35">
-			<system-out>        403: {'model': model.ErrorResponse,</system-out>
-		</testcase>
-		<testcase name="Mutant #82" file="src/api/__init__.py" line="44">
-			<system-out>                 200: {'model': model.GroupList},</system-out>
-		</testcase>
-		<testcase name="Mutant #83" file="src/api/__init__.py" line="45">
-			<system-out>                 403: {'model': model.ErrorResponse,</system-out>
-		</testcase>
-		<testcase name="Mutant #84" file="src/api/__init__.py" line="54">
-			<system-out>        200: {'model': model.Group},</system-out>
-		</testcase>
-		<testcase name="Mutant #85" file="src/api/__init__.py" line="55">
-			<system-out>        403: {'model': model.ErrorResponse,</system-out>
-		</testcase>
-		<testcase name="Mutant #86" file="src/api/__init__.py" line="64">
-			<system-out>                 200: {'model': model.Group},</system-out>
-		</testcase>
-		<testcase name="Mutant #87" file="src/api/__init__.py" line="65">
-			<system-out>                 403: {'model': model.ErrorResponse,</system-out>
-		</testcase>
-		<testcase name="Mutant #88" file="src/api/__init__.py" line="68">
-			<system-out>                 404: {'model': model.ErrorResponse,</system-out>
-		</testcase>
-		<testcase name="Mutant #89" file="src/api/__init__.py" line="77">
-			<system-out>        200: {'model': model.Group},</system-out>
-		</testcase>
-		<testcase name="Mutant #90" file="src/api/__init__.py" line="78">
-			<system-out>        403: {'model': model.ErrorResponse,</system-out>
-		</testcase>
-		<testcase name="Mutant #91" file="src/api/__init__.py" line="81">
-			<system-out>        404: {'model': model.ErrorResponse}}</system-out>
-		</testcase>
-		<testcase name="Mutant #92" file="src/service/user.py" line="12">
-			<system-out>    username, password = user.username, hash_password(user.password)</system-out>
-		</testcase>
-		<testcase name="Mutant #93" file="src/service/user.py" line="14">
-			<system-out>    user_exists = UserDB.user_exists(username)</system-out>
-		</testcase>
-		<testcase name="Mutant #94" file="src/service/user.py" line="17">
-			<system-out>            content={'message': f&quot;Username \&quot;{username}\&quot; is already taken&quot;},</system-out>
-		</testcase>
-		<testcase name="Mutant #95" file="src/service/user.py" line="22">
-			<system-out>        new_user = UserDB.get_by_username(username)</system-out>
-		</testcase>
-		<testcase name="Mutant #96" file="src/service/user.py" line="24">
-			<system-out>            {&quot;id&quot;: new_user['id']}, Config.jwt_token_secret, algorithm=&quot;HS256&quot;)</system-out>
-		</testcase>
-		<testcase name="Mutant #97" file="src/service/user.py" line="31">
-			<system-out>    found_user = UserDB.get_by_username(user.username)</system-out>
-		</testcase>
-		<testcase name="Mutant #98" file="src/service/user.py" line="32">
-			<system-out>    if found_user is None or not check_password(</system-out>
-		</testcase>
-		<testcase name="Mutant #99" file="src/service/user.py" line="32">
-			<system-out>    if found_user is None or not check_password(</system-out>
-		</testcase>
-		<testcase name="Mutant #100" file="src/service/user.py" line="34">
-			<system-out>            found_user['password']):</system-out>
-		</testcase>
-		<testcase name="Mutant #101" file="src/service/user.py" line="38">
-			<system-out>        )</system-out>
-		</testcase>
-		<testcase name="Mutant #102" file="src/service/user.py" line="43">
-			<system-out>                   Config.jwt_token_secret, algorithm=&quot;HS256&quot;))</system-out>
-		</testcase>
-		<testcase name="Mutant #103" file="src/service/user.py" line="50">
-			<system-out>    users_list = UserDB.list_users()</system-out>
-		</testcase>
-		<testcase name="Mutant #104" file="src/service/user.py" line="52">
-			<system-out>        lambda data: model.ListUser.model_validate(data).model_dump(),</system-out>
-		</testcase>
-		<testcase name="Mutant #105" file="src/service/user.py" line="53">
-			<system-out>        users_list))</system-out>
-		</testcase>
-		<testcase name="Mutant #106" file="src/service/user.py" line="58">
-			<failure type="failure" message="bad_survived">--- src/service/user.py
-+++ src/service/user.py
-@@ -55,7 +55,7 @@
- 
- 
- async def get_self(user_id):
--    user = UserDB.get_by_id(user_id)
-+    user = None
-     # Technically we should always find user,
-     # do not catch user not found for the sake of simplicity
-     user['token'] = jwt.encode({&quot;id&quot;: user['id']},
-</failure>
-			<system-out>    user = UserDB.get_by_id(user_id)</system-out>
-		</testcase>
-		<testcase name="Mutant #107" file="src/service/user.py" line="62">
-			<failure type="failure" message="bad_survived">--- src/service/user.py
-+++ src/service/user.py
-@@ -58,8 +58,7 @@
-     user = UserDB.get_by_id(user_id)
-     # Technically we should always find user,
-     # do not catch user not found for the sake of simplicity
--    user['token'] = jwt.encode({&quot;id&quot;: user['id']},
--                               Config.jwt_token_secret, algorithm=&quot;HS256&quot;)
-+    user['token'] = None
-     return JSONResponse(status_code=HTTPStatus.OK,
-                         content=model.User.model_validate(user).model_dump())
- 
-</failure>
-			<system-out>                               Config.jwt_token_secret, algorithm=&quot;HS256&quot;)</system-out>
-		</testcase>
-		<testcase name="Mutant #108" file="src/service/group.py" line="11">
-			<system-out>    if (len(group_data.member_ids) != len(set(group_data.member_ids))</system-out>
-		</testcase>
-		<testcase name="Mutant #109" file="src/service/group.py" line="12">
-			<system-out>            or len(group_data.member_ids) == 0</system-out>
-		</testcase>
-		<testcase name="Mutant #110" file="src/service/group.py" line="12">
-			<failure type="failure" message="bad_survived">--- src/service/group.py
-+++ src/service/group.py
-@@ -9,7 +9,7 @@
- 
- async def create(user_id, group_data: model.CreateGroup) -&gt; JSONResponse:
-     if (len(group_data.member_ids) != len(set(group_data.member_ids))
--            or len(group_data.member_ids) == 0
-+            or len(group_data.member_ids) == 1
-             or (len(group_data.member_ids) == 1
-                 and group_data.member_ids[0] == user_id)):
-         return JSONResponse(
-</failure>
-			<system-out>            or len(group_data.member_ids) == 0</system-out>
-		</testcase>
-		<testcase name="Mutant #111" file="src/service/group.py" line="13">
-			<system-out>            or (len(group_data.member_ids) == 1</system-out>
-		</testcase>
-		<testcase name="Mutant #112" file="src/service/group.py" line="13">
-			<failure type="failure" message="bad_survived">--- src/service/group.py
-+++ src/service/group.py
-@@ -10,7 +10,7 @@
- async def create(user_id, group_data: model.CreateGroup) -&gt; JSONResponse:
-     if (len(group_data.member_ids) != len(set(group_data.member_ids))
-             or len(group_data.member_ids) == 0
--            or (len(group_data.member_ids) == 1
-+            or (len(group_data.member_ids) == 2
-                 and group_data.member_ids[0] == user_id)):
-         return JSONResponse(
-             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-</failure>
-			<system-out>            or (len(group_data.member_ids) == 1</system-out>
-		</testcase>
-		<testcase name="Mutant #113" file="src/service/group.py" line="14">
-			<failure type="failure" message="bad_survived">--- src/service/group.py
-+++ src/service/group.py
-@@ -11,7 +11,7 @@
-     if (len(group_data.member_ids) != len(set(group_data.member_ids))
-             or len(group_data.member_ids) == 0
-             or (len(group_data.member_ids) == 1
--                and group_data.member_ids[0] == user_id)):
-+                and group_data.member_ids[1] == user_id)):
-         return JSONResponse(
-             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-             content='invalid list of members '
-</failure>
-			<system-out>                and group_data.member_ids[0] == user_id)):</system-out>
-		</testcase>
-		<testcase name="Mutant #114" file="src/service/group.py" line="14">
-			<failure type="failure" message="bad_survived">--- src/service/group.py
-+++ src/service/group.py
-@@ -11,7 +11,7 @@
-     if (len(group_data.member_ids) != len(set(group_data.member_ids))
-             or len(group_data.member_ids) == 0
-             or (len(group_data.member_ids) == 1
--                and group_data.member_ids[0] == user_id)):
-+                and group_data.member_ids[0] != user_id)):
-         return JSONResponse(
-             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-             content='invalid list of members '
-</failure>
-			<system-out>                and group_data.member_ids[0] == user_id)):</system-out>
-		</testcase>
-		<testcase name="Mutant #115" file="src/service/group.py" line="14">
-			<system-out>                and group_data.member_ids[0] == user_id)):</system-out>
-		</testcase>
-		<testcase name="Mutant #116" file="src/service/group.py" line="14">
-			<system-out>                and group_data.member_ids[0] == user_id)):</system-out>
-		</testcase>
-		<testcase name="Mutant #117" file="src/service/group.py" line="20">
-			<system-out>    if not UserDB.users_exist(group_data.member_ids.copy()):</system-out>
-		</testcase>
-		<testcase name="Mutant #118" file="src/service/group.py" line="25">
-			<system-out>    if user_id not in group_data.member_ids:</system-out>
-		</testcase>
-		<testcase name="Mutant #119" file="src/service/group.py" line="26">
-			<system-out>        group_data.member_ids += [user_id]</system-out>
-		</testcase>
-		<testcase name="Mutant #120" file="src/service/group.py" line="26">
-			<system-out>        group_data.member_ids += [user_id]</system-out>
-		</testcase>
-		<testcase name="Mutant #121" file="src/service/group.py" line="28">
-			<system-out>    id = GroupDB.create(group_data.name, group_data.member_ids)</system-out>
-		</testcase>
-		<testcase name="Mutant #122" file="src/service/group.py" line="29">
-			<system-out>    group = GroupDB.get(id)</system-out>
-		</testcase>
-		<testcase name="Mutant #123" file="src/service/group.py" line="30">
-			<system-out>    group['members'] = GroupDB.get_members(id)</system-out>
-		</testcase>
-		<testcase name="Mutant #124" file="src/service/group.py" line="31">
-			<system-out>    group['history'] = SplitHistoryDB.list(id)</system-out>
-		</testcase>
-		<testcase name="Mutant #125" file="src/service/group.py" line="37">
-			<system-out>    group = GroupDB.get(group_id)</system-out>
-		</testcase>
-		<testcase name="Mutant #126" file="src/service/group.py" line="38">
-			<system-out>    if group is None:</system-out>
-		</testcase>
-		<testcase name="Mutant #127" file="src/service/group.py" line="41">
-			<system-out>    group['members'] = GroupDB.get_members(group_id)</system-out>
-		</testcase>
-		<testcase name="Mutant #128" file="src/service/group.py" line="42">
-			<system-out>    if user_id not in map(lambda member: member['id'], group['members']):</system-out>
-		</testcase>
-		<testcase name="Mutant #129" file="src/service/group.py" line="42">
-			<system-out>    if user_id not in map(lambda member: member['id'], group['members']):</system-out>
-		</testcase>
-		<testcase name="Mutant #130" file="src/service/group.py" line="45">
-			<system-out>    group['history'] = SplitHistoryDB.list(group_id)</system-out>
-		</testcase>
-		<testcase name="Mutant #131" file="src/service/group.py" line="51">
-			<failure type="failure" message="bad_survived">--- src/service/group.py
-+++ src/service/group.py
-@@ -48,7 +48,7 @@
- 
- 
- async def list_users(user_id):
--    groups = GroupDB.list_users(user_id)
-+    groups = None
-     return JSONResponse(content=model.GroupList.model_validate(
-         {'groups': groups}).model_dump(), status_code=HTTPStatus.OK)
- 
-</failure>
-			<system-out>    groups = GroupDB.list_users(user_id)</system-out>
-		</testcase>
-		<testcase name="Mutant #132" file="src/service/group.py" line="57">
-			<system-out>    if len(split_data.payer_ids) != len(</system-out>
-		</testcase>
-		<testcase name="Mutant #133" file="src/service/group.py" line="58">
-			<system-out>            set(split_data.payer_ids)) or len(split_data.payer_ids) == 0:</system-out>
-		</testcase>
-		<testcase name="Mutant #134" file="src/service/group.py" line="58">
-			<failure type="failure" message="bad_survived">--- src/service/group.py
-+++ src/service/group.py
-@@ -55,7 +55,7 @@
- 
- async def split(user_id, split_data: model.Split):
-     if len(split_data.payer_ids) != len(
--            set(split_data.payer_ids)) or len(split_data.payer_ids) == 0:
-+            set(split_data.payer_ids)) or len(split_data.payer_ids) == 1:
-         return JSONResponse(
-             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-             content='invalid list of payers (empty or contains duplicates)')
-</failure>
-			<system-out>            set(split_data.payer_ids)) or len(split_data.payer_ids) == 0:</system-out>
-		</testcase>
-		<testcase name="Mutant #135" file="src/service/group.py" line="58">
-			<failure type="failure" message="bad_survived">--- src/service/group.py
-+++ src/service/group.py
-@@ -55,7 +55,7 @@
- 
- async def split(user_id, split_data: model.Split):
-     if len(split_data.payer_ids) != len(
--            set(split_data.payer_ids)) or len(split_data.payer_ids) == 0:
-+            set(split_data.payer_ids)) and len(split_data.payer_ids) == 0:
-         return JSONResponse(
-             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-             content='invalid list of payers (empty or contains duplicates)')
-</failure>
-			<system-out>            set(split_data.payer_ids)) or len(split_data.payer_ids) == 0:</system-out>
-		</testcase>
-		<testcase name="Mutant #136" file="src/service/group.py" line="62">
-			<failure type="failure" message="bad_survived">--- src/service/group.py
-+++ src/service/group.py
-@@ -59,7 +59,7 @@
-         return JSONResponse(
-             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-             content='invalid list of payers (empty or contains duplicates)')
--    if split_data.amount &lt;= 0:
-+    if split_data.amount &lt; 0:
-         return JSONResponse(
-             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-             content='amount less or equal to zero')
-</failure>
-			<system-out>    if split_data.amount &lt;= 0:</system-out>
-		</testcase>
-		<testcase name="Mutant #137" file="src/service/group.py" line="62">
-			<failure type="failure" message="bad_survived">--- src/service/group.py
-+++ src/service/group.py
-@@ -59,7 +59,7 @@
-         return JSONResponse(
-             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-             content='invalid list of payers (empty or contains duplicates)')
--    if split_data.amount &lt;= 0:
-+    if split_data.amount &lt;= 1:
-         return JSONResponse(
-             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-             content='amount less or equal to zero')
-</failure>
-			<system-out>    if split_data.amount &lt;= 0:</system-out>
-		</testcase>
-		<testcase name="Mutant #138" file="src/service/group.py" line="67">
-			<system-out>    group = GroupDB.get(split_data.group_id)</system-out>
-		</testcase>
-		<testcase name="Mutant #139" file="src/service/group.py" line="68">
-			<system-out>    if group is None:</system-out>
-		</testcase>
-		<testcase name="Mutant #140" file="src/service/group.py" line="72">
-			<system-out>    group['members'] = GroupDB.get_members(split_data.group_id)</system-out>
-		</testcase>
-		<testcase name="Mutant #141" file="src/service/group.py" line="73">
-			<system-out>    if user_id not in map(lambda member: member['id'], group['members']):</system-out>
-		</testcase>
-		<testcase name="Mutant #142" file="src/service/group.py" line="73">
-			<system-out>    if user_id not in map(lambda member: member['id'], group['members']):</system-out>
-		</testcase>
-		<testcase name="Mutant #143" file="src/service/group.py" line="78">
-			<system-out>    member_ids = list(map(lambda member: member['id'], group['members']))</system-out>
-		</testcase>
-		<testcase name="Mutant #144" file="src/service/group.py" line="78">
-			<system-out>    member_ids = list(map(lambda member: member['id'], group['members']))</system-out>
-		</testcase>
-		<testcase name="Mutant #145" file="src/service/group.py" line="80">
-			<system-out>        if payer_id not in member_ids:</system-out>
-		</testcase>
-		<testcase name="Mutant #146" file="src/service/group.py" line="84">
-			<system-out>    if split_data.lander_id not in member_ids:</system-out>
-		</testcase>
-	</testsuite>
-</testsuites>
-
+<coverage version="7.5.0" timestamp="1714418892619" lines-valid="1025" lines-covered="825" line-rate="0.8049" branches-valid="276" branches-covered="182" branch-rate="0.6594" complexity="0">
+	<!-- Generated by coverage.py: https://coverage.readthedocs.io/en/7.5.0 -->
+	<!-- Based on https://raw.githubusercontent.com/cobertura/web/master/htdocs/xml/coverage-04.dtd -->
+	<sources>
+		<source>/home/runner/work/SQR-project-S24/SQR-project-S24</source>
+	</sources>
+	<packages>
+		<package name="src" line-rate="1" branch-rate="1" complexity="0">
+			<classes>
+				<class name="__init__.py" filename="src/__init__.py" complexity="0" line-rate="1" branch-rate="1">
+					<methods/>
+					<lines/>
+				</class>
+			</classes>
+		</package>
+		<package name="src.api" line-rate="0.931" branch-rate="1" complexity="0">
+			<classes>
+				<class name="__init__.py" filename="src/api/__init__.py" complexity="0" line-rate="0.931" branch-rate="1">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="2" hits="1"/>
+						<line number="3" hits="1"/>
+						<line number="4" hits="1"/>
+						<line number="7" hits="1"/>
+						<line number="8" hits="1"/>
+						<line number="13" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="14" hits="1"/>
+						<line number="16" hits="1"/>
+						<line number="21" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="22" hits="0"/>
+						<line number="24" hits="1"/>
+						<line number="30" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="31" hits="0"/>
+						<line number="33" hits="1"/>
+						<line number="39" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="40" hits="1"/>
+						<line number="42" hits="1"/>
+						<line number="50" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="51" hits="1"/>
+						<line number="53" hits="1"/>
+						<line number="59" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="60" hits="1"/>
+						<line number="62" hits="1"/>
+						<line number="73" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="74" hits="1"/>
+						<line number="76" hits="1"/>
+						<line number="83" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="84" hits="1"/>
+					</lines>
+				</class>
+			</classes>
+		</package>
+		<package name="src.config" line-rate="0.9474" branch-rate="0.75" complexity="0">
+			<classes>
+				<class name="__init__.py" filename="src/config/__init__.py" complexity="0" line-rate="0.9474" branch-rate="0.75">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="4" hits="1"/>
+						<line number="5" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="7" hits="1"/>
+						<line number="8" hits="1"/>
+						<line number="9" hits="1"/>
+						<line number="11" hits="1"/>
+						<line number="12" hits="1"/>
+						<line number="13" hits="1"/>
+						<line number="15" hits="1"/>
+						<line number="19" hits="1"/>
+						<line number="20" hits="1"/>
+						<line number="22" hits="1"/>
+						<line number="23" hits="1" branch="true" condition-coverage="50% (1/2)" missing-branches="24"/>
+						<line number="24" hits="0"/>
+						<line number="25" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="26" hits="1"/>
+						<line number="29" hits="1"/>
+					</lines>
+				</class>
+			</classes>
+		</package>
+		<package name="src.db" line-rate="0.9785" branch-rate="0.9545" complexity="0">
+			<classes>
+				<class name="__init__.py" filename="src/db/__init__.py" complexity="0" line-rate="1" branch-rate="1">
+					<methods/>
+					<lines/>
+				</class>
+				<class name="group.py" filename="src/db/group.py" complexity="0" line-rate="0.9655" branch-rate="0.8333">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="2" hits="1"/>
+						<line number="5" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="7" hits="1"/>
+						<line number="9" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="10" hits="1"/>
+						<line number="13" hits="1"/>
+						<line number="14" hits="1"/>
+						<line number="16" hits="1"/>
+						<line number="17" hits="1"/>
+						<line number="20" hits="1" branch="true" condition-coverage="50% (1/2)" missing-branches="21"/>
+						<line number="21" hits="0"/>
+						<line number="22" hits="1"/>
+						<line number="24" hits="1"/>
+						<line number="25" hits="1"/>
+						<line number="31" hits="1"/>
+						<line number="33" hits="1"/>
+						<line number="34" hits="1"/>
+						<line number="41" hits="1"/>
+						<line number="43" hits="1"/>
+						<line number="44" hits="1"/>
+						<line number="45" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="46" hits="1"/>
+						<line number="48" hits="1"/>
+						<line number="50" hits="1"/>
+						<line number="52" hits="1"/>
+						<line number="53" hits="1"/>
+						<line number="59" hits="1"/>
+					</lines>
+				</class>
+				<class name="split_history.py" filename="src/db/split_history.py" complexity="0" line-rate="1" branch-rate="1">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="2" hits="1"/>
+						<line number="5" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="7" hits="1"/>
+						<line number="14" hits="1"/>
+						<line number="15" hits="1"/>
+						<line number="22" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="23" hits="1"/>
+						<line number="24" hits="1"/>
+						<line number="27" hits="1"/>
+					</lines>
+				</class>
+				<class name="sqlite.py" filename="src/db/sqlite.py" complexity="0" line-rate="0.963" branch-rate="1">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="2" hits="1"/>
+						<line number="5" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="7" hits="1"/>
+						<line number="8" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="9" hits="1"/>
+						<line number="11" hits="1"/>
+						<line number="13" hits="1"/>
+						<line number="14" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="15" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="17" hits="1"/>
+						<line number="18" hits="1"/>
+						<line number="19" hits="1"/>
+						<line number="20" hits="1"/>
+						<line number="21" hits="1"/>
+						<line number="23" hits="1"/>
+						<line number="24" hits="1"/>
+						<line number="26" hits="1"/>
+						<line number="27" hits="1"/>
+						<line number="29" hits="1"/>
+						<line number="30" hits="1"/>
+						<line number="31" hits="1"/>
+						<line number="32" hits="1"/>
+						<line number="34" hits="1"/>
+						<line number="35" hits="0"/>
+						<line number="38" hits="1"/>
+					</lines>
+				</class>
+				<class name="user.py" filename="src/db/user.py" complexity="0" line-rate="1" branch-rate="1">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="4" hits="1"/>
+						<line number="5" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="8" hits="1"/>
+						<line number="9" hits="1"/>
+						<line number="13" hits="1"/>
+						<line number="14" hits="1"/>
+						<line number="17" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="18" hits="1"/>
+						<line number="19" hits="1"/>
+						<line number="21" hits="1"/>
+						<line number="22" hits="1"/>
+						<line number="24" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="25" hits="1"/>
+						<line number="26" hits="1"/>
+						<line number="28" hits="1"/>
+						<line number="29" hits="1"/>
+						<line number="32" hits="1"/>
+						<line number="34" hits="1"/>
+						<line number="35" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="36" hits="1"/>
+						<line number="40" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="41" hits="1"/>
+						<line number="42" hits="1"/>
+						<line number="45" hits="1"/>
+					</lines>
+				</class>
+			</classes>
+		</package>
+		<package name="src.middleware" line-rate="0.8824" branch-rate="1" complexity="0">
+			<classes>
+				<class name="__init__.py" filename="src/middleware/__init__.py" complexity="0" line-rate="0.8824" branch-rate="1">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="3" hits="1"/>
+						<line number="4" hits="1"/>
+						<line number="5" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="9" hits="1"/>
+						<line number="10" hits="1"/>
+						<line number="11" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="12" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="14" hits="1"/>
+						<line number="16" hits="1"/>
+						<line number="17" hits="1"/>
+						<line number="18" hits="1"/>
+						<line number="20" hits="1"/>
+						<line number="21" hits="0"/>
+						<line number="22" hits="0"/>
+						<line number="26" hits="1"/>
+					</lines>
+				</class>
+			</classes>
+		</package>
+		<package name="src.model" line-rate="1" branch-rate="1" complexity="0">
+			<classes>
+				<class name="__init__.py" filename="src/model/__init__.py" complexity="0" line-rate="1" branch-rate="1">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="4" hits="1"/>
+						<line number="5" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="7" hits="1"/>
+						<line number="10" hits="1"/>
+						<line number="11" hits="1"/>
+						<line number="12" hits="1"/>
+						<line number="13" hits="1"/>
+						<line number="16" hits="1"/>
+						<line number="17" hits="1"/>
+						<line number="18" hits="1"/>
+						<line number="19" hits="1"/>
+						<line number="20" hits="1"/>
+						<line number="21" hits="1"/>
+						<line number="24" hits="1"/>
+						<line number="25" hits="1"/>
+						<line number="26" hits="1"/>
+						<line number="27" hits="1"/>
+						<line number="28" hits="1"/>
+						<line number="31" hits="1"/>
+						<line number="32" hits="1"/>
+						<line number="33" hits="1"/>
+						<line number="36" hits="1"/>
+						<line number="37" hits="1"/>
+						<line number="38" hits="1"/>
+						<line number="41" hits="1"/>
+						<line number="42" hits="1"/>
+						<line number="45" hits="1"/>
+						<line number="46" hits="1"/>
+						<line number="47" hits="1"/>
+						<line number="50" hits="1"/>
+						<line number="51" hits="1"/>
+						<line number="52" hits="1"/>
+						<line number="55" hits="1"/>
+						<line number="56" hits="1"/>
+						<line number="59" hits="1"/>
+						<line number="60" hits="1"/>
+						<line number="61" hits="1"/>
+						<line number="64" hits="1"/>
+						<line number="65" hits="1"/>
+						<line number="66" hits="1"/>
+						<line number="67" hits="1"/>
+						<line number="68" hits="1"/>
+						<line number="71" hits="1"/>
+						<line number="72" hits="1"/>
+					</lines>
+				</class>
+			</classes>
+		</package>
+		<package name="src.service" line-rate="0.9186" branch-rate="0.7941" complexity="0">
+			<classes>
+				<class name="__init__.py" filename="src/service/__init__.py" complexity="0" line-rate="1" branch-rate="1">
+					<methods/>
+					<lines/>
+				</class>
+				<class name="group.py" filename="src/service/group.py" complexity="0" line-rate="0.8571" branch-rate="0.75">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="3" hits="1"/>
+						<line number="4" hits="1"/>
+						<line number="5" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="7" hits="1"/>
+						<line number="10" hits="1"/>
+						<line number="11" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="15" hits="1"/>
+						<line number="20" hits="1" branch="true" condition-coverage="50% (1/2)" missing-branches="21"/>
+						<line number="21" hits="0"/>
+						<line number="25" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="26" hits="1"/>
+						<line number="28" hits="1"/>
+						<line number="29" hits="1"/>
+						<line number="30" hits="1"/>
+						<line number="31" hits="1"/>
+						<line number="32" hits="1"/>
+						<line number="36" hits="1"/>
+						<line number="37" hits="1"/>
+						<line number="38" hits="1" branch="true" condition-coverage="50% (1/2)" missing-branches="39"/>
+						<line number="39" hits="0"/>
+						<line number="41" hits="1"/>
+						<line number="42" hits="1" branch="true" condition-coverage="66% (2/3)" missing-branches="43"/>
+						<line number="43" hits="0"/>
+						<line number="45" hits="1"/>
+						<line number="46" hits="1"/>
+						<line number="50" hits="1"/>
+						<line number="51" hits="1"/>
+						<line number="52" hits="1"/>
+						<line number="56" hits="1"/>
+						<line number="57" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="59" hits="1"/>
+						<line number="62" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="63" hits="1"/>
+						<line number="67" hits="1"/>
+						<line number="68" hits="1" branch="true" condition-coverage="50% (1/2)" missing-branches="69"/>
+						<line number="69" hits="0"/>
+						<line number="72" hits="1"/>
+						<line number="73" hits="1" branch="true" condition-coverage="66% (2/3)" missing-branches="74"/>
+						<line number="74" hits="0"/>
+						<line number="78" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="79" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="80" hits="1" branch="true" condition-coverage="50% (1/2)" missing-branches="81"/>
+						<line number="81" hits="0"/>
+						<line number="84" hits="1" branch="true" condition-coverage="50% (1/2)" missing-branches="85"/>
+						<line number="85" hits="0"/>
+						<line number="89" hits="1"/>
+						<line number="95" hits="1"/>
+					</lines>
+				</class>
+				<class name="passwords.py" filename="src/service/passwords.py" complexity="0" line-rate="1" branch-rate="1">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="3" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="9" hits="1"/>
+						<line number="13" hits="1"/>
+						<line number="16" hits="1"/>
+					</lines>
+				</class>
+				<class name="user.py" filename="src/service/user.py" complexity="0" line-rate="1" branch-rate="1">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="3" hits="1"/>
+						<line number="4" hits="1"/>
+						<line number="5" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="7" hits="1"/>
+						<line number="8" hits="1"/>
+						<line number="11" hits="1"/>
+						<line number="12" hits="1"/>
+						<line number="14" hits="1"/>
+						<line number="15" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="16" hits="1"/>
+						<line number="21" hits="1"/>
+						<line number="22" hits="1"/>
+						<line number="23" hits="1"/>
+						<line number="25" hits="1"/>
+						<line number="30" hits="1"/>
+						<line number="31" hits="1"/>
+						<line number="32" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="35" hits="1"/>
+						<line number="39" hits="1"/>
+						<line number="41" hits="1"/>
+						<line number="44" hits="1"/>
+						<line number="49" hits="1"/>
+						<line number="50" hits="1"/>
+						<line number="51" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="54" hits="1"/>
+						<line number="57" hits="1"/>
+						<line number="58" hits="1"/>
+						<line number="61" hits="1"/>
+						<line number="63" hits="1"/>
+					</lines>
+				</class>
+			</classes>
+		</package>
+		<package name="src.static" line-rate="0.8" branch-rate="1" complexity="0">
+			<classes>
+				<class name="__init__.py" filename="src/static/__init__.py" complexity="0" line-rate="0.8" branch-rate="1">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="2" hits="1"/>
+						<line number="3" hits="1"/>
+						<line number="4" hits="1"/>
+						<line number="7" hits="1"/>
+						<line number="8" hits="1"/>
+						<line number="10" hits="1"/>
+						<line number="11" hits="1"/>
+						<line number="13" hits="1"/>
+						<line number="14" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="15" hits="0"/>
+						<line number="19" hits="1"/>
+						<line number="20" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="21" hits="0"/>
+						<line number="26" hits="1"/>
+						<line number="27" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="28" hits="0"/>
+						<line number="33" hits="1"/>
+						<line number="34" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="35" hits="0"/>
+						<line number="39" hits="1"/>
+						<line number="40" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="41" hits="0"/>
+						<line number="45" hits="1"/>
+						<line number="46" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="47" hits="0"/>
+						<line number="52" hits="1"/>
+						<line number="53" hits="1"/>
+						<line number="55" hits="1"/>
+						<line number="57" hits="1"/>
+					</lines>
+				</class>
+			</classes>
+		</package>
+		<package name="src.tests.db" line-rate="0.568" branch-rate="0.3462" complexity="0">
+			<classes>
+				<class name="test_db_group.py" filename="src/tests/db/test_db_group.py" complexity="0" line-rate="0.6353" branch-rate="0.375">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="2" hits="1"/>
+						<line number="3" hits="1"/>
+						<line number="4" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="7" hits="1"/>
+						<line number="8" hits="1"/>
+						<line number="10" hits="1"/>
+						<line number="13" hits="1"/>
+						<line number="14" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="15" hits="1"/>
+						<line number="17" hits="1"/>
+						<line number="18" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="19" hits="1"/>
+						<line number="21" hits="1"/>
+						<line number="23" hits="1"/>
+						<line number="28" hits="1"/>
+						<line number="32" hits="1"/>
+						<line number="34" hits="1"/>
+						<line number="35" hits="1"/>
+						<line number="36" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="37,38"/>
+						<line number="37" hits="0"/>
+						<line number="38" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="39,40"/>
+						<line number="39" hits="0"/>
+						<line number="40" hits="0"/>
+						<line number="41" hits="0"/>
+						<line number="43" hits="1"/>
+						<line number="54" hits="1"/>
+						<line number="57" hits="1"/>
+						<line number="58" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="59" hits="1"/>
+						<line number="61" hits="1"/>
+						<line number="66" hits="1"/>
+						<line number="68" hits="1"/>
+						<line number="69" hits="1"/>
+						<line number="70" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="71,72"/>
+						<line number="71" hits="0"/>
+						<line number="72" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="73,74"/>
+						<line number="73" hits="0"/>
+						<line number="74" hits="0"/>
+						<line number="75" hits="0"/>
+						<line number="77" hits="1"/>
+						<line number="80" hits="1"/>
+						<line number="81" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="82" hits="1"/>
+						<line number="84" hits="1"/>
+						<line number="89" hits="1"/>
+						<line number="91" hits="1"/>
+						<line number="92" hits="1"/>
+						<line number="93" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="94,95"/>
+						<line number="94" hits="0"/>
+						<line number="95" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="96,97"/>
+						<line number="96" hits="0"/>
+						<line number="97" hits="0"/>
+						<line number="98" hits="0"/>
+						<line number="99" hits="0"/>
+						<line number="101" hits="1"/>
+						<line number="108" hits="1"/>
+						<line number="109" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="110" hits="1"/>
+						<line number="115" hits="1"/>
+						<line number="117" hits="1"/>
+						<line number="118" hits="1"/>
+						<line number="119" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="120,121"/>
+						<line number="120" hits="0"/>
+						<line number="121" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="122,123"/>
+						<line number="122" hits="0"/>
+						<line number="123" hits="0"/>
+						<line number="124" hits="0"/>
+						<line number="126" hits="1"/>
+						<line number="134" hits="1"/>
+						<line number="135" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="136" hits="1"/>
+						<line number="140" hits="1"/>
+						<line number="144" hits="1"/>
+						<line number="146" hits="1"/>
+						<line number="147" hits="1"/>
+						<line number="148" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="149,150"/>
+						<line number="149" hits="0"/>
+						<line number="150" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="151,152"/>
+						<line number="151" hits="0"/>
+						<line number="152" hits="0"/>
+						<line number="153" hits="0"/>
+						<line number="155" hits="1"/>
+						<line number="171" hits="1"/>
+					</lines>
+				</class>
+				<class name="test_db_split_history.py" filename="src/tests/db/test_db_split_history.py" complexity="0" line-rate="0.5" branch-rate="0.3333">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="2" hits="1"/>
+						<line number="3" hits="1"/>
+						<line number="4" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="7" hits="1"/>
+						<line number="9" hits="1"/>
+						<line number="12" hits="1"/>
+						<line number="13" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="14" hits="0"/>
+						<line number="16" hits="0"/>
+						<line number="17" hits="0"/>
+						<line number="19" hits="0"/>
+						<line number="24" hits="0"/>
+						<line number="26" hits="0"/>
+						<line number="28" hits="0"/>
+						<line number="29" hits="0"/>
+						<line number="31" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="32,33"/>
+						<line number="32" hits="0"/>
+						<line number="33" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="34,35"/>
+						<line number="34" hits="0"/>
+						<line number="35" hits="0"/>
+						<line number="36" hits="0"/>
+						<line number="38" hits="0"/>
+						<line number="46" hits="1"/>
+						<line number="47" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="48" hits="1"/>
+						<line number="50" hits="1"/>
+						<line number="51" hits="1"/>
+						<line number="52" hits="1"/>
+						<line number="66" hits="1"/>
+						<line number="71" hits="1"/>
+						<line number="73" hits="1"/>
+						<line number="75" hits="1"/>
+						<line number="76" hits="1"/>
+						<line number="90" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="91,92"/>
+						<line number="91" hits="0"/>
+						<line number="92" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="93,94"/>
+						<line number="93" hits="0"/>
+						<line number="94" hits="0"/>
+						<line number="95" hits="0"/>
+						<line number="97" hits="1"/>
+					</lines>
+				</class>
+				<class name="test_db_user.py" filename="src/tests/db/test_db_user.py" complexity="0" line-rate="0.5539" branch-rate="0.3372">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="2" hits="1"/>
+						<line number="3" hits="1"/>
+						<line number="4" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="7" hits="1"/>
+						<line number="8" hits="1"/>
+						<line number="10" hits="1"/>
+						<line number="13" hits="1"/>
+						<line number="14" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="15" hits="1"/>
+						<line number="17" hits="1"/>
+						<line number="18" hits="1"/>
+						<line number="20" hits="1"/>
+						<line number="25" hits="1"/>
+						<line number="27" hits="1"/>
+						<line number="28" hits="1"/>
+						<line number="29" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="30,31"/>
+						<line number="30" hits="0"/>
+						<line number="31" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="32,33"/>
+						<line number="32" hits="0"/>
+						<line number="33" hits="0"/>
+						<line number="34" hits="0"/>
+						<line number="36" hits="1"/>
+						<line number="41" hits="1"/>
+						<line number="42" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="43" hits="1"/>
+						<line number="45" hits="1"/>
+						<line number="49" hits="1"/>
+						<line number="51" hits="1"/>
+						<line number="52" hits="1"/>
+						<line number="53" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="54,55"/>
+						<line number="54" hits="0"/>
+						<line number="55" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="56,57"/>
+						<line number="56" hits="0"/>
+						<line number="57" hits="0"/>
+						<line number="58" hits="0"/>
+						<line number="60" hits="1"/>
+						<line number="67" hits="1"/>
+						<line number="68" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="69" hits="1"/>
+						<line number="71" hits="1"/>
+						<line number="76" hits="1"/>
+						<line number="78" hits="1"/>
+						<line number="79" hits="1"/>
+						<line number="80" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="81,82"/>
+						<line number="81" hits="0"/>
+						<line number="82" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="83,84"/>
+						<line number="83" hits="0"/>
+						<line number="84" hits="0"/>
+						<line number="85" hits="0"/>
+						<line number="87" hits="1"/>
+						<line number="94" hits="1"/>
+						<line number="95" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="96" hits="1"/>
+						<line number="98" hits="1"/>
+						<line number="103" hits="1"/>
+						<line number="105" hits="1"/>
+						<line number="106" hits="1"/>
+						<line number="107" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="108,109"/>
+						<line number="108" hits="0"/>
+						<line number="109" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="110,111"/>
+						<line number="110" hits="0"/>
+						<line number="111" hits="0"/>
+						<line number="112" hits="0"/>
+						<line number="114" hits="1"/>
+						<line number="121" hits="1"/>
+						<line number="122" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="123" hits="1"/>
+						<line number="125" hits="1"/>
+						<line number="130" hits="1"/>
+						<line number="132" hits="1"/>
+						<line number="133" hits="1"/>
+						<line number="134" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="135,136"/>
+						<line number="135" hits="0"/>
+						<line number="136" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="137,138"/>
+						<line number="137" hits="0"/>
+						<line number="138" hits="0"/>
+						<line number="139" hits="0"/>
+						<line number="141" hits="1"/>
+						<line number="148" hits="1"/>
+						<line number="149" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="150" hits="1"/>
+						<line number="152" hits="1"/>
+						<line number="157" hits="1"/>
+						<line number="159" hits="1"/>
+						<line number="160" hits="1"/>
+						<line number="161" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="162,163"/>
+						<line number="162" hits="0"/>
+						<line number="163" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="164,165"/>
+						<line number="164" hits="0"/>
+						<line number="165" hits="0"/>
+						<line number="166" hits="0"/>
+						<line number="168" hits="1"/>
+						<line number="174" hits="1"/>
+						<line number="175" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="176" hits="1"/>
+						<line number="178" hits="1"/>
+						<line number="183" hits="1"/>
+						<line number="185" hits="1"/>
+						<line number="186" hits="1"/>
+						<line number="187" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="188,189"/>
+						<line number="188" hits="0"/>
+						<line number="189" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="190,191"/>
+						<line number="190" hits="0"/>
+						<line number="191" hits="0"/>
+						<line number="192" hits="0"/>
+						<line number="194" hits="1"/>
+						<line number="200" hits="1"/>
+						<line number="201" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="202" hits="1"/>
+						<line number="204" hits="1"/>
+						<line number="209" hits="1"/>
+						<line number="211" hits="1"/>
+						<line number="212" hits="1"/>
+						<line number="213" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="214,215"/>
+						<line number="214" hits="0"/>
+						<line number="215" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="216,217"/>
+						<line number="216" hits="0"/>
+						<line number="217" hits="0"/>
+						<line number="218" hits="0"/>
+						<line number="220" hits="1"/>
+						<line number="226" hits="1"/>
+						<line number="227" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="228" hits="1"/>
+						<line number="230" hits="1"/>
+						<line number="235" hits="1"/>
+						<line number="237" hits="1"/>
+						<line number="238" hits="1"/>
+						<line number="239" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="240,241"/>
+						<line number="240" hits="0"/>
+						<line number="241" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="242,243"/>
+						<line number="242" hits="0"/>
+						<line number="243" hits="0"/>
+						<line number="244" hits="0"/>
+						<line number="246" hits="1"/>
+						<line number="252" hits="1"/>
+						<line number="253" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="254" hits="1"/>
+						<line number="256" hits="1"/>
+						<line number="261" hits="1"/>
+						<line number="263" hits="1"/>
+						<line number="264" hits="1"/>
+						<line number="265" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="266,267"/>
+						<line number="266" hits="0"/>
+						<line number="267" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="268,269"/>
+						<line number="268" hits="0"/>
+						<line number="269" hits="0"/>
+						<line number="270" hits="0"/>
+						<line number="272" hits="1"/>
+						<line number="278" hits="1"/>
+						<line number="279" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="280" hits="1"/>
+						<line number="282" hits="1"/>
+						<line number="287" hits="1"/>
+						<line number="289" hits="1"/>
+						<line number="290" hits="1"/>
+						<line number="291" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="292,293"/>
+						<line number="292" hits="0"/>
+						<line number="293" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="294,295"/>
+						<line number="294" hits="0"/>
+						<line number="295" hits="0"/>
+						<line number="296" hits="0"/>
+						<line number="298" hits="1"/>
+						<line number="304" hits="1"/>
+						<line number="305" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="306" hits="0"/>
+						<line number="308" hits="0"/>
+						<line number="309" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="310,311"/>
+						<line number="310" hits="0"/>
+						<line number="311" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="312,313"/>
+						<line number="312" hits="0"/>
+						<line number="313" hits="0"/>
+						<line number="315" hits="0"/>
+						<line number="320" hits="0"/>
+						<line number="322" hits="0"/>
+						<line number="323" hits="0"/>
+						<line number="324" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="325,326"/>
+						<line number="325" hits="0"/>
+						<line number="326" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="327,328"/>
+						<line number="327" hits="0"/>
+						<line number="328" hits="0"/>
+						<line number="329" hits="0"/>
+						<line number="331" hits="0"/>
+						<line number="340" hits="1"/>
+						<line number="341" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="342" hits="1"/>
+						<line number="344" hits="1"/>
+						<line number="345" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="346" hits="1"/>
+						<line number="347" hits="1" branch="true" condition-coverage="50% (1/2)" missing-branches="349"/>
+						<line number="348" hits="1"/>
+						<line number="349" hits="0"/>
+						<line number="351" hits="1"/>
+						<line number="356" hits="1"/>
+						<line number="358" hits="1"/>
+						<line number="359" hits="1"/>
+						<line number="360" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="361,362"/>
+						<line number="361" hits="0"/>
+						<line number="362" hits="0" branch="true" condition-coverage="0% (0/2)" missing-branches="363,364"/>
+						<line number="363" hits="0"/>
+						<line number="364" hits="0"/>
+						<line number="365" hits="0"/>
+						<line number="367" hits="1"/>
+					</lines>
+				</class>
+			</classes>
+		</package>
+		<package name="src.tests.integration" line-rate="0.9649" branch-rate="1" complexity="0">
+			<classes>
+				<class name="test_base.py" filename="src/tests/integration/test_base.py" complexity="0" line-rate="1" branch-rate="1">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="2" hits="1"/>
+						<line number="4" hits="1"/>
+						<line number="7" hits="1"/>
+						<line number="8" hits="1"/>
+						<line number="10" hits="1"/>
+						<line number="12" hits="1"/>
+						<line number="17" hits="1"/>
+						<line number="18" hits="1"/>
+						<line number="19" hits="1"/>
+						<line number="21" hits="1"/>
+						<line number="22" hits="1"/>
+						<line number="23" hits="1"/>
+						<line number="24" hits="1"/>
+						<line number="26" hits="1"/>
+						<line number="29" hits="1"/>
+						<line number="30" hits="1"/>
+					</lines>
+				</class>
+				<class name="test_integration.py" filename="src/tests/integration/test_integration.py" complexity="0" line-rate="0.9588" branch-rate="1">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="2" hits="1"/>
+						<line number="3" hits="1"/>
+						<line number="4" hits="1"/>
+						<line number="5" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="8" hits="1"/>
+						<line number="10" hits="1"/>
+						<line number="11" hits="1"/>
+						<line number="13" hits="1"/>
+						<line number="15" hits="1"/>
+						<line number="17" hits="1"/>
+						<line number="19" hits="1"/>
+						<line number="21" hits="1"/>
+						<line number="25" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="26" hits="1"/>
+						<line number="27" hits="1"/>
+						<line number="28" hits="1"/>
+						<line number="29" hits="1"/>
+						<line number="30" hits="1"/>
+						<line number="33" hits="1"/>
+						<line number="34" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="35" hits="1"/>
+						<line number="40" hits="1"/>
+						<line number="42" hits="1"/>
+						<line number="43" hits="1"/>
+						<line number="50" hits="1"/>
+						<line number="53" hits="1"/>
+						<line number="54" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="55" hits="1"/>
+						<line number="58" hits="1"/>
+						<line number="60" hits="1"/>
+						<line number="68" hits="1"/>
+						<line number="69" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="70" hits="1"/>
+						<line number="76" hits="1"/>
+						<line number="78" hits="1"/>
+						<line number="81" hits="1"/>
+						<line number="82" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="83" hits="1"/>
+						<line number="86" hits="1"/>
+						<line number="88" hits="1"/>
+						<line number="91" hits="1"/>
+						<line number="92" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="93" hits="1"/>
+						<line number="96" hits="1"/>
+						<line number="98" hits="1"/>
+						<line number="101" hits="1"/>
+						<line number="103" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="104" hits="1"/>
+						<line number="113" hits="1"/>
+						<line number="115" hits="1"/>
+						<line number="118" hits="1"/>
+						<line number="119" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="120" hits="1"/>
+						<line number="122" hits="1"/>
+						<line number="123" hits="1"/>
+						<line number="124" hits="1"/>
+						<line number="126" hits="1"/>
+						<line number="128" hits="1"/>
+						<line number="131" hits="1"/>
+						<line number="132" hits="1"/>
+						<line number="133" hits="1"/>
+						<line number="135" hits="1"/>
+						<line number="138" hits="1"/>
+						<line number="141" hits="1"/>
+						<line number="144" hits="1"/>
+						<line number="145" hits="1"/>
+						<line number="146" hits="1"/>
+						<line number="147" hits="1"/>
+						<line number="148" hits="1"/>
+						<line number="149" hits="1"/>
+						<line number="151" hits="1"/>
+						<line number="153" hits="1"/>
+						<line number="155" hits="1"/>
+						<line number="156" hits="1"/>
+						<line number="158" hits="1"/>
+						<line number="159" hits="1"/>
+						<line number="160" hits="1"/>
+						<line number="162" hits="1"/>
+						<line number="164" hits="1"/>
+						<line number="165" hits="1"/>
+						<line number="166" hits="1"/>
+						<line number="167" hits="1"/>
+						<line number="169" hits="1"/>
+						<line number="172" hits="1"/>
+						<line number="173" hits="1"/>
+						<line number="174" hits="1"/>
+						<line number="176" hits="1"/>
+						<line number="179" hits="1"/>
+						<line number="180" hits="1"/>
+						<line number="181" hits="1"/>
+						<line number="183" hits="0"/>
+						<line number="184" hits="0"/>
+						<line number="185" hits="0"/>
+						<line number="186" hits="0"/>
+						<line number="188" hits="1"/>
+					</lines>
+				</class>
+			</classes>
+		</package>
+		<package name="src.tests.service" line-rate="0.9804" branch-rate="1" complexity="0">
+			<classes>
+				<class name="test_group.py" filename="src/tests/service/test_group.py" complexity="0" line-rate="0.9706" branch-rate="1">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="2" hits="1"/>
+						<line number="3" hits="1"/>
+						<line number="4" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="7" hits="1"/>
+						<line number="9" hits="1"/>
+						<line number="11" hits="1"/>
+						<line number="13" hits="1"/>
+						<line number="15" hits="1"/>
+						<line number="18" hits="1"/>
+						<line number="19" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="21" hits="1"/>
+						<line number="28" hits="1"/>
+						<line number="29" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="31" hits="1"/>
+						<line number="37" hits="1"/>
+						<line number="38" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="39" hits="1"/>
+						<line number="44" hits="1"/>
+						<line number="49" hits="1"/>
+						<line number="57" hits="1"/>
+						<line number="73" hits="1"/>
+						<line number="74" hits="1"/>
+						<line number="94" hits="1"/>
+						<line number="95" hits="1"/>
+						<line number="96" hits="1"/>
+						<line number="98" hits="1"/>
+						<line number="99" hits="1"/>
+						<line number="100" hits="1"/>
+						<line number="101" hits="1"/>
+						<line number="102" hits="1"/>
+						<line number="104" hits="1"/>
+						<line number="105" hits="1"/>
+						<line number="106" hits="1"/>
+						<line number="107" hits="1"/>
+						<line number="108" hits="1"/>
+						<line number="110" hits="1"/>
+						<line number="111" hits="1"/>
+						<line number="112" hits="1"/>
+						<line number="123" hits="1"/>
+						<line number="139" hits="1"/>
+						<line number="140" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="141" hits="1"/>
+						<line number="146" hits="1"/>
+						<line number="151" hits="1"/>
+						<line number="159" hits="1"/>
+						<line number="175" hits="1"/>
+						<line number="176" hits="1"/>
+						<line number="196" hits="1"/>
+						<line number="197" hits="1"/>
+						<line number="201" hits="1"/>
+						<line number="203" hits="1"/>
+						<line number="204" hits="1"/>
+						<line number="205" hits="1"/>
+						<line number="206" hits="1"/>
+						<line number="207" hits="1"/>
+						<line number="209" hits="1"/>
+						<line number="210" hits="1"/>
+						<line number="211" hits="1"/>
+						<line number="212" hits="1"/>
+						<line number="213" hits="1"/>
+						<line number="215" hits="1"/>
+						<line number="216" hits="1"/>
+						<line number="217" hits="1"/>
+						<line number="229" hits="1"/>
+						<line number="247" hits="1"/>
+						<line number="248" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="249" hits="1"/>
+						<line number="250" hits="1"/>
+						<line number="254" hits="1"/>
+						<line number="255" hits="1"/>
+						<line number="258" hits="1"/>
+						<line number="259" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="260" hits="0"/>
+						<line number="261" hits="0"/>
+						<line number="267" hits="0"/>
+						<line number="268" hits="0"/>
+						<line number="271" hits="1"/>
+						<line number="272" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="273" hits="1"/>
+						<line number="274" hits="1"/>
+						<line number="280" hits="1"/>
+						<line number="281" hits="1"/>
+						<line number="284" hits="1"/>
+						<line number="285" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="286" hits="1"/>
+						<line number="287" hits="1"/>
+						<line number="293" hits="1"/>
+						<line number="294" hits="1"/>
+						<line number="297" hits="1"/>
+						<line number="298" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="299" hits="1"/>
+						<line number="308" hits="1"/>
+						<line number="330" hits="1"/>
+						<line number="331" hits="1"/>
+						<line number="352" hits="1"/>
+						<line number="359" hits="1"/>
+						<line number="360" hits="1"/>
+						<line number="367" hits="1"/>
+						<line number="368" hits="1"/>
+						<line number="369" hits="1"/>
+						<line number="370" hits="1"/>
+						<line number="372" hits="1"/>
+						<line number="373" hits="1"/>
+						<line number="374" hits="1"/>
+						<line number="375" hits="1"/>
+						<line number="376" hits="1"/>
+						<line number="377" hits="1"/>
+						<line number="379" hits="1"/>
+						<line number="380" hits="1"/>
+						<line number="381" hits="1"/>
+						<line number="398" hits="1"/>
+						<line number="416" hits="1"/>
+						<line number="417" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="418" hits="1"/>
+						<line number="427" hits="1"/>
+						<line number="449" hits="1"/>
+						<line number="450" hits="1"/>
+						<line number="471" hits="1"/>
+						<line number="478" hits="1"/>
+						<line number="479" hits="1"/>
+						<line number="486" hits="1"/>
+						<line number="487" hits="1"/>
+						<line number="488" hits="1"/>
+						<line number="489" hits="1"/>
+						<line number="491" hits="1"/>
+						<line number="492" hits="1"/>
+						<line number="493" hits="1"/>
+						<line number="494" hits="1"/>
+						<line number="495" hits="1"/>
+						<line number="496" hits="1"/>
+						<line number="498" hits="1"/>
+						<line number="499" hits="1"/>
+						<line number="500" hits="1"/>
+						<line number="517" hits="1"/>
+					</lines>
+				</class>
+				<class name="test_user.py" filename="src/tests/service/test_user.py" complexity="0" line-rate="1" branch-rate="1">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="2" hits="1"/>
+						<line number="3" hits="1"/>
+						<line number="5" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="7" hits="1"/>
+						<line number="8" hits="1"/>
+						<line number="10" hits="1"/>
+						<line number="12" hits="1"/>
+						<line number="14" hits="1"/>
+						<line number="15" hits="1"/>
+						<line number="17" hits="1"/>
+						<line number="20" hits="1"/>
+						<line number="21" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="23" hits="1"/>
+						<line number="29" hits="1"/>
+						<line number="30" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="31" hits="1"/>
+						<line number="36" hits="1"/>
+						<line number="37" hits="1"/>
+						<line number="38" hits="1"/>
+						<line number="39" hits="1"/>
+						<line number="40" hits="1"/>
+						<line number="43" hits="1"/>
+						<line number="44" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="45" hits="1"/>
+						<line number="50" hits="1"/>
+						<line number="51" hits="1"/>
+						<line number="52" hits="1"/>
+						<line number="53" hits="1"/>
+						<line number="56" hits="1"/>
+						<line number="57" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="58" hits="1"/>
+						<line number="63" hits="1"/>
+						<line number="68" hits="1"/>
+						<line number="77" hits="1"/>
+						<line number="78" hits="1"/>
+						<line number="79" hits="1"/>
+						<line number="80" hits="1"/>
+						<line number="82" hits="1"/>
+						<line number="83" hits="1"/>
+						<line number="84" hits="1"/>
+						<line number="86" hits="1"/>
+						<line number="87" hits="1"/>
+						<line number="88" hits="1"/>
+						<line number="89" hits="1"/>
+						<line number="92" hits="1"/>
+						<line number="93" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="94" hits="1"/>
+						<line number="103" hits="1"/>
+						<line number="104" hits="1"/>
+						<line number="105" hits="1"/>
+						<line number="106" hits="1"/>
+						<line number="108" hits="1"/>
+						<line number="109" hits="1"/>
+						<line number="110" hits="1"/>
+						<line number="112" hits="1"/>
+						<line number="113" hits="1"/>
+						<line number="114" hits="1"/>
+						<line number="115" hits="1"/>
+						<line number="118" hits="1"/>
+						<line number="119" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="120" hits="1"/>
+						<line number="129" hits="1"/>
+						<line number="130" hits="1"/>
+						<line number="131" hits="1"/>
+						<line number="132" hits="1"/>
+						<line number="133" hits="1"/>
+					</lines>
+				</class>
+			</classes>
+		</package>
+		<package name="src.tests.ui" line-rate="0.4821" branch-rate="1" complexity="0">
+			<classes>
+				<class name="test_ui.py" filename="src/tests/ui/test_ui.py" complexity="0" line-rate="0.3889" branch-rate="1">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="2" hits="1"/>
+						<line number="3" hits="1"/>
+						<line number="4" hits="1"/>
+						<line number="5" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="8" hits="1"/>
+						<line number="10" hits="1"/>
+						<line number="12" hits="1"/>
+						<line number="13" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="14" hits="0"/>
+						<line number="15" hits="0"/>
+						<line number="17" hits="1"/>
+						<line number="18" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="19" hits="0"/>
+						<line number="20" hits="0"/>
+						<line number="22" hits="0"/>
+						<line number="23" hits="0"/>
+						<line number="24" hits="0"/>
+						<line number="25" hits="0"/>
+						<line number="27" hits="0"/>
+						<line number="28" hits="0"/>
+						<line number="29" hits="0"/>
+						<line number="30" hits="0"/>
+						<line number="32" hits="1"/>
+						<line number="33" hits="1" branch="true" condition-coverage="100% (2/2)"/>
+						<line number="34" hits="0"/>
+						<line number="36" hits="0"/>
+						<line number="37" hits="0"/>
+						<line number="38" hits="0"/>
+						<line number="39" hits="0"/>
+						<line number="40" hits="0"/>
+						<line number="42" hits="0"/>
+						<line number="43" hits="0"/>
+						<line number="44" hits="0"/>
+						<line number="45" hits="0"/>
+					</lines>
+				</class>
+				<class name="utils.py" filename="src/tests/ui/utils.py" complexity="0" line-rate="0.65" branch-rate="1">
+					<methods/>
+					<lines>
+						<line number="1" hits="1"/>
+						<line number="2" hits="1"/>
+						<line number="3" hits="1"/>
+						<line number="4" hits="1"/>
+						<line number="6" hits="1"/>
+						<line number="8" hits="1"/>
+						<line number="15" hits="1"/>
+						<line number="16" hits="1"/>
+						<line number="18" hits="1"/>
+						<line number="19" hits="0"/>
+						<line number="20" hits="0"/>
+						<line number="21" hits="0"/>
+						<line number="23" hits="1"/>
+						<line number="24" hits="0"/>
+						<line number="26" hits="1"/>
+						<line number="27" hits="0"/>
+						<line number="29" hits="1"/>
+						<line number="30" hits="0"/>
+						<line number="32" hits="1"/>
+						<line number="33" hits="0"/>
+					</lines>
+				</class>
+			</classes>
+		</package>
+	</packages>
+</coverage>
