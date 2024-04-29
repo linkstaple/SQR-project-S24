@@ -20,8 +20,7 @@ src.middleware | 88% | 100% | ✔
 src.model | 100% | 100% | ✔
 src.service | 92% | 79% | ✔
 src.static | 80% | 100% | ✔
-src.tests.ui | 65% | 100% | ➖
-**Summary** | **92%** (313 / 340) | **90%** (83 / 92) | ✔
+**Summary** | **94%** (302 / 322) | **90%** (83 / 92) | ✔
 <!-- END REPORT -->
 
 ## Mutation testing report
