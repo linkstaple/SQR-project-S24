@@ -1,6 +1,5 @@
 from .sqlite import Database
 import json
-import time
 
 
 class _SplitHistory:
