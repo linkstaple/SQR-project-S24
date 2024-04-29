@@ -47,7 +47,9 @@ jobs:
           sed -e ':a' -e 'N' -e '$!ba' -e 's/===/\n/g' one_line_readme.md > README.md
           rm one_line_readme.md report.md report-fixed.md test.txt oneline.txt passed failed p1 total p2 rate
 
+      - uses: actions/checkout@v3
+
       - uses: mikeal/publish-to-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: 'andrey'
+          BRANCH_NAME: 'main'
