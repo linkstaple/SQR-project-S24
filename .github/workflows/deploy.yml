@@ -31,18 +31,16 @@ jobs:
     needs: [ install-dependencies ]
     steps:
       - name: run linter
-        continue-on-error: true
         working-directory: /home/poga/sqr-fanaty-serduchki/work
-        run: python3.11 -m poetry run flake8
+        run: python3.11 -m poetry run flake8 src/
 
   run-tests:
     runs-on: self-hosted
     needs: [ install-dependencies ]
     steps:
       - name: run tests
-        continue-on-error: true
         working-directory: /home/poga/sqr-fanaty-serduchki/work
-        run: python3.11 -m poetry run pytest tests/
+        run: python3.11 -m poetry run pytest
 
   build-docker-image:
     runs-on: self-hosted
