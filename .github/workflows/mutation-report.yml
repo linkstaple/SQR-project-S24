@@ -45,7 +45,7 @@ jobs:
           sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/===/g' README.md > one_line_readme.md
           sed -i "s/<\!-- BEGIN MUTATION REPORT -->.*<\!-- END MUTATION REPORT -->/<\!-- BEGIN MUTATION REPORT -->===$(cat report-fixed.md)===<\!-- END MUTATION REPORT -->/g" one_line_readme.md
           sed -e ':a' -e 'N' -e '$!ba' -e 's/===/\n/g' one_line_readme.md > README.md
-          rm one_line_readme.md report.md rm report-fixed.md test.txt oneline.txt passed failed p1 total p2 rate
+          rm one_line_readme.md report.md report-fixed.md test.txt oneline.txt passed failed p1 total p2 rate
 
       - uses: mikeal/publish-to-github-action@master
         env:
