@@ -28,7 +28,7 @@ src.tests.ui | 65% | 100% | ➖
 <!-- BEGIN MUTATION REPORT -->
 Total mutations | Passed | Failed | Rate
 ----------------|--------|--------|------
-9 | 9 | 0 | 100%
+100 | 100 | 0 | 100%
 <!-- END MUTATION REPORT -->
 
 ## Install dependencies
