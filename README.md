@@ -25,6 +25,11 @@ src.tests.service | 100% | 100% | ✔
 **Summary** | **95%** (555 / 583) | **89%** (118 / 132) | ✔
 <!-- END REPORT -->
 
+Total mutations | Passed | Failed | Rate
+----------------|--------|--------|------
+100 | 99     | 1 | 99.0%
+
+
 ## Install dependencies
 `poetry install`
 

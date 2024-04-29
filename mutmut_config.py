@@ -13,6 +13,3 @@ def pre_mutation(context):
 
     if context.filename == 'src/db/sqlite.py':
         context.skip = True
-
-    if context.filename != 'src/db/split_history.py':
-        context.skip = True
