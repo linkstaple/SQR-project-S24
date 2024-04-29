@@ -23,7 +23,7 @@ class _Config:
 
     def _try_find_in_env(self, key, env_key, fallback=None):
         if os.getenv(env_key) is not None:
-            setattr(self, key, eval(os.getenv(env_key)))
+            setattr(self, key, os.getenv(env_key))
         elif fallback is not None:
             setattr(self, key, fallback)
 
