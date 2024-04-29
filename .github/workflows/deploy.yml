@@ -42,9 +42,25 @@ jobs:
         working-directory: /home/poga/sqr-fanaty-serduchki/work
         run: python3.11 -m poetry run pytest
 
+  run-bandit:
+    runs-on: self-hosted
+    needs: [install-dependencies]
+    steps:
+      - name: run bandit
+        working-directory: /home/poga/sqr-fanaty-serduchki/work
+        run: python3.11 -m poetry run bandit -c bandit.yaml -r src/
+
+  run-complexity-check:
+    runs-on: self-hosted
+    needs: [ install-dependencies ]
+    steps:
+      - name: run complexity check
+        working-directory: /home/poga/sqr-fanaty-serduchki/work
+        run: python3.11 -m poetry run flake8 --max-complexity 10 src/
+
   build-docker-image:
     runs-on: self-hosted
-    needs: [ run-tests, run-linter ]
+    needs: [ run-tests, run-linter, run-bandit, run-complexity-check ]
     steps:
       - name: build docker image
         working-directory: /home/poga/sqr-fanaty-serduchki/work

@@ -1,8 +1,7 @@
 import model
 import service.user
 import service.group
-from fastapi import FastAPI
-from starlette_context import context
+from fastapi import FastAPI, Request
 
 
 def setup(app: FastAPI) -> None:
@@ -37,8 +36,8 @@ def setup(app: FastAPI) -> None:
               'description': 'Unauthorized request'
               }
     })
-    async def profile():
-        return await service.user.get_self(context.user_id)
+    async def profile(request: Request):
+        return await service.user.get_self(request.state.user_id)
 
     @app.get("/api/groups", summary="List groups which user belongs to",
              responses={
@@ -48,8 +47,8 @@ def setup(app: FastAPI) -> None:
                        }
              }
              )
-    async def groups():
-        return await service.group.list_users(context.user_id)
+    async def groups(request: Request):
+        return await service.group.list_users(request.state.user_id)
 
     @app.post("/api/group", summary="Create new group", responses={
         200: {'model': model.Group},
@@ -57,8 +56,8 @@ def setup(app: FastAPI) -> None:
               'description': 'Unauthorized request'
               }
     })
-    async def group(group_data: model.CreateGroup):
-        return await service.group.create(context.user_id, group_data)
+    async def group(group_data: model.CreateGroup, request: Request):
+        return await service.group.create(request.state.user_id, group_data)
 
     @app.get("/api/group/{id}", summary="Get data of particular group",
              responses={
@@ -71,8 +70,8 @@ def setup(app: FastAPI) -> None:
                        / user is not a member of the group'''},
              }
              )
-    async def group_info(id: int):
-        return await service.group.get(context.user_id, id)
+    async def group_info(id: int, request: Request):
+        return await service.group.get(request.state.user_id, id)
 
     @app.post("/api/split", summary="Create new expense splitting", responses={
         200: {'model': model.Group},
@@ -81,5 +80,5 @@ def setup(app: FastAPI) -> None:
               },
         404: {'model': model.ErrorResponse}}
     )
-    async def split(split_data: model.Split):
-        return await service.group.split(context.user_id, split_data)
+    async def split(split_data: model.Split, request: Request):
+        return await service.group.split(request.state.user_id, split_data)
