@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 import jwt
 from fastapi import Request, FastAPI
 from fastapi.responses import JSONResponse
@@ -19,6 +21,6 @@ def setup(app: FastAPI):
         except:
             return JSONResponse(
                 content="jwt token invalid or not provided",
-                status_code=403)
+                status_code=HTTPStatus.FORBIDDEN)
 
         return await call_next(request)
