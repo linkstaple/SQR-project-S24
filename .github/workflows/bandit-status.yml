@@ -21,7 +21,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install poetry
-          poetry installs
+          poetry install
           
       - name: Fetch status from _badge
         uses: actions/checkout@v4
