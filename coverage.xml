@@ -1,0 +1,625 @@
+<?xml version="1.0" ?>
+<testsuites disabled="0" errors="0" failures="15" tests="146" time="0.0">
+	<testsuite disabled="0" errors="0" failures="15" name="mutmut" skipped="0" tests="146" time="0">
+		<testcase name="Mutant #1" file="src/main.py" line="9">
+			<failure type="failure" message="bad_survived">--- src/main.py
++++ src/main.py
+@@ -6,7 +6,7 @@
+ from config import Config
+ from fastapi import FastAPI
+ 
+-if __name__ == &quot;__main__&quot;:
++if __name__ != &quot;__main__&quot;:
+     uvicorn.run(&quot;main:app&quot;, host=Config.bind_host,
+                 port=Config.bind_port, reload=True)
+ 
+</failure>
+			<system-out>if __name__ == &quot;__main__&quot;:</system-out>
+		</testcase>
+		<testcase name="Mutant #2" file="src/main.py" line="11">
+			<failure type="failure" message="bad_survived">--- src/main.py
++++ src/main.py
+@@ -8,7 +8,7 @@
+ 
+ if __name__ == &quot;__main__&quot;:
+     uvicorn.run(&quot;main:app&quot;, host=Config.bind_host,
+-                port=Config.bind_port, reload=True)
++                port=Config.bind_port, reload=False)
+ 
+ app = FastAPI()
+ middleware.setup(app)
+</failure>
+			<system-out>                port=Config.bind_port, reload=True)</system-out>
+		</testcase>
+		<testcase name="Mutant #3" file="src/main.py" line="13">
+			<failure type="failure" message="bad_survived">--- src/main.py
++++ src/main.py
+@@ -10,7 +10,7 @@
+     uvicorn.run(&quot;main:app&quot;, host=Config.bind_host,
+                 port=Config.bind_port, reload=True)
+ 
+-app = FastAPI()
++app = None
+ middleware.setup(app)
+ api.setup(app)
+ static.setup(app)
+</failure>
+			<system-out>app = FastAPI()</system-out>
+		</testcase>
+		<testcase name="Mutant #4" file="src/middleware/__init__.py" line="10">
+			<system-out>        if (request.url.path[:5] != '/api/'</system-out>
+		</testcase>
+		<testcase name="Mutant #5" file="src/middleware/__init__.py" line="10">
+			<system-out>        if (request.url.path[:5] != '/api/'</system-out>
+		</testcase>
+		<testcase name="Mutant #6" file="src/middleware/__init__.py" line="11">
+			<system-out>                or request.url.path in ['/api/login', '/api/register']):</system-out>
+		</testcase>
+		<testcase name="Mutant #7" file="src/middleware/__init__.py" line="11">
+			<system-out>                or request.url.path in ['/api/login', '/api/register']):</system-out>
+		</testcase>
+		<testcase name="Mutant #8" file="src/middleware/__init__.py" line="14">
+			<system-out>        token = request.headers.get(&quot;Authorization&quot;)</system-out>
+		</testcase>
+		<testcase name="Mutant #9" file="src/middleware/__init__.py" line="16">
+			<system-out>            payload = jwt.decode(token.split()[1],</system-out>
+		</testcase>
+		<testcase name="Mutant #10" file="src/middleware/__init__.py" line="17">
+			<system-out>                                 Config.jwt_token_secret, algorithms=[&quot;HS256&quot;])</system-out>
+		</testcase>
+		<testcase name="Mutant #11" file="src/middleware/__init__.py" line="18">
+			<system-out>            request.state.user_id = payload['id']</system-out>
+		</testcase>
+		<testcase name="Mutant #12" file="src/middleware/__init__.py" line="22">
+			<system-out>                status_code=403)</system-out>
+		</testcase>
+		<testcase name="Mutant #13" file="src/config/__init__.py" line="5">
+			<system-out>    sqlite_path = 'lazy_split.db'</system-out>
+		</testcase>
+		<testcase name="Mutant #14" file="src/config/__init__.py" line="6">
+			<system-out>    sqlite_init_script_path = 'src/db/init.sql'</system-out>
+		</testcase>
+		<testcase name="Mutant #15" file="src/config/__init__.py" line="7">
+			<system-out>    jwt_token_secret = None</system-out>
+		</testcase>
+		<testcase name="Mutant #16" file="src/config/__init__.py" line="8">
+			<system-out>    bind_host = 'localhost'</system-out>
+		</testcase>
+		<testcase name="Mutant #17" file="src/config/__init__.py" line="9">
+			<system-out>    bind_port = 8000</system-out>
+		</testcase>
+		<testcase name="Mutant #18" file="src/config/__init__.py" line="9">
+			<system-out>    bind_port = 8000</system-out>
+		</testcase>
+		<testcase name="Mutant #19" file="src/config/__init__.py" line="23">
+			<system-out>        if os.getenv(env_key) is not None:</system-out>
+		</testcase>
+		<testcase name="Mutant #20" file="src/config/__init__.py" line="25">
+			<system-out>        elif fallback is not None:</system-out>
+		</testcase>
+		<testcase name="Mutant #21" file="src/config/__init__.py" line="29">
+			<system-out>Config = _Config()</system-out>
+		</testcase>
+		<testcase name="Mutant #22" file="src/schema/__init__.py" line="8">
+			<system-out>            lambda route: route.path.startswith('/api'),</system-out>
+		</testcase>
+		<testcase name="Mutant #23" file="src/schema/__init__.py" line="9">
+			<system-out>            app.routes))</system-out>
+		</testcase>
+		<testcase name="Mutant #24" file="src/schema/__init__.py" line="16">
+			<system-out>        )</system-out>
+		</testcase>
+		<testcase name="Mutant #25" file="src/schema/__init__.py" line="18">
+			<system-out>        app.openapi_schema = openapi_schema</system-out>
+		</testcase>
+		<testcase name="Mutant #26" file="src/schema/__init__.py" line="21">
+			<system-out>    app.openapi = api_schema</system-out>
+		</testcase>
+		<testcase name="Mutant #27" file="src/static/__init__.py" line="8">
+			<system-out>    mount_static_folders(app)</system-out>
+		</testcase>
+		<testcase name="Mutant #28" file="src/static/__init__.py" line="10">
+			<system-out>    templates = Jinja2Templates(directory=&quot;static&quot;)</system-out>
+		</testcase>
+		<testcase name="Mutant #29" file="src/static/__init__.py" line="11">
+			<system-out>    html_templates = Jinja2Templates(directory=&quot;static/html&quot;)</system-out>
+		</testcase>
+		<testcase name="Mutant #30" file="src/db/user.py" line="16">
+			<system-out>                              username)</system-out>
+		</testcase>
+		<testcase name="Mutant #31" file="src/db/user.py" line="17">
+			<system-out>        if resp is None or len(resp) == 0:</system-out>
+		</testcase>
+		<testcase name="Mutant #32" file="src/db/user.py" line="17">
+			<system-out>        if resp is None or len(resp) == 0:</system-out>
+		</testcase>
+		<testcase name="Mutant #33" file="src/db/user.py" line="17">
+			<system-out>        if resp is None or len(resp) == 0:</system-out>
+		</testcase>
+		<testcase name="Mutant #34" file="src/db/user.py" line="17">
+			<system-out>        if resp is None or len(resp) == 0:</system-out>
+		</testcase>
+		<testcase name="Mutant #35" file="src/db/user.py" line="19">
+			<system-out>        return resp[0]</system-out>
+		</testcase>
+		<testcase name="Mutant #36" file="src/db/user.py" line="23">
+			<system-out>                              id)</system-out>
+		</testcase>
+		<testcase name="Mutant #37" file="src/db/user.py" line="24">
+			<system-out>        if resp is None or len(resp) == 0:</system-out>
+		</testcase>
+		<testcase name="Mutant #38" file="src/db/user.py" line="24">
+			<system-out>        if resp is None or len(resp) == 0:</system-out>
+		</testcase>
+		<testcase name="Mutant #39" file="src/db/user.py" line="24">
+			<system-out>        if resp is None or len(resp) == 0:</system-out>
+		</testcase>
+		<testcase name="Mutant #40" file="src/db/user.py" line="24">
+			<system-out>        if resp is None or len(resp) == 0:</system-out>
+		</testcase>
+		<testcase name="Mutant #41" file="src/db/user.py" line="26">
+			<system-out>        return resp[0]</system-out>
+		</testcase>
+		<testcase name="Mutant #42" file="src/db/user.py" line="30">
+			<system-out>                              username)</system-out>
+		</testcase>
+		<testcase name="Mutant #43" file="src/db/user.py" line="32">
+			<system-out>        return not (resp is None or len(resp) == 0)</system-out>
+		</testcase>
+		<testcase name="Mutant #44" file="src/db/user.py" line="32">
+			<system-out>        return not (resp is None or len(resp) == 0)</system-out>
+		</testcase>
+		<testcase name="Mutant #45" file="src/db/user.py" line="32">
+			<system-out>        return not (resp is None or len(resp) == 0)</system-out>
+		</testcase>
+		<testcase name="Mutant #46" file="src/db/user.py" line="32">
+			<system-out>        return not (resp is None or len(resp) == 0)</system-out>
+		</testcase>
+		<testcase name="Mutant #47" file="src/db/user.py" line="32">
+			<system-out>        return not (resp is None or len(resp) == 0)</system-out>
+		</testcase>
+		<testcase name="Mutant #48" file="src/db/user.py" line="39">
+			<system-out>                id)</system-out>
+		</testcase>
+		<testcase name="Mutant #49" file="src/db/user.py" line="40">
+			<system-out>            if count == 0:</system-out>
+		</testcase>
+		<testcase name="Mutant #50" file="src/db/user.py" line="40">
+			<system-out>            if count == 0:</system-out>
+		</testcase>
+		<testcase name="Mutant #51" file="src/db/user.py" line="41">
+			<system-out>                return False</system-out>
+		</testcase>
+		<testcase name="Mutant #52" file="src/db/user.py" line="42">
+			<failure type="failure" message="bad_survived">--- src/db/user.py
++++ src/db/user.py
+@@ -39,7 +39,7 @@
+                 id)
+             if count == 0:
+                 return False
+-        return True
++        return False
+ 
+ 
+ User = _User()
+</failure>
+			<system-out>        return True</system-out>
+		</testcase>
+		<testcase name="Mutant #53" file="src/db/user.py" line="45">
+			<system-out>User = _User()</system-out>
+		</testcase>
+		<testcase name="Mutant #54" file="src/db/sqlite.py" line="7">
+			<system-out>        self.connection = sqlite3.connect(Config.sqlite_path)</system-out>
+		</testcase>
+		<testcase name="Mutant #55" file="src/db/sqlite.py" line="14">
+			<system-out>        fields = [column[0] for column in cursor.description]</system-out>
+		</testcase>
+		<testcase name="Mutant #56" file="src/db/sqlite.py" line="14">
+			<system-out>        fields = [column[0] for column in cursor.description]</system-out>
+		</testcase>
+		<testcase name="Mutant #57" file="src/db/sqlite.py" line="18">
+			<system-out>        cursor = self.connection.cursor()</system-out>
+		</testcase>
+		<testcase name="Mutant #58" file="src/db/sqlite.py" line="19">
+			<system-out>        cursor.row_factory = self.__factory</system-out>
+		</testcase>
+		<testcase name="Mutant #59" file="src/db/sqlite.py" line="30">
+			<system-out>        rows = self.connection.execute(query, params).fetchall()</system-out>
+		</testcase>
+		<testcase name="Mutant #60" file="src/db/sqlite.py" line="38">
+			<system-out>Database = _Database()</system-out>
+		</testcase>
+		<testcase name="Mutant #61" file="src/db/group.py" line="8">
+			<system-out>                                  &quot;values ($1) returning id&quot;, name)</system-out>
+		</testcase>
+		<testcase name="Mutant #62" file="src/db/group.py" line="19">
+			<system-out>            group_id)</system-out>
+		</testcase>
+		<testcase name="Mutant #63" file="src/db/group.py" line="20">
+			<system-out>        if len(rows) == 0:</system-out>
+		</testcase>
+		<testcase name="Mutant #64" file="src/db/group.py" line="20">
+			<system-out>        if len(rows) == 0:</system-out>
+		</testcase>
+		<testcase name="Mutant #65" file="src/db/group.py" line="22">
+			<system-out>        return rows[0]</system-out>
+		</testcase>
+		<testcase name="Mutant #66" file="src/db/group.py" line="30">
+			<system-out>            user_id)</system-out>
+		</testcase>
+		<testcase name="Mutant #67" file="src/db/group.py" line="40">
+			<system-out>            group_id)</system-out>
+		</testcase>
+		<testcase name="Mutant #68" file="src/db/group.py" line="47">
+			<system-out>                group_id, payer_id, -amount / len(payer_ids))</system-out>
+		</testcase>
+		<testcase name="Mutant #69" file="src/db/group.py" line="47">
+			<system-out>                group_id, payer_id, -amount / len(payer_ids))</system-out>
+		</testcase>
+		<testcase name="Mutant #70" file="src/db/group.py" line="59">
+			<system-out>Group = _Group()</system-out>
+		</testcase>
+		<testcase name="Mutant #71" file="src/db/split_history.py" line="21">
+			<system-out>            group_id)</system-out>
+		</testcase>
+		<testcase name="Mutant #72" file="src/db/split_history.py" line="23">
+			<system-out>            history_entry['payer_ids'] = json.loads(history_entry['payer_ids'])</system-out>
+		</testcase>
+		<testcase name="Mutant #73" file="src/db/split_history.py" line="27">
+			<system-out>SplitHistory = _SplitHistory()</system-out>
+		</testcase>
+		<testcase name="Mutant #74" file="src/api/__init__.py" line="9">
+			<system-out>        200: {'model': model.User},</system-out>
+		</testcase>
+		<testcase name="Mutant #75" file="src/api/__init__.py" line="10">
+			<system-out>        409: {'model': model.ErrorResponse,</system-out>
+		</testcase>
+		<testcase name="Mutant #76" file="src/api/__init__.py" line="17">
+			<system-out>        200: {'model': model.User},</system-out>
+		</testcase>
+		<testcase name="Mutant #77" file="src/api/__init__.py" line="18">
+			<system-out>        404: {'model': model.ErrorResponse,</system-out>
+		</testcase>
+		<testcase name="Mutant #78" file="src/api/__init__.py" line="25">
+			<system-out>        200: {'model': model.UsersList},</system-out>
+		</testcase>
+		<testcase name="Mutant #79" file="src/api/__init__.py" line="26">
+			<system-out>        403: {'model': model.ErrorResponse,</system-out>
+		</testcase>
+		<testcase name="Mutant #80" file="src/api/__init__.py" line="34">
+			<system-out>        200: {'model': model.User},</system-out>
+		</testcase>
+		<testcase name="Mutant #81" file="src/api/__init__.py" line="35">
+			<system-out>        403: {'model': model.ErrorResponse,</system-out>
+		</testcase>
+		<testcase name="Mutant #82" file="src/api/__init__.py" line="44">
+			<system-out>                 200: {'model': model.GroupList},</system-out>
+		</testcase>
+		<testcase name="Mutant #83" file="src/api/__init__.py" line="45">
+			<system-out>                 403: {'model': model.ErrorResponse,</system-out>
+		</testcase>
+		<testcase name="Mutant #84" file="src/api/__init__.py" line="54">
+			<system-out>        200: {'model': model.Group},</system-out>
+		</testcase>
+		<testcase name="Mutant #85" file="src/api/__init__.py" line="55">
+			<system-out>        403: {'model': model.ErrorResponse,</system-out>
+		</testcase>
+		<testcase name="Mutant #86" file="src/api/__init__.py" line="64">
+			<system-out>                 200: {'model': model.Group},</system-out>
+		</testcase>
+		<testcase name="Mutant #87" file="src/api/__init__.py" line="65">
+			<system-out>                 403: {'model': model.ErrorResponse,</system-out>
+		</testcase>
+		<testcase name="Mutant #88" file="src/api/__init__.py" line="68">
+			<system-out>                 404: {'model': model.ErrorResponse,</system-out>
+		</testcase>
+		<testcase name="Mutant #89" file="src/api/__init__.py" line="77">
+			<system-out>        200: {'model': model.Group},</system-out>
+		</testcase>
+		<testcase name="Mutant #90" file="src/api/__init__.py" line="78">
+			<system-out>        403: {'model': model.ErrorResponse,</system-out>
+		</testcase>
+		<testcase name="Mutant #91" file="src/api/__init__.py" line="81">
+			<system-out>        404: {'model': model.ErrorResponse}}</system-out>
+		</testcase>
+		<testcase name="Mutant #92" file="src/service/user.py" line="12">
+			<system-out>    username, password = user.username, hash_password(user.password)</system-out>
+		</testcase>
+		<testcase name="Mutant #93" file="src/service/user.py" line="14">
+			<system-out>    user_exists = UserDB.user_exists(username)</system-out>
+		</testcase>
+		<testcase name="Mutant #94" file="src/service/user.py" line="17">
+			<system-out>            content={'message': f&quot;Username \&quot;{username}\&quot; is already taken&quot;},</system-out>
+		</testcase>
+		<testcase name="Mutant #95" file="src/service/user.py" line="22">
+			<system-out>        new_user = UserDB.get_by_username(username)</system-out>
+		</testcase>
+		<testcase name="Mutant #96" file="src/service/user.py" line="24">
+			<system-out>            {&quot;id&quot;: new_user['id']}, Config.jwt_token_secret, algorithm=&quot;HS256&quot;)</system-out>
+		</testcase>
+		<testcase name="Mutant #97" file="src/service/user.py" line="31">
+			<system-out>    found_user = UserDB.get_by_username(user.username)</system-out>
+		</testcase>
+		<testcase name="Mutant #98" file="src/service/user.py" line="32">
+			<system-out>    if found_user is None or not check_password(</system-out>
+		</testcase>
+		<testcase name="Mutant #99" file="src/service/user.py" line="32">
+			<system-out>    if found_user is None or not check_password(</system-out>
+		</testcase>
+		<testcase name="Mutant #100" file="src/service/user.py" line="34">
+			<system-out>            found_user['password']):</system-out>
+		</testcase>
+		<testcase name="Mutant #101" file="src/service/user.py" line="38">
+			<system-out>        )</system-out>
+		</testcase>
+		<testcase name="Mutant #102" file="src/service/user.py" line="43">
+			<system-out>                   Config.jwt_token_secret, algorithm=&quot;HS256&quot;))</system-out>
+		</testcase>
+		<testcase name="Mutant #103" file="src/service/user.py" line="50">
+			<system-out>    users_list = UserDB.list_users()</system-out>
+		</testcase>
+		<testcase name="Mutant #104" file="src/service/user.py" line="52">
+			<system-out>        lambda data: model.ListUser.model_validate(data).model_dump(),</system-out>
+		</testcase>
+		<testcase name="Mutant #105" file="src/service/user.py" line="53">
+			<system-out>        users_list))</system-out>
+		</testcase>
+		<testcase name="Mutant #106" file="src/service/user.py" line="58">
+			<failure type="failure" message="bad_survived">--- src/service/user.py
++++ src/service/user.py
+@@ -55,7 +55,7 @@
+ 
+ 
+ async def get_self(user_id):
+-    user = UserDB.get_by_id(user_id)
++    user = None
+     # Technically we should always find user,
+     # do not catch user not found for the sake of simplicity
+     user['token'] = jwt.encode({&quot;id&quot;: user['id']},
+</failure>
+			<system-out>    user = UserDB.get_by_id(user_id)</system-out>
+		</testcase>
+		<testcase name="Mutant #107" file="src/service/user.py" line="62">
+			<failure type="failure" message="bad_survived">--- src/service/user.py
++++ src/service/user.py
+@@ -58,8 +58,7 @@
+     user = UserDB.get_by_id(user_id)
+     # Technically we should always find user,
+     # do not catch user not found for the sake of simplicity
+-    user['token'] = jwt.encode({&quot;id&quot;: user['id']},
+-                               Config.jwt_token_secret, algorithm=&quot;HS256&quot;)
++    user['token'] = None
+     return JSONResponse(status_code=HTTPStatus.OK,
+                         content=model.User.model_validate(user).model_dump())
+ 
+</failure>
+			<system-out>                               Config.jwt_token_secret, algorithm=&quot;HS256&quot;)</system-out>
+		</testcase>
+		<testcase name="Mutant #108" file="src/service/group.py" line="11">
+			<system-out>    if (len(group_data.member_ids) != len(set(group_data.member_ids))</system-out>
+		</testcase>
+		<testcase name="Mutant #109" file="src/service/group.py" line="12">
+			<system-out>            or len(group_data.member_ids) == 0</system-out>
+		</testcase>
+		<testcase name="Mutant #110" file="src/service/group.py" line="12">
+			<failure type="failure" message="bad_survived">--- src/service/group.py
++++ src/service/group.py
+@@ -9,7 +9,7 @@
+ 
+ async def create(user_id, group_data: model.CreateGroup) -&gt; JSONResponse:
+     if (len(group_data.member_ids) != len(set(group_data.member_ids))
+-            or len(group_data.member_ids) == 0
++            or len(group_data.member_ids) == 1
+             or (len(group_data.member_ids) == 1
+                 and group_data.member_ids[0] == user_id)):
+         return JSONResponse(
+</failure>
+			<system-out>            or len(group_data.member_ids) == 0</system-out>
+		</testcase>
+		<testcase name="Mutant #111" file="src/service/group.py" line="13">
+			<system-out>            or (len(group_data.member_ids) == 1</system-out>
+		</testcase>
+		<testcase name="Mutant #112" file="src/service/group.py" line="13">
+			<failure type="failure" message="bad_survived">--- src/service/group.py
++++ src/service/group.py
+@@ -10,7 +10,7 @@
+ async def create(user_id, group_data: model.CreateGroup) -&gt; JSONResponse:
+     if (len(group_data.member_ids) != len(set(group_data.member_ids))
+             or len(group_data.member_ids) == 0
+-            or (len(group_data.member_ids) == 1
++            or (len(group_data.member_ids) == 2
+                 and group_data.member_ids[0] == user_id)):
+         return JSONResponse(
+             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
+</failure>
+			<system-out>            or (len(group_data.member_ids) == 1</system-out>
+		</testcase>
+		<testcase name="Mutant #113" file="src/service/group.py" line="14">
+			<failure type="failure" message="bad_survived">--- src/service/group.py
++++ src/service/group.py
+@@ -11,7 +11,7 @@
+     if (len(group_data.member_ids) != len(set(group_data.member_ids))
+             or len(group_data.member_ids) == 0
+             or (len(group_data.member_ids) == 1
+-                and group_data.member_ids[0] == user_id)):
++                and group_data.member_ids[1] == user_id)):
+         return JSONResponse(
+             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
+             content='invalid list of members '
+</failure>
+			<system-out>                and group_data.member_ids[0] == user_id)):</system-out>
+		</testcase>
+		<testcase name="Mutant #114" file="src/service/group.py" line="14">
+			<failure type="failure" message="bad_survived">--- src/service/group.py
++++ src/service/group.py
+@@ -11,7 +11,7 @@
+     if (len(group_data.member_ids) != len(set(group_data.member_ids))
+             or len(group_data.member_ids) == 0
+             or (len(group_data.member_ids) == 1
+-                and group_data.member_ids[0] == user_id)):
++                and group_data.member_ids[0] != user_id)):
+         return JSONResponse(
+             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
+             content='invalid list of members '
+</failure>
+			<system-out>                and group_data.member_ids[0] == user_id)):</system-out>
+		</testcase>
+		<testcase name="Mutant #115" file="src/service/group.py" line="14">
+			<system-out>                and group_data.member_ids[0] == user_id)):</system-out>
+		</testcase>
+		<testcase name="Mutant #116" file="src/service/group.py" line="14">
+			<system-out>                and group_data.member_ids[0] == user_id)):</system-out>
+		</testcase>
+		<testcase name="Mutant #117" file="src/service/group.py" line="20">
+			<system-out>    if not UserDB.users_exist(group_data.member_ids.copy()):</system-out>
+		</testcase>
+		<testcase name="Mutant #118" file="src/service/group.py" line="25">
+			<system-out>    if user_id not in group_data.member_ids:</system-out>
+		</testcase>
+		<testcase name="Mutant #119" file="src/service/group.py" line="26">
+			<system-out>        group_data.member_ids += [user_id]</system-out>
+		</testcase>
+		<testcase name="Mutant #120" file="src/service/group.py" line="26">
+			<system-out>        group_data.member_ids += [user_id]</system-out>
+		</testcase>
+		<testcase name="Mutant #121" file="src/service/group.py" line="28">
+			<system-out>    id = GroupDB.create(group_data.name, group_data.member_ids)</system-out>
+		</testcase>
+		<testcase name="Mutant #122" file="src/service/group.py" line="29">
+			<system-out>    group = GroupDB.get(id)</system-out>
+		</testcase>
+		<testcase name="Mutant #123" file="src/service/group.py" line="30">
+			<system-out>    group['members'] = GroupDB.get_members(id)</system-out>
+		</testcase>
+		<testcase name="Mutant #124" file="src/service/group.py" line="31">
+			<system-out>    group['history'] = SplitHistoryDB.list(id)</system-out>
+		</testcase>
+		<testcase name="Mutant #125" file="src/service/group.py" line="37">
+			<system-out>    group = GroupDB.get(group_id)</system-out>
+		</testcase>
+		<testcase name="Mutant #126" file="src/service/group.py" line="38">
+			<system-out>    if group is None:</system-out>
+		</testcase>
+		<testcase name="Mutant #127" file="src/service/group.py" line="41">
+			<system-out>    group['members'] = GroupDB.get_members(group_id)</system-out>
+		</testcase>
+		<testcase name="Mutant #128" file="src/service/group.py" line="42">
+			<system-out>    if user_id not in map(lambda member: member['id'], group['members']):</system-out>
+		</testcase>
+		<testcase name="Mutant #129" file="src/service/group.py" line="42">
+			<system-out>    if user_id not in map(lambda member: member['id'], group['members']):</system-out>
+		</testcase>
+		<testcase name="Mutant #130" file="src/service/group.py" line="45">
+			<system-out>    group['history'] = SplitHistoryDB.list(group_id)</system-out>
+		</testcase>
+		<testcase name="Mutant #131" file="src/service/group.py" line="51">
+			<failure type="failure" message="bad_survived">--- src/service/group.py
++++ src/service/group.py
+@@ -48,7 +48,7 @@
+ 
+ 
+ async def list_users(user_id):
+-    groups = GroupDB.list_users(user_id)
++    groups = None
+     return JSONResponse(content=model.GroupList.model_validate(
+         {'groups': groups}).model_dump(), status_code=HTTPStatus.OK)
+ 
+</failure>
+			<system-out>    groups = GroupDB.list_users(user_id)</system-out>
+		</testcase>
+		<testcase name="Mutant #132" file="src/service/group.py" line="57">
+			<system-out>    if len(split_data.payer_ids) != len(</system-out>
+		</testcase>
+		<testcase name="Mutant #133" file="src/service/group.py" line="58">
+			<system-out>            set(split_data.payer_ids)) or len(split_data.payer_ids) == 0:</system-out>
+		</testcase>
+		<testcase name="Mutant #134" file="src/service/group.py" line="58">
+			<failure type="failure" message="bad_survived">--- src/service/group.py
++++ src/service/group.py
+@@ -55,7 +55,7 @@
+ 
+ async def split(user_id, split_data: model.Split):
+     if len(split_data.payer_ids) != len(
+-            set(split_data.payer_ids)) or len(split_data.payer_ids) == 0:
++            set(split_data.payer_ids)) or len(split_data.payer_ids) == 1:
+         return JSONResponse(
+             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
+             content='invalid list of payers (empty or contains duplicates)')
+</failure>
+			<system-out>            set(split_data.payer_ids)) or len(split_data.payer_ids) == 0:</system-out>
+		</testcase>
+		<testcase name="Mutant #135" file="src/service/group.py" line="58">
+			<failure type="failure" message="bad_survived">--- src/service/group.py
++++ src/service/group.py
+@@ -55,7 +55,7 @@
+ 
+ async def split(user_id, split_data: model.Split):
+     if len(split_data.payer_ids) != len(
+-            set(split_data.payer_ids)) or len(split_data.payer_ids) == 0:
++            set(split_data.payer_ids)) and len(split_data.payer_ids) == 0:
+         return JSONResponse(
+             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
+             content='invalid list of payers (empty or contains duplicates)')
+</failure>
+			<system-out>            set(split_data.payer_ids)) or len(split_data.payer_ids) == 0:</system-out>
+		</testcase>
+		<testcase name="Mutant #136" file="src/service/group.py" line="62">
+			<failure type="failure" message="bad_survived">--- src/service/group.py
++++ src/service/group.py
+@@ -59,7 +59,7 @@
+         return JSONResponse(
+             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
+             content='invalid list of payers (empty or contains duplicates)')
+-    if split_data.amount &lt;= 0:
++    if split_data.amount &lt; 0:
+         return JSONResponse(
+             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
+             content='amount less or equal to zero')
+</failure>
+			<system-out>    if split_data.amount &lt;= 0:</system-out>
+		</testcase>
+		<testcase name="Mutant #137" file="src/service/group.py" line="62">
+			<failure type="failure" message="bad_survived">--- src/service/group.py
++++ src/service/group.py
+@@ -59,7 +59,7 @@
+         return JSONResponse(
+             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
+             content='invalid list of payers (empty or contains duplicates)')
+-    if split_data.amount &lt;= 0:
++    if split_data.amount &lt;= 1:
+         return JSONResponse(
+             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
+             content='amount less or equal to zero')
+</failure>
+			<system-out>    if split_data.amount &lt;= 0:</system-out>
+		</testcase>
+		<testcase name="Mutant #138" file="src/service/group.py" line="67">
+			<system-out>    group = GroupDB.get(split_data.group_id)</system-out>
+		</testcase>
+		<testcase name="Mutant #139" file="src/service/group.py" line="68">
+			<system-out>    if group is None:</system-out>
+		</testcase>
+		<testcase name="Mutant #140" file="src/service/group.py" line="72">
+			<system-out>    group['members'] = GroupDB.get_members(split_data.group_id)</system-out>
+		</testcase>
+		<testcase name="Mutant #141" file="src/service/group.py" line="73">
+			<system-out>    if user_id not in map(lambda member: member['id'], group['members']):</system-out>
+		</testcase>
+		<testcase name="Mutant #142" file="src/service/group.py" line="73">
+			<system-out>    if user_id not in map(lambda member: member['id'], group['members']):</system-out>
+		</testcase>
+		<testcase name="Mutant #143" file="src/service/group.py" line="78">
+			<system-out>    member_ids = list(map(lambda member: member['id'], group['members']))</system-out>
+		</testcase>
+		<testcase name="Mutant #144" file="src/service/group.py" line="78">
+			<system-out>    member_ids = list(map(lambda member: member['id'], group['members']))</system-out>
+		</testcase>
+		<testcase name="Mutant #145" file="src/service/group.py" line="80">
+			<system-out>        if payer_id not in member_ids:</system-out>
+		</testcase>
+		<testcase name="Mutant #146" file="src/service/group.py" line="84">
+			<system-out>    if split_data.lander_id not in member_ids:</system-out>
+		</testcase>
+	</testsuite>
+</testsuites>
+

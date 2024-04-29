@@ -26,6 +26,13 @@ src.tests.ui | 48% | 100% | ➖
 **Summary** | **91%** (584 / 641) | **90%** (124 / 138) | ✔
 <!-- END REPORT -->
 
+## Mutation testing report
+<!-- BEGIN MUTATION REPORT -->
+Total mutations | Passed | Failed | Rate
+----------------|--------|--------|------
+5 | 5 | 0 | 100%
+<!-- END MUTATION REPORT -->
+
 ## Install dependencies
 `poetry install`
 
