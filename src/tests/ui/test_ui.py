@@ -1,7 +1,7 @@
 import pytest
 from utils import WebDriver, app_urls
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.safari.options import Options
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By as FindBy
 from selenium.common.exceptions import TimeoutException
 
@@ -14,7 +14,7 @@ def driver():
     safari_options = Options()
     return WebDriver(safari_options, WAIT_TIME)
 
-def test_main_page_for_unauthorized_user(driver, capsys):
+def test_main_page_for_unauthorized_user(driver):
     driver.driver.start_client()
     driver.load_page(app_urls.get('main'))
 

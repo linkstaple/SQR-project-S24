@@ -1,5 +1,5 @@
 from selenium import webdriver
-from selenium.webdriver.safari.options import Options
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By as FindBy
 
@@ -13,10 +13,10 @@ app_urls = {
 }
 
 class WebDriver:
-    driver: webdriver.Safari
+    driver: webdriver.Chrome
 
     def __init__(self, browser_options: Options, wait_time):
-        self.driver = webdriver.Safari(options=browser_options)
+        self.driver = webdriver.Chrome(options=browser_options)
         self.driver.set_window_size(1200, 800)
         self.wait = WebDriverWait(self.driver, wait_time)
 
